@@ -1,0 +1,3028 @@
+{
+  "Renaissance": {
+    "name": "Renaissance",
+    "desc": "Warm ochres and Venetian red",
+    "font_main": "Georgia",
+    "font_title": "Georgia",
+    "bg_deep": "#1c1510",
+    "bg_mid": "#2a1f17",
+    "bg_panel": "#231a13",
+    "bg_toolbar": "#1e1610",
+    "bg_canvas": "#1a1208",
+    "surface": "#3a2a1e",
+    "surface_hi": "#4a3828",
+    "surface_act": "#5a4535",
+    "parchment": "#e8d5a3",
+    "parchment_dim": "#a08060",
+    "parchment_faint": "#8c6a54",
+    "primary": "#8b2500",
+    "primary_hi": "#a83010",
+    "primary_act": "#c04020",
+    "secondary": "#c8960a",
+    "secondary_hi": "#e0aa18",
+    "tertiary": "#2d6b5a",
+    "tertiary_txt": "#7ecfb8",
+    "rule": "#4a3020",
+    "rule_dim": "#2e2010",
+    "selection_color": "#e85020",
+    "sel_colors": [
+      [
+        178,
+        82,
+        40
+      ],
+      [
+        42,
+        90,
+        80
+      ],
+      [
+        160,
+        120,
+        30
+      ],
+      [
+        80,
+        50,
+        110
+      ],
+      [
+        140,
+        60,
+        60
+      ],
+      [
+        55,
+        90,
+        60
+      ],
+      [
+        170,
+        100,
+        50
+      ],
+      [
+        70,
+        70,
+        120
+      ],
+      [
+        150,
+        80,
+        80
+      ],
+      [
+        60,
+        100,
+        80
+      ],
+      [
+        130,
+        110,
+        40
+      ],
+      [
+        90,
+        50,
+        90
+      ]
+    ]
+  },
+  "Modern": {
+    "name": "Modern",
+    "desc": "Clean dark mode",
+    "font_main": "Segoe UI",
+    "font_title": "Segoe UI",
+    "bg_deep": "#0f0f14",
+    "bg_mid": "#18181f",
+    "bg_panel": "#14141a",
+    "bg_toolbar": "#1c1c24",
+    "bg_canvas": "#0d0d12",
+    "surface": "#24242e",
+    "surface_hi": "#2e2e3c",
+    "surface_act": "#38384a",
+    "parchment": "#e8e8f0",
+    "parchment_dim": "#a0a0b8",
+    "parchment_faint": "#70708b",
+    "primary": "#2a60a9",
+    "primary_hi": "#3a70b9",
+    "primary_act": "#4a80c9",
+    "secondary": "#50d9a0",
+    "secondary_hi": "#60e9b0",
+    "tertiary": "#1a6050",
+    "tertiary_txt": "#d0f0e0",
+    "rule": "#2a2a38",
+    "rule_dim": "#1a1a24",
+    "selection_color": "#ff50d0",
+    "sel_colors": [
+      [
+        74,
+        144,
+        217
+      ],
+      [
+        80,
+        200,
+        160
+      ],
+      [
+        180,
+        120,
+        200
+      ],
+      [
+        220,
+        160,
+        80
+      ],
+      [
+        100,
+        180,
+        220
+      ],
+      [
+        200,
+        100,
+        150
+      ],
+      [
+        150,
+        200,
+        100
+      ],
+      [
+        180,
+        140,
+        80
+      ],
+      [
+        220,
+        100,
+        100
+      ],
+      [
+        100,
+        180,
+        180
+      ],
+      [
+        180,
+        180,
+        100
+      ],
+      [
+        140,
+        100,
+        200
+      ]
+    ]
+  },
+  "Nordic": {
+    "name": "Nordic",
+    "desc": "Nordic frost and stone",
+    "font_main": "Constantia",
+    "font_title": "Constantia",
+    "bg_deep": "#1a1c20",
+    "bg_mid": "#242830",
+    "bg_panel": "#1e2028",
+    "bg_toolbar": "#1c1e24",
+    "bg_canvas": "#141618",
+    "surface": "#303440",
+    "surface_hi": "#3a4050",
+    "surface_act": "#444860",
+    "parchment": "#d8d0c0",
+    "parchment_dim": "#909098",
+    "parchment_faint": "#74747e",
+    "primary": "#6a6878",
+    "primary_hi": "#7a7888",
+    "primary_act": "#8a8898",
+    "secondary": "#c8b878",
+    "secondary_hi": "#d8c888",
+    "tertiary": "#304050",
+    "tertiary_txt": "#d0e0f0",
+    "rule": "#3a3a48",
+    "rule_dim": "#282830",
+    "selection_color": "#c0d0ff",
+    "sel_colors": [
+      [
+        180,
+        160,
+        120
+      ],
+      [
+        112,
+        144,
+        168
+      ],
+      [
+        160,
+        120,
+        140
+      ],
+      [
+        140,
+        168,
+        140
+      ],
+      [
+        168,
+        140,
+        112
+      ],
+      [
+        120,
+        140,
+        180
+      ],
+      [
+        180,
+        140,
+        120
+      ],
+      [
+        140,
+        160,
+        180
+      ],
+      [
+        160,
+        168,
+        120
+      ],
+      [
+        120,
+        120,
+        160
+      ],
+      [
+        180,
+        120,
+        160
+      ],
+      [
+        140,
+        180,
+        160
+      ]
+    ]
+  },
+  "Volkihar Clan": {
+    "name": "Volkihar Clan",
+    "desc": "Crimson darkness",
+    "font_main": "Palatino Linotype",
+    "font_title": "Palatino Linotype",
+    "bg_deep": "#140a0a",
+    "bg_mid": "#1e1010",
+    "bg_panel": "#180c0c",
+    "bg_toolbar": "#160a0a",
+    "bg_canvas": "#100808",
+    "surface": "#2a1818",
+    "surface_hi": "#382020",
+    "surface_act": "#482828",
+    "parchment": "#e0d0c8",
+    "parchment_dim": "#988888",
+    "parchment_faint": "#7b6464",
+    "primary": "#8b0000",
+    "primary_hi": "#a01010",
+    "primary_act": "#b82020",
+    "secondary": "#b8960a",
+    "secondary_hi": "#c8a618",
+    "tertiary": "#1a3030",
+    "tertiary_txt": "#d0c8c8",
+    "rule": "#3a2020",
+    "rule_dim": "#281010",
+    "selection_color": "#c060ff",
+    "sel_colors": [
+      [
+        139,
+        0,
+        0
+      ],
+      [
+        80,
+        0,
+        40
+      ],
+      [
+        120,
+        60,
+        60
+      ],
+      [
+        180,
+        40,
+        40
+      ],
+      [
+        100,
+        20,
+        20
+      ],
+      [
+        140,
+        60,
+        80
+      ],
+      [
+        160,
+        30,
+        60
+      ],
+      [
+        100,
+        80,
+        80
+      ],
+      [
+        180,
+        60,
+        80
+      ],
+      [
+        60,
+        20,
+        60
+      ],
+      [
+        120,
+        100,
+        100
+      ],
+      [
+        80,
+        40,
+        100
+      ]
+    ]
+  },
+  "Dawnguard": {
+    "name": "Dawnguard",
+    "desc": "Sun Crusader gold and amber",
+    "font_main": "Cambria",
+    "font_title": "Cambria",
+    "bg_deep": "#1a1408",
+    "bg_mid": "#282010",
+    "bg_panel": "#201808",
+    "bg_toolbar": "#1c1408",
+    "bg_canvas": "#140e06",
+    "surface": "#3a2818",
+    "surface_hi": "#4a3820",
+    "surface_act": "#5a4828",
+    "parchment": "#f0e8d0",
+    "parchment_dim": "#a89868",
+    "parchment_faint": "#806d4f",
+    "primary": "#c84800",
+    "primary_hi": "#d85810",
+    "primary_act": "#e86820",
+    "secondary": "#ffd700",
+    "secondary_hi": "#ffe740",
+    "tertiary": "#2a4030",
+    "tertiary_txt": "#d0e8d0",
+    "rule": "#4a3820",
+    "rule_dim": "#302010",
+    "selection_color": "#ffc040",
+    "sel_colors": [
+      [
+        255,
+        215,
+        0
+      ],
+      [
+        255,
+        165,
+        0
+      ],
+      [
+        255,
+        140,
+        0
+      ],
+      [
+        255,
+        200,
+        50
+      ],
+      [
+        200,
+        150,
+        0
+      ],
+      [
+        255,
+        180,
+        80
+      ],
+      [
+        240,
+        200,
+        120
+      ],
+      [
+        220,
+        170,
+        50
+      ],
+      [
+        255,
+        220,
+        100
+      ],
+      [
+        200,
+        180,
+        80
+      ],
+      [
+        255,
+        190,
+        60
+      ],
+      [
+        230,
+        160,
+        80
+      ]
+    ]
+  },
+  "Arcane": {
+    "name": "Arcane",
+    "desc": "Magical systems",
+    "font_main": "Palatino Linotype",
+    "font_title": "Palatino Linotype",
+    "bg_deep": "#12131a",
+    "bg_mid": "#1a1b24",
+    "bg_panel": "#15161d",
+    "bg_toolbar": "#17181f",
+    "bg_canvas": "#0e0f14",
+    "surface": "#252630",
+    "surface_hi": "#303040",
+    "surface_act": "#3a3a50",
+    "parchment": "#d8d2c4",
+    "parchment_dim": "#8880a0",
+    "parchment_faint": "#6c6c8c",
+    "primary": "#5d3fd3",
+    "primary_hi": "#6d4fe3",
+    "primary_act": "#7d5ff3",
+    "secondary": "#9f8cff",
+    "secondary_hi": "#af9cff",
+    "tertiary": "#2030a0",
+    "tertiary_txt": "#d0d0ff",
+    "rule": "#2a2a38",
+    "rule_dim": "#1a1a24",
+    "selection_color": "#00ffcc",
+    "sel_colors": [
+      [
+        93,
+        63,
+        211
+      ],
+      [
+        58,
+        123,
+        213
+      ],
+      [
+        159,
+        140,
+        255
+      ],
+      [
+        200,
+        180,
+        100
+      ],
+      [
+        100,
+        150,
+        220
+      ],
+      [
+        180,
+        100,
+        150
+      ],
+      [
+        150,
+        200,
+        180
+      ],
+      [
+        220,
+        160,
+        100
+      ],
+      [
+        120,
+        100,
+        200
+      ],
+      [
+        200,
+        200,
+        100
+      ],
+      [
+        100,
+        200,
+        200
+      ],
+      [
+        180,
+        120,
+        180
+      ]
+    ]
+  },
+  "Ashen": {
+    "name": "Ashen",
+    "desc": "Volcanic Red Mountain",
+    "font_main": "Cambria",
+    "font_title": "Cambria",
+    "bg_deep": "#2c2a28",
+    "bg_mid": "#3a3835",
+    "bg_panel": "#32302d",
+    "bg_toolbar": "#34322f",
+    "bg_canvas": "#252320",
+    "surface": "#4a4744",
+    "surface_hi": "#5a5754",
+    "surface_act": "#6a6764",
+    "parchment": "#f0e8e0",
+    "parchment_dim": "#b0a098",
+    "parchment_faint": "#8e857b",
+    "primary": "#8b4010",
+    "primary_hi": "#9b5020",
+    "primary_act": "#ab6030",
+    "secondary": "#c9b458",
+    "secondary_hi": "#d9c468",
+    "tertiary": "#3a3530",
+    "tertiary_txt": "#e0d8d0",
+    "rule": "#4a4744",
+    "rule_dim": "#353230",
+    "selection_color": "#ff4060",
+    "sel_colors": [
+      [
+        106,
+        103,
+        98
+      ],
+      [
+        217,
+        107,
+        43
+      ],
+      [
+        201,
+        180,
+        88
+      ],
+      [
+        138,
+        129,
+        124
+      ],
+      [
+        180,
+        140,
+        100
+      ],
+      [
+        140,
+        120,
+        120
+      ],
+      [
+        160,
+        150,
+        100
+      ],
+      [
+        120,
+        100,
+        140
+      ],
+      [
+        200,
+        160,
+        120
+      ],
+      [
+        100,
+        140,
+        120
+      ],
+      [
+        160,
+        120,
+        160
+      ],
+      [
+        140,
+        160,
+        120
+      ]
+    ]
+  },
+  "Atherial": {
+    "name": "Atherial",
+    "desc": "Divine elder scroll energy",
+    "font_main": "Times New Roman",
+    "font_title": "Times New Roman",
+    "bg_deep": "#2b2e3a",
+    "bg_mid": "#3a3d4a",
+    "bg_panel": "#323540",
+    "bg_toolbar": "#343848",
+    "bg_canvas": "#1e2028",
+    "surface": "#4a4d5a",
+    "surface_hi": "#5a5d6a",
+    "surface_act": "#6a6d7a",
+    "parchment": "#f6f7fb",
+    "parchment_dim": "#c0c0d0",
+    "parchment_faint": "#8c8ca0",
+    "primary": "#6080a0",
+    "primary_hi": "#7090b0",
+    "primary_act": "#80a0c0",
+    "secondary": "#eedb9a",
+    "secondary_hi": "#feebaa",
+    "tertiary": "#5040a0",
+    "tertiary_txt": "#e0d0ff",
+    "rule": "#4a4d5a",
+    "rule_dim": "#353840",
+    "selection_color": "#ffe060",
+    "sel_colors": [
+      [
+        246,
+        247,
+        251
+      ],
+      [
+        168,
+        208,
+        240
+      ],
+      [
+        238,
+        219,
+        154
+      ],
+      [
+        207,
+        201,
+        232
+      ],
+      [
+        180,
+        200,
+        220
+      ],
+      [
+        220,
+        180,
+        200
+      ],
+      [
+        200,
+        220,
+        180
+      ],
+      [
+        154,
+        200,
+        220
+      ],
+      [
+        232,
+        200,
+        180
+      ],
+      [
+        180,
+        220,
+        200
+      ],
+      [
+        220,
+        200,
+        154
+      ],
+      [
+        200,
+        154,
+        220
+      ]
+    ]
+  },
+  "Dwemer": {
+    "name": "Dwemer",
+    "desc": "Bronze and copper machinery",
+    "font_main": "Georgia",
+    "font_title": "Georgia",
+    "bg_deep": "#0f0b09",
+    "bg_mid": "#1a140e",
+    "bg_panel": "#15110d",
+    "bg_toolbar": "#12100b",
+    "bg_canvas": "#0d0b07",
+    "surface": "#2a2118",
+    "surface_hi": "#3a3128",
+    "surface_act": "#4a4138",
+    "parchment": "#fff8e8",
+    "parchment_dim": "#c0a070",
+    "parchment_faint": "#81664c",
+    "primary": "#8b5a2b",
+    "primary_hi": "#a06a3b",
+    "primary_act": "#b57a4b",
+    "secondary": "#607080",
+    "secondary_hi": "#8098b0",
+    "tertiary": "#2a4040",
+    "tertiary_txt": "#c8e8e8",
+    "rule": "#3a2820",
+    "rule_dim": "#201810",
+    "selection_color": "#ff9040",
+    "sel_colors": [
+      [
+        176,
+        141,
+        87
+      ],
+      [
+        110,
+        123,
+        91
+      ],
+      [
+        122,
+        70,
+        50
+      ],
+      [
+        122,
+        127,
+        133
+      ],
+      [
+        140,
+        120,
+        80
+      ],
+      [
+        100,
+        110,
+        100
+      ],
+      [
+        130,
+        130,
+        100
+      ],
+      [
+        110,
+        100,
+        130
+      ],
+      [
+        150,
+        130,
+        100
+      ],
+      [
+        100,
+        130,
+        130
+      ],
+      [
+        130,
+        100,
+        150
+      ],
+      [
+        120,
+        150,
+        110
+      ]
+    ]
+  },
+  "Glacial": {
+    "name": "Glacial",
+    "desc": "Ice frozen clarity",
+    "font_main": "Constantia",
+    "font_title": "Constantia",
+    "bg_deep": "#1a2e3a",
+    "bg_mid": "#2a3e4a",
+    "bg_panel": "#223440",
+    "bg_toolbar": "#283848",
+    "bg_canvas": "#102030",
+    "surface": "#3a4e5a",
+    "surface_hi": "#4a5e6a",
+    "surface_act": "#5a6e7a",
+    "parchment": "#f0fbff",
+    "parchment_dim": "#b8d8e8",
+    "parchment_faint": "#718f9e",
+    "primary": "#4080a0",
+    "primary_hi": "#5090b0",
+    "primary_act": "#60a0c0",
+    "secondary": "#a4d8f0",
+    "secondary_hi": "#b4e8ff",
+    "tertiary": "#203040",
+    "tertiary_txt": "#d0e0f0",
+    "rule": "#3a4e5a",
+    "rule_dim": "#283840",
+    "selection_color": "#ffb060",
+    "sel_colors": [
+      [
+        240,
+        251,
+        255
+      ],
+      [
+        164,
+        216,
+        240
+      ],
+      [
+        127,
+        95,
+        115
+      ],
+      [
+        127,
+        224,
+        255
+      ],
+      [
+        200,
+        220,
+        240
+      ],
+      [
+        240,
+        200,
+        220
+      ],
+      [
+        220,
+        240,
+        200
+      ],
+      [
+        180,
+        200,
+        240
+      ],
+      [
+        240,
+        220,
+        180
+      ],
+      [
+        180,
+        240,
+        220
+      ],
+      [
+        220,
+        180,
+        240
+      ],
+      [
+        200,
+        240,
+        180
+      ]
+    ]
+  },
+  "Verdant": {
+    "name": "Verdant",
+    "desc": "Living nature",
+    "font_main": "Palatino Linotype",
+    "font_title": "Palatino Linotype",
+    "bg_deep": "#1f2a1f",
+    "bg_mid": "#2f3a2f",
+    "bg_panel": "#283028",
+    "bg_toolbar": "#2a342a",
+    "bg_canvas": "#152015",
+    "surface": "#3f4b3f",
+    "surface_hi": "#4f5b4f",
+    "surface_act": "#5f6b5f",
+    "parchment": "#f0f8e8",
+    "parchment_dim": "#98a888",
+    "parchment_faint": "#768c61",
+    "primary": "#3a5020",
+    "primary_hi": "#4a6030",
+    "primary_act": "#5a7040",
+    "secondary": "#c6a85e",
+    "secondary_hi": "#d6b86e",
+    "tertiary": "#2a3520",
+    "tertiary_txt": "#d0e8b0",
+    "rule": "#3f4b3f",
+    "rule_dim": "#2a342a",
+    "selection_color": "#70d070",
+    "sel_colors": [
+      [
+        79,
+        107,
+        60
+      ],
+      [
+        59,
+        47,
+        42
+      ],
+      [
+        127,
+        175,
+        90
+      ],
+      [
+        198,
+        168,
+        94
+      ],
+      [
+        100,
+        120,
+        80
+      ],
+      [
+        140,
+        100,
+        80
+      ],
+      [
+        120,
+        140,
+        100
+      ],
+      [
+        90,
+        110,
+        130
+      ],
+      [
+        160,
+        130,
+        80
+      ],
+      [
+        80,
+        130,
+        120
+      ],
+      [
+        130,
+        100,
+        160
+      ],
+      [
+        110,
+        140,
+        100
+      ]
+    ]
+  },
+  "College of Winterhold": {
+    "name": "College of Winterhold",
+    "desc": "Mages arcane",
+    "font_main": "Palatino Linotype",
+    "font_title": "Palatino Linotype",
+    "bg_deep": "#2a3040",
+    "bg_mid": "#3a4050",
+    "bg_panel": "#323848",
+    "bg_toolbar": "#343c50",
+    "bg_canvas": "#1a2030",
+    "surface": "#4a5568",
+    "surface_hi": "#5a6578",
+    "surface_act": "#6a7588",
+    "parchment": "#e3eaf2",
+    "parchment_dim": "#98a8b8",
+    "parchment_faint": "#8593a1",
+    "primary": "#3a5f8a",
+    "primary_hi": "#4a6f9a",
+    "primary_act": "#5a7faa",
+    "secondary": "#7f9cf5",
+    "secondary_hi": "#8fafff",
+    "tertiary": "#2a2840",
+    "tertiary_txt": "#d0d8f0",
+    "rule": "#4a5568",
+    "rule_dim": "#343c50",
+    "selection_color": "#6080d0",
+    "sel_colors": [
+      [
+        58,
+        95,
+        138
+      ],
+      [
+        127,
+        156,
+        245
+      ],
+      [
+        90,
+        104,
+        68
+      ],
+      [
+        227,
+        234,
+        242
+      ],
+      [
+        140,
+        120,
+        180
+      ],
+      [
+        180,
+        140,
+        120
+      ],
+      [
+        120,
+        180,
+        140
+      ],
+      [
+        200,
+        180,
+        100
+      ],
+      [
+        100,
+        180,
+        200
+      ],
+      [
+        180,
+        100,
+        200
+      ],
+      [
+        200,
+        200,
+        100
+      ],
+      [
+        140,
+        100,
+        180
+      ]
+    ]
+  },
+  "Companions": {
+    "name": "Companions",
+    "desc": "Werewolves warrior",
+    "font_main": "Constantia",
+    "font_title": "Constantia",
+    "bg_deep": "#2a2520",
+    "bg_mid": "#3a3530",
+    "bg_panel": "#322c28",
+    "bg_toolbar": "#38322c",
+    "bg_canvas": "#1a1815",
+    "surface": "#4a4540",
+    "surface_hi": "#5a5550",
+    "surface_act": "#6a6560",
+    "parchment": "#f0f0e8",
+    "parchment_dim": "#a0a098",
+    "parchment_faint": "#8a8780",
+    "primary": "#6f7a86",
+    "primary_hi": "#808b97",
+    "primary_act": "#919ca8",
+    "secondary": "#8b5a36",
+    "secondary_hi": "#9b6a46",
+    "tertiary": "#2f3a28",
+    "tertiary_txt": "#d7e0c8",
+    "rule": "#4a4540",
+    "rule_dim": "#322c28",
+    "selection_color": "#d89a4a",
+    "sel_colors": [
+      [
+        111,
+        122,
+        134
+      ],
+      [
+        139,
+        90,
+        54
+      ],
+      [
+        215,
+        224,
+        232
+      ],
+      [
+        92,
+        106,
+        84
+      ],
+      [
+        184,
+        154,
+        94
+      ],
+      [
+        70,
+        86,
+        98
+      ],
+      [
+        124,
+        134,
+        108
+      ],
+      [
+        160,
+        112,
+        72
+      ],
+      [
+        98,
+        118,
+        128
+      ],
+      [
+        143,
+        126,
+        92
+      ],
+      [
+        178,
+        148,
+        116
+      ],
+      [
+        120,
+        146,
+        112
+      ]
+    ]
+  },
+  "Dark Brotherhood": {
+    "name": "Dark Brotherhood",
+    "desc": "Assassin shadow",
+    "font_main": "Times New Roman",
+    "font_title": "Times New Roman",
+    "bg_deep": "#0a0a0a",
+    "bg_mid": "#141414",
+    "bg_panel": "#101010",
+    "bg_toolbar": "#121212",
+    "bg_canvas": "#080808",
+    "surface": "#202020",
+    "surface_hi": "#2a2a2a",
+    "surface_act": "#343434",
+    "parchment": "#e8e8e0",
+    "parchment_dim": "#909090",
+    "parchment_faint": "#6b6b6b",
+    "primary": "#4a0000",
+    "primary_hi": "#5a1010",
+    "primary_act": "#6a2020",
+    "secondary": "#4b4b4b",
+    "secondary_hi": "#5b5b5b",
+    "tertiary": "#201515",
+    "tertiary_txt": "#e0d0d0",
+    "rule": "#252525",
+    "rule_dim": "#151515",
+    "selection_color": "#ff4040",
+    "sel_colors": [
+      [
+        10,
+        10,
+        10
+      ],
+      [
+        110,
+        15,
+        15
+      ],
+      [
+        75,
+        75,
+        75
+      ],
+      [
+        140,
+        43,
+        43
+      ],
+      [
+        60,
+        60,
+        60
+      ],
+      [
+        100,
+        40,
+        40
+      ],
+      [
+        80,
+        80,
+        80
+      ],
+      [
+        120,
+        30,
+        30
+      ],
+      [
+        90,
+        90,
+        90
+      ],
+      [
+        110,
+        50,
+        50
+      ],
+      [
+        70,
+        70,
+        70
+      ],
+      [
+        130,
+        35,
+        35
+      ]
+    ]
+  },
+  "Imperial Legion": {
+    "name": "Imperial Legion",
+    "desc": "Empire disciplined",
+    "font_main": "Times New Roman",
+    "font_title": "Times New Roman",
+    "bg_deep": "#2a1a1a",
+    "bg_mid": "#3a2a2a",
+    "bg_panel": "#322424",
+    "bg_toolbar": "#382828",
+    "bg_canvas": "#1a1414",
+    "surface": "#4a3a3a",
+    "surface_hi": "#5a4a4a",
+    "surface_act": "#6a5a5a",
+    "parchment": "#f0f0e8",
+    "parchment_dim": "#a0a098",
+    "parchment_faint": "#917b6f",
+    "primary": "#5a1010",
+    "primary_hi": "#6a2020",
+    "primary_act": "#7a3030",
+    "secondary": "#d4af37",
+    "secondary_hi": "#e4bf47",
+    "tertiary": "#2a2a30",
+    "tertiary_txt": "#d0d8e0",
+    "rule": "#4a3a3a",
+    "rule_dim": "#322424",
+    "selection_color": "#c0a030",
+    "sel_colors": [
+      [
+        140,
+        31,
+        31
+      ],
+      [
+        212,
+        175,
+        55
+      ],
+      [
+        232,
+        230,
+        227
+      ],
+      [
+        74,
+        79,
+        85
+      ],
+      [
+        160,
+        100,
+        100
+      ],
+      [
+        100,
+        160,
+        100
+      ],
+      [
+        100,
+        100,
+        160
+      ],
+      [
+        180,
+        140,
+        100
+      ],
+      [
+        100,
+        180,
+        140
+      ],
+      [
+        140,
+        100,
+        180
+      ],
+      [
+        180,
+        100,
+        140
+      ],
+      [
+        140,
+        180,
+        100
+      ]
+    ]
+  },
+  "Stormcloak": {
+    "name": "Stormcloak",
+    "desc": "Rebellion rebellion",
+    "font_main": "Georgia",
+    "font_title": "Georgia",
+    "bg_deep": "#1a1c24",
+    "bg_mid": "#2a2c34",
+    "bg_panel": "#242830",
+    "bg_toolbar": "#282c34",
+    "bg_canvas": "#14161c",
+    "surface": "#3a3c44",
+    "surface_hi": "#4a4c54",
+    "surface_act": "#5a5c64",
+    "parchment": "#f0f4f8",
+    "parchment_dim": "#98a8b8",
+    "parchment_faint": "#718192",
+    "primary": "#1a2a50",
+    "primary_hi": "#2a3a60",
+    "primary_act": "#3a4a70",
+    "secondary": "#8a9199",
+    "secondary_hi": "#9aa1a9",
+    "tertiary": "#2a1515",
+    "tertiary_txt": "#d0c8c8",
+    "rule": "#3a3c44",
+    "rule_dim": "#282c34",
+    "selection_color": "#5080c0",
+    "sel_colors": [
+      [
+        46,
+        74,
+        125
+      ],
+      [
+        90,
+        70,
+        53
+      ],
+      [
+        138,
+        145,
+        153
+      ],
+      [
+        234,
+        241,
+        247
+      ],
+      [
+        140,
+        100,
+        100
+      ],
+      [
+        100,
+        140,
+        100
+      ],
+      [
+        100,
+        100,
+        140
+      ],
+      [
+        160,
+        140,
+        100
+      ],
+      [
+        100,
+        160,
+        140
+      ],
+      [
+        140,
+        100,
+        160
+      ],
+      [
+        160,
+        100,
+        140
+      ],
+      [
+        140,
+        160,
+        100
+      ]
+    ]
+  },
+  "Thieves Guild": {
+    "name": "Thieves Guild",
+    "desc": "Shadows stealth",
+    "font_main": "Georgia",
+    "font_title": "Georgia",
+    "bg_deep": "#0c0c0c",
+    "bg_mid": "#1c1c1c",
+    "bg_panel": "#141414",
+    "bg_toolbar": "#181818",
+    "bg_canvas": "#0a0a0a",
+    "surface": "#282828",
+    "surface_hi": "#323232",
+    "surface_act": "#3c3c3c",
+    "parchment": "#f0d878",
+    "parchment_dim": "#908030",
+    "parchment_faint": "#727226",
+    "primary": "#303030",
+    "primary_hi": "#404040",
+    "primary_act": "#505050",
+    "secondary": "#c9a646",
+    "secondary_hi": "#d9b656",
+    "tertiary": "#1a2520",
+    "tertiary_txt": "#d0e0d8",
+    "rule": "#282828",
+    "rule_dim": "#1c1c1c",
+    "selection_color": "#c8a030",
+    "sel_colors": [
+      [
+        20,
+        20,
+        20
+      ],
+      [
+        201,
+        166,
+        70
+      ],
+      [
+        58,
+        47,
+        40
+      ],
+      [
+        107,
+        111,
+        115
+      ],
+      [
+        140,
+        120,
+        60
+      ],
+      [
+        80,
+        100,
+        90
+      ],
+      [
+        100,
+        90,
+        120
+      ],
+      [
+        160,
+        140,
+        100
+      ],
+      [
+        100,
+        140,
+        120
+      ],
+      [
+        120,
+        100,
+        140
+      ],
+      [
+        140,
+        100,
+        160
+      ],
+      [
+        100,
+        160,
+        120
+      ]
+    ]
+  },
+  "Akatosh": {
+    "name": "Akatosh",
+    "desc": "Time dragon god",
+    "font_main": "Times New Roman",
+    "font_title": "Times New Roman",
+    "bg_deep": "#2a2e35",
+    "bg_mid": "#3a3e45",
+    "bg_panel": "#323640",
+    "bg_toolbar": "#383c48",
+    "bg_canvas": "#1a1e24",
+    "surface": "#4a4e55",
+    "surface_hi": "#5a5e65",
+    "surface_act": "#6a6e75",
+    "parchment": "#f0f4f8",
+    "parchment_dim": "#98a8b8",
+    "parchment_faint": "#8593a1",
+    "primary": "#b78b2a",
+    "primary_hi": "#c79b3a",
+    "primary_act": "#d7ab4a",
+    "secondary": "#5a8fc8",
+    "secondary_hi": "#6a9fd8",
+    "tertiary": "#24364c",
+    "tertiary_txt": "#d8e6f5",
+    "rule": "#4a4e55",
+    "rule_dim": "#383c48",
+    "selection_color": "#f0c95a",
+    "sel_colors": [
+      [
+        183,
+        139,
+        42
+      ],
+      [
+        90,
+        143,
+        200
+      ],
+      [
+        240,
+        201,
+        90
+      ],
+      [
+        230,
+        237,
+        245
+      ],
+      [
+        123,
+        147,
+        174
+      ],
+      [
+        91,
+        73,
+        48
+      ],
+      [
+        169,
+        127,
+        62
+      ],
+      [
+        61,
+        98,
+        141
+      ],
+      [
+        206,
+        177,
+        116
+      ],
+      [
+        86,
+        128,
+        173
+      ],
+      [
+        151,
+        96,
+        70
+      ],
+      [
+        154,
+        173,
+        108
+      ]
+    ]
+  },
+  "Arkay": {
+    "name": "Arkay",
+    "desc": "Death cycle",
+    "font_main": "Times New Roman",
+    "font_title": "Times New Roman",
+    "bg_deep": "#1c1c1c",
+    "bg_mid": "#2c2c2c",
+    "bg_panel": "#242424",
+    "bg_toolbar": "#282828",
+    "bg_canvas": "#101010",
+    "surface": "#3c3c3c",
+    "surface_hi": "#4c4c4c",
+    "surface_act": "#5c5c5c",
+    "parchment": "#d8d2c4",
+    "parchment_dim": "#8a8278",
+    "parchment_faint": "#857a6b",
+    "primary": "#5e5a54",
+    "primary_hi": "#6e6a64",
+    "primary_act": "#7e7a74",
+    "secondary": "#6e7f5a",
+    "secondary_hi": "#7e8f6a",
+    "tertiary": "#2a1f15",
+    "tertiary_txt": "#9a8f85",
+    "rule": "#3c3c3c",
+    "rule_dim": "#282828",
+    "selection_color": "#8880a0",
+    "sel_colors": [
+      [
+        216,
+        210,
+        196
+      ],
+      [
+        94,
+        90,
+        84
+      ],
+      [
+        74,
+        63,
+        53
+      ],
+      [
+        110,
+        127,
+        90
+      ],
+      [
+        140,
+        130,
+        110
+      ],
+      [
+        110,
+        140,
+        130
+      ],
+      [
+        130,
+        110,
+        140
+      ],
+      [
+        160,
+        140,
+        120
+      ],
+      [
+        120,
+        160,
+        140
+      ],
+      [
+        140,
+        120,
+        160
+      ],
+      [
+        160,
+        120,
+        140
+      ],
+      [
+        140,
+        160,
+        120
+      ]
+    ]
+  },
+  "Julianos": {
+    "name": "Julianos",
+    "desc": "Wisdom logic",
+    "font_main": "Cambria",
+    "font_title": "Cambria",
+    "bg_deep": "#1e1e24",
+    "bg_mid": "#2e2e38",
+    "bg_panel": "#262630",
+    "bg_toolbar": "#2c2c38",
+    "bg_canvas": "#141418",
+    "surface": "#3e3e48",
+    "surface_hi": "#4e4e58",
+    "surface_act": "#5e5e68",
+    "parchment": "#e8d9b5",
+    "parchment_dim": "#988878",
+    "parchment_faint": "#937d66",
+    "primary": "#3a5f8a",
+    "primary_hi": "#4a6f9a",
+    "primary_act": "#5a7faa",
+    "secondary": "#6b7280",
+    "secondary_hi": "#7b8290",
+    "tertiary": "#2a5883",
+    "tertiary_txt": "#8fc8f3",
+    "rule": "#3e3e48",
+    "rule_dim": "#2c2c38",
+    "selection_color": "#5090d0",
+    "sel_colors": [
+      [
+        58,
+        95,
+        138
+      ],
+      [
+        30,
+        30,
+        36
+      ],
+      [
+        232,
+        217,
+        181
+      ],
+      [
+        107,
+        114,
+        128
+      ],
+      [
+        95,
+        168,
+        211
+      ],
+      [
+        180,
+        140,
+        100
+      ],
+      [
+        100,
+        180,
+        140
+      ],
+      [
+        140,
+        100,
+        180
+      ],
+      [
+        160,
+        140,
+        100
+      ],
+      [
+        100,
+        160,
+        140
+      ],
+      [
+        140,
+        180,
+        100
+      ],
+      [
+        180,
+        100,
+        140
+      ]
+    ]
+  },
+  "Kynareth": {
+    "name": "Kynareth",
+    "desc": "Sky wind",
+    "font_main": "Constantia",
+    "font_title": "Constantia",
+    "bg_deep": "#1a2028",
+    "bg_mid": "#2a3038",
+    "bg_panel": "#242830",
+    "bg_toolbar": "#282c34",
+    "bg_canvas": "#141820",
+    "surface": "#3a4048",
+    "surface_hi": "#4a5058",
+    "surface_act": "#5a6068",
+    "parchment": "#f0f6fa",
+    "parchment_dim": "#98b8d8",
+    "parchment_faint": "#688898",
+    "primary": "#5a93c0",
+    "primary_hi": "#6aa3d0",
+    "primary_act": "#7ab3e0",
+    "secondary": "#6f8f63",
+    "secondary_hi": "#7f9f73",
+    "tertiary": "#39534d",
+    "tertiary_txt": "#d6efe6",
+    "rule": "#3a4048",
+    "rule_dim": "#282c34",
+    "selection_color": "#9be7ff",
+    "sel_colors": [
+      [
+        90,
+        147,
+        192
+      ],
+      [
+        111,
+        143,
+        99
+      ],
+      [
+        240,
+        246,
+        250
+      ],
+      [
+        155,
+        231,
+        255
+      ],
+      [
+        126,
+        186,
+        222
+      ],
+      [
+        77,
+        114,
+        132
+      ],
+      [
+        170,
+        213,
+        186
+      ],
+      [
+        104,
+        136,
+        156
+      ],
+      [
+        196,
+        232,
+        244
+      ],
+      [
+        134,
+        170,
+        121
+      ],
+      [
+        115,
+        159,
+        183
+      ],
+      [
+        177,
+        220,
+        202
+      ]
+    ]
+  },
+  "Stendarr": {
+    "name": "Stendarr",
+    "desc": "Mercy protection",
+    "font_main": "Cambria",
+    "font_title": "Cambria",
+    "bg_deep": "#2a2a30",
+    "bg_mid": "#3a3a40",
+    "bg_panel": "#323238",
+    "bg_toolbar": "#383840",
+    "bg_canvas": "#1a1a20",
+    "surface": "#4a4a50",
+    "surface_hi": "#5a5a60",
+    "surface_act": "#6a6a70",
+    "parchment": "#ffffff",
+    "parchment_dim": "#a8a8b0",
+    "parchment_faint": "#8d8d94",
+    "primary": "#6f8898",
+    "primary_hi": "#7f98a8",
+    "primary_act": "#8fa8b8",
+    "secondary": "#d8b84c",
+    "secondary_hi": "#e8c85c",
+    "tertiary": "#3f5f78",
+    "tertiary_txt": "#c9dced",
+    "rule": "#4a4a50",
+    "rule_dim": "#383840",
+    "selection_color": "#f1d77a",
+    "sel_colors": [
+      [
+        216,
+        184,
+        76
+      ],
+      [
+        255,
+        255,
+        255
+      ],
+      [
+        111,
+        136,
+        152
+      ],
+      [
+        201,
+        220,
+        235
+      ],
+      [
+        79,
+        110,
+        134
+      ],
+      [
+        168,
+        180,
+        152
+      ],
+      [
+        141,
+        159,
+        172
+      ],
+      [
+        234,
+        220,
+        170
+      ],
+      [
+        123,
+        145,
+        158
+      ],
+      [
+        188,
+        205,
+        214
+      ],
+      [
+        102,
+        122,
+        136
+      ],
+      [
+        221,
+        202,
+        132
+      ]
+    ]
+  },
+  "Talos": {
+    "name": "Talos",
+    "desc": "Power empire",
+    "font_main": "Georgia",
+    "font_title": "Georgia",
+    "bg_deep": "#1a1c24",
+    "bg_mid": "#2a2c34",
+    "bg_panel": "#242830",
+    "bg_toolbar": "#282c34",
+    "bg_canvas": "#14161c",
+    "surface": "#3a3c44",
+    "surface_hi": "#4a4c54",
+    "surface_act": "#5a5c64",
+    "parchment": "#eaf1f7",
+    "parchment_dim": "#98a8b8",
+    "parchment_faint": "#718192",
+    "primary": "#7a2c2c",
+    "primary_hi": "#8a3c3c",
+    "primary_act": "#9a4c4c",
+    "secondary": "#c6a64b",
+    "secondary_hi": "#d6b65b",
+    "tertiary": "#1e2a4d",
+    "tertiary_txt": "#7e9ace",
+    "rule": "#3a3c44",
+    "rule_dim": "#282c34",
+    "selection_color": "#ffd700",
+    "sel_colors": [
+      [
+        46,
+        74,
+        125
+      ],
+      [
+        90,
+        95,
+        102
+      ],
+      [
+        122,
+        44,
+        44
+      ],
+      [
+        234,
+        241,
+        247
+      ],
+      [
+        198,
+        166,
+        75
+      ],
+      [
+        140,
+        120,
+        100
+      ],
+      [
+        100,
+        140,
+        120
+      ],
+      [
+        160,
+        140,
+        100
+      ],
+      [
+        100,
+        160,
+        140
+      ],
+      [
+        140,
+        100,
+        160
+      ],
+      [
+        160,
+        100,
+        140
+      ],
+      [
+        140,
+        160,
+        100
+      ]
+    ]
+  },
+  "Zenithar": {
+    "name": "Zenithar",
+    "desc": "Commerce labor",
+    "font_main": "Cambria",
+    "font_title": "Cambria",
+    "bg_deep": "#2a2218",
+    "bg_mid": "#3a3228",
+    "bg_panel": "#322c24",
+    "bg_toolbar": "#38302c",
+    "bg_canvas": "#1a1810",
+    "surface": "#4a4238",
+    "surface_hi": "#5a5248",
+    "surface_act": "#6a6258",
+    "parchment": "#eaddc8",
+    "parchment_dim": "#989080",
+    "parchment_faint": "#90846e",
+    "primary": "#6e6e6e",
+    "primary_hi": "#7e7e7e",
+    "primary_act": "#8e8e8e",
+    "secondary": "#c9a646",
+    "secondary_hi": "#d9b656",
+    "tertiary": "#2a1b0a",
+    "tertiary_txt": "#9a8b7a",
+    "rule": "#4a4238",
+    "rule_dim": "#322c24",
+    "selection_color": "#d8b860",
+    "sel_colors": [
+      [
+        201,
+        166,
+        70
+      ],
+      [
+        74,
+        59,
+        42
+      ],
+      [
+        110,
+        110,
+        110
+      ],
+      [
+        234,
+        221,
+        200
+      ],
+      [
+        140,
+        120,
+        100
+      ],
+      [
+        100,
+        140,
+        120
+      ],
+      [
+        120,
+        100,
+        140
+      ],
+      [
+        160,
+        140,
+        100
+      ],
+      [
+        100,
+        160,
+        140
+      ],
+      [
+        140,
+        100,
+        160
+      ],
+      [
+        160,
+        100,
+        140
+      ],
+      [
+        140,
+        160,
+        100
+      ]
+    ]
+  },
+  "Azura": {
+    "name": "Azura",
+    "desc": "Dawn dusk",
+    "font_main": "Palatino Linotype",
+    "font_title": "Palatino Linotype",
+    "bg_deep": "#1f2a44",
+    "bg_mid": "#2f3a54",
+    "bg_panel": "#273240",
+    "bg_toolbar": "#2c3848",
+    "bg_canvas": "#151e30",
+    "surface": "#3f4a5a",
+    "surface_hi": "#4f5a6a",
+    "surface_act": "#5f6a7a",
+    "parchment": "#e6c97a",
+    "parchment_dim": "#988850",
+    "parchment_faint": "#a1894a",
+    "primary": "#5a4b8a",
+    "primary_hi": "#6a5b9a",
+    "primary_act": "#7a6baa",
+    "secondary": "#e8a1a1",
+    "secondary_hi": "#f8b1b1",
+    "tertiary": "#375575",
+    "tertiary_txt": "#b0d8f0",
+    "rule": "#3f4a5a",
+    "rule_dim": "#2c3848",
+    "selection_color": "#a070d0",
+    "sel_colors": [
+      [
+        90,
+        75,
+        138
+      ],
+      [
+        232,
+        161,
+        161
+      ],
+      [
+        135,
+        181,
+        214
+      ],
+      [
+        230,
+        201,
+        122
+      ],
+      [
+        31,
+        42,
+        68
+      ],
+      [
+        180,
+        160,
+        120
+      ],
+      [
+        120,
+        180,
+        160
+      ],
+      [
+        160,
+        120,
+        180
+      ],
+      [
+        200,
+        180,
+        140
+      ],
+      [
+        140,
+        200,
+        180
+      ],
+      [
+        180,
+        140,
+        200
+      ],
+      [
+        160,
+        200,
+        160
+      ]
+    ]
+  },
+  "Boethiah": {
+    "name": "Boethiah",
+    "desc": "Deception plots",
+    "font_main": "Times New Roman",
+    "font_title": "Times New Roman",
+    "bg_deep": "#121212",
+    "bg_mid": "#1e1e1e",
+    "bg_panel": "#181818",
+    "bg_toolbar": "#1c1c1c",
+    "bg_canvas": "#0a0a0a",
+    "surface": "#2a2a2a",
+    "surface_hi": "#343434",
+    "surface_act": "#3e3e3e",
+    "parchment": "#d4af37",
+    "parchment_dim": "#8a7828",
+    "parchment_faint": "#847023",
+    "primary": "#8a7a2f",
+    "primary_hi": "#9a8a3f",
+    "primary_act": "#aa9a4f",
+    "secondary": "#8c2028",
+    "secondary_hi": "#9c3038",
+    "tertiary": "#2e332c",
+    "tertiary_txt": "#aeb59e",
+    "rule": "#2a2a2a",
+    "rule_dim": "#1c1c1c",
+    "selection_color": "#d64a5f",
+    "sel_colors": [
+      [
+        138,
+        122,
+        47
+      ],
+      [
+        140,
+        32,
+        40
+      ],
+      [
+        18,
+        18,
+        18
+      ],
+      [
+        212,
+        74,
+        95
+      ],
+      [
+        77,
+        84,
+        73
+      ],
+      [
+        170,
+        154,
+        90
+      ],
+      [
+        110,
+        52,
+        64
+      ],
+      [
+        122,
+        105,
+        54
+      ],
+      [
+        168,
+        132,
+        78
+      ],
+      [
+        95,
+        108,
+        84
+      ],
+      [
+        153,
+        57,
+        76
+      ],
+      [
+        202,
+        170,
+        110
+      ]
+    ]
+  },
+  "Clavicus Vile": {
+    "name": "Clavicus Vile",
+    "desc": "Pacts wishes",
+    "font_main": "Times New Roman",
+    "font_title": "Times New Roman",
+    "bg_deep": "#1a2028",
+    "bg_mid": "#2a3038",
+    "bg_panel": "#242830",
+    "bg_toolbar": "#282c34",
+    "bg_canvas": "#141820",
+    "surface": "#3a4048",
+    "surface_hi": "#4a5058",
+    "surface_act": "#5a6068",
+    "parchment": "#f5e9d4",
+    "parchment_dim": "#a89880",
+    "parchment_faint": "#907d60",
+    "primary": "#3d5f9a",
+    "primary_hi": "#4d6faa",
+    "primary_act": "#5d7fba",
+    "secondary": "#d1a83c",
+    "secondary_hi": "#e1b84c",
+    "tertiary": "#4b2a5a",
+    "tertiary_txt": "#d8b7ea",
+    "rule": "#3a4048",
+    "rule_dim": "#282c34",
+    "selection_color": "#ff9a3c",
+    "sel_colors": [
+      [
+        61,
+        95,
+        154
+      ],
+      [
+        209,
+        168,
+        60
+      ],
+      [
+        245,
+        233,
+        212
+      ],
+      [
+        94,
+        58,
+        122
+      ],
+      [
+        255,
+        154,
+        60
+      ],
+      [
+        72,
+        102,
+        133
+      ],
+      [
+        143,
+        104,
+        177
+      ],
+      [
+        185,
+        142,
+        86
+      ],
+      [
+        90,
+        132,
+        111
+      ],
+      [
+        118,
+        140,
+        208
+      ],
+      [
+        173,
+        96,
+        118
+      ],
+      [
+        148,
+        168,
+        96
+      ]
+    ]
+  },
+  "Hermaeus Mora": {
+    "name": "Hermaeus Mora",
+    "desc": "Knowledge forbidden",
+    "font_main": "Georgia",
+    "font_title": "Georgia",
+    "bg_deep": "#0a0f0d",
+    "bg_mid": "#1a1f1d",
+    "bg_panel": "#141918",
+    "bg_toolbar": "#181c1a",
+    "bg_canvas": "#080c0a",
+    "surface": "#2a302d",
+    "surface_hi": "#3a403d",
+    "surface_act": "#4a504d",
+    "parchment": "#d0c060",
+    "parchment_dim": "#908030",
+    "parchment_faint": "#856f2c",
+    "primary": "#1f3d2b",
+    "primary_hi": "#2f4d3b",
+    "primary_act": "#3f5d4b",
+    "secondary": "#b5a642",
+    "secondary_hi": "#c5b652",
+    "tertiary": "#206020",
+    "tertiary_txt": "#90d090",
+    "rule": "#2a302d",
+    "rule_dim": "#181c1a",
+    "selection_color": "#80ff40",
+    "sel_colors": [
+      [
+        31,
+        61,
+        43
+      ],
+      [
+        10,
+        15,
+        13
+      ],
+      [
+        181,
+        166,
+        66
+      ],
+      [
+        58,
+        47,
+        42
+      ],
+      [
+        127,
+        255,
+        127
+      ],
+      [
+        180,
+        160,
+        100
+      ],
+      [
+        100,
+        180,
+        140
+      ],
+      [
+        140,
+        100,
+        180
+      ],
+      [
+        200,
+        180,
+        140
+      ],
+      [
+        140,
+        200,
+        180
+      ],
+      [
+        180,
+        140,
+        200
+      ],
+      [
+        160,
+        200,
+        160
+      ]
+    ]
+  },
+  "Hircine": {
+    "name": "Hircine",
+    "desc": "Hunt chase",
+    "font_main": "Georgia",
+    "font_title": "Georgia",
+    "bg_deep": "#1a1512",
+    "bg_mid": "#2a2520",
+    "bg_panel": "#241c18",
+    "bg_toolbar": "#282018",
+    "bg_canvas": "#120d0a",
+    "surface": "#3a3028",
+    "surface_hi": "#4a4038",
+    "surface_act": "#5a5048",
+    "parchment": "#d8d2c4",
+    "parchment_dim": "#8a8278",
+    "parchment_faint": "#7f7465",
+    "primary": "#5a3a2a",
+    "primary_hi": "#6a4a3a",
+    "primary_act": "#7a5a4a",
+    "secondary": "#c68642",
+    "secondary_hi": "#d69652",
+    "tertiary": "#1f3f1f",
+    "tertiary_txt": "#7f9f7f",
+    "rule": "#3a3028",
+    "rule_dim": "#241c18",
+    "selection_color": "#50c060",
+    "sel_colors": [
+      [
+        47,
+        79,
+        47
+      ],
+      [
+        90,
+        58,
+        42
+      ],
+      [
+        216,
+        210,
+        196
+      ],
+      [
+        26,
+        26,
+        26
+      ],
+      [
+        198,
+        134,
+        66
+      ],
+      [
+        140,
+        120,
+        100
+      ],
+      [
+        100,
+        140,
+        120
+      ],
+      [
+        120,
+        100,
+        140
+      ],
+      [
+        180,
+        160,
+        120
+      ],
+      [
+        120,
+        180,
+        160
+      ],
+      [
+        160,
+        120,
+        180
+      ],
+      [
+        140,
+        180,
+        140
+      ]
+    ]
+  },
+  "Mehrunes Dagon": {
+    "name": "Mehrunes Dagon",
+    "desc": "Destruction change",
+    "font_main": "Bahnschrift",
+    "font_title": "Bahnschrift",
+    "bg_deep": "#1a1a1a",
+    "bg_mid": "#2a2a2a",
+    "bg_panel": "#222222",
+    "bg_toolbar": "#262626",
+    "bg_canvas": "#101010",
+    "surface": "#3a3a3a",
+    "surface_hi": "#4a4a4a",
+    "surface_act": "#5a5a5a",
+    "parchment": "#ffe0a0",
+    "parchment_dim": "#c8a060",
+    "parchment_faint": "#967442",
+    "primary": "#ff5a1f",
+    "primary_hi": "#ff6a2f",
+    "primary_act": "#ff7a3f",
+    "secondary": "#8c1c13",
+    "secondary_hi": "#9c2c23",
+    "tertiary": "#3c3c3c",
+    "tertiary_txt": "#acacac",
+    "rule": "#3a3a3a",
+    "rule_dim": "#262626",
+    "selection_color": "#ff3060",
+    "sel_colors": [
+      [
+        255,
+        90,
+        31
+      ],
+      [
+        26,
+        26,
+        26
+      ],
+      [
+        140,
+        28,
+        19
+      ],
+      [
+        255,
+        200,
+        87
+      ],
+      [
+        92,
+        92,
+        92
+      ],
+      [
+        200,
+        180,
+        140
+      ],
+      [
+        140,
+        200,
+        180
+      ],
+      [
+        180,
+        140,
+        200
+      ],
+      [
+        220,
+        200,
+        160
+      ],
+      [
+        160,
+        220,
+        200
+      ],
+      [
+        200,
+        160,
+        220
+      ],
+      [
+        180,
+        200,
+        160
+      ]
+    ]
+  },
+  "Molag Bal": {
+    "name": "Molag Bal",
+    "desc": "Enslavement domination",
+    "font_main": "Segoe UI",
+    "font_title": "Segoe UI",
+    "bg_deep": "#050505",
+    "bg_mid": "#0f0f0f",
+    "bg_panel": "#0a0a0a",
+    "bg_toolbar": "#0c0c0c",
+    "bg_canvas": "#020202",
+    "surface": "#1a1a1a",
+    "surface_hi": "#242424",
+    "surface_act": "#2e2e2e",
+    "parchment": "#d0d8d8",
+    "parchment_dim": "#809090",
+    "parchment_faint": "#606a6a",
+    "primary": "#6e0f0f",
+    "primary_hi": "#7e1f1f",
+    "primary_act": "#8e2f2f",
+    "secondary": "#2c3e50",
+    "secondary_hi": "#3c4e60",
+    "tertiary": "#1a1a1a",
+    "tertiary_txt": "#7a7a7a",
+    "rule": "#1a1a1a",
+    "rule_dim": "#0c0c0c",
+    "selection_color": "#b030ff",
+    "sel_colors": [
+      [
+        5,
+        5,
+        5
+      ],
+      [
+        44,
+        62,
+        80
+      ],
+      [
+        170,
+        183,
+        184
+      ],
+      [
+        110,
+        15,
+        15
+      ],
+      [
+        42,
+        42,
+        42
+      ],
+      [
+        100,
+        80,
+        80
+      ],
+      [
+        80,
+        100,
+        80
+      ],
+      [
+        80,
+        80,
+        100
+      ],
+      [
+        120,
+        100,
+        80
+      ],
+      [
+        100,
+        120,
+        80
+      ],
+      [
+        80,
+        100,
+        120
+      ],
+      [
+        100,
+        80,
+        120
+      ]
+    ]
+  },
+  "Nocturnal": {
+    "name": "Nocturnal",
+    "desc": "Night shadows",
+    "font_main": "Constantia",
+    "font_title": "Constantia",
+    "bg_deep": "#000000",
+    "bg_mid": "#0a1018",
+    "bg_panel": "#050c14",
+    "bg_toolbar": "#080f18",
+    "bg_canvas": "#020508",
+    "surface": "#141c28",
+    "surface_hi": "#1c2838",
+    "surface_act": "#243448",
+    "parchment": "#c0c0c0",
+    "parchment_dim": "#707080",
+    "parchment_faint": "#676780",
+    "primary": "#0b1a2a",
+    "primary_hi": "#1b2a3a",
+    "primary_act": "#2b3a4a",
+    "secondary": "#6b7280",
+    "secondary_hi": "#7b8290",
+    "tertiary": "#0a001a",
+    "tertiary_txt": "#7a6e8a",
+    "rule": "#141c28",
+    "rule_dim": "#080f18",
+    "selection_color": "#8040a0",
+    "sel_colors": [
+      [
+        11,
+        26,
+        42
+      ],
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        192,
+        192,
+        192
+      ],
+      [
+        42,
+        30,
+        58
+      ],
+      [
+        107,
+        114,
+        128
+      ],
+      [
+        140,
+        120,
+        140
+      ],
+      [
+        120,
+        140,
+        120
+      ],
+      [
+        140,
+        120,
+        160
+      ],
+      [
+        160,
+        140,
+        120
+      ],
+      [
+        120,
+        160,
+        140
+      ],
+      [
+        140,
+        160,
+        120
+      ],
+      [
+        160,
+        120,
+        140
+      ]
+    ]
+  },
+  "Sheogorath": {
+    "name": "Sheogorath",
+    "desc": "Madness chaos",
+    "font_main": "Trebuchet MS",
+    "font_title": "Trebuchet MS",
+    "bg_deep": "#0a0a0a",
+    "bg_mid": "#1a1a1a",
+    "bg_panel": "#141414",
+    "bg_toolbar": "#181818",
+    "bg_canvas": "#080808",
+    "surface": "#282828",
+    "surface_hi": "#383838",
+    "surface_act": "#484848",
+    "parchment": "#f5f5f5",
+    "parchment_dim": "#a0a0a0",
+    "parchment_faint": "#6f6f6f",
+    "primary": "#6a0dad",
+    "primary_hi": "#7a1ddd",
+    "primary_act": "#8a2ddd",
+    "secondary": "#d4af37",
+    "secondary_hi": "#e4bf47",
+    "tertiary": "#307000",
+    "tertiary_txt": "#b0f060",
+    "rule": "#282828",
+    "rule_dim": "#181818",
+    "selection_color": "#ffdd00",
+    "sel_colors": [
+      [
+        212,
+        175,
+        55
+      ],
+      [
+        106,
+        13,
+        173
+      ],
+      [
+        245,
+        245,
+        245
+      ],
+      [
+        127,
+        255,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        200,
+        180,
+        140
+      ],
+      [
+        140,
+        200,
+        180
+      ],
+      [
+        180,
+        140,
+        200
+      ],
+      [
+        220,
+        200,
+        160
+      ],
+      [
+        160,
+        220,
+        200
+      ],
+      [
+        200,
+        160,
+        220
+      ],
+      [
+        180,
+        200,
+        160
+      ]
+    ]
+  },
+  "Sanguine": {
+    "name": "Sanguine",
+    "desc": "Pleasure excess",
+    "font_main": "Georgia",
+    "font_title": "Georgia",
+    "bg_deep": "#1c1c1c",
+    "bg_mid": "#2c282e",
+    "bg_panel": "#242028",
+    "bg_toolbar": "#28242e",
+    "bg_canvas": "#141418",
+    "surface": "#3c3844",
+    "surface_hi": "#4c4854",
+    "surface_act": "#5c5864",
+    "parchment": "#e6c97a",
+    "parchment_dim": "#987850",
+    "parchment_faint": "#a06f4a",
+    "primary": "#6e1e2a",
+    "primary_hi": "#7e2e3a",
+    "primary_act": "#8e3e4a",
+    "secondary": "#e8a1a1",
+    "secondary_hi": "#f8b1b1",
+    "tertiary": "#2b1e3e",
+    "tertiary_txt": "#9b7eae",
+    "rule": "#3c3844",
+    "rule_dim": "#28242e",
+    "selection_color": "#ff3030",
+    "sel_colors": [
+      [
+        110,
+        30,
+        42
+      ],
+      [
+        75,
+        46,
+        94
+      ],
+      [
+        230,
+        201,
+        122
+      ],
+      [
+        232,
+        180,
+        184
+      ],
+      [
+        28,
+        28,
+        28
+      ],
+      [
+        180,
+        160,
+        120
+      ],
+      [
+        120,
+        180,
+        160
+      ],
+      [
+        160,
+        120,
+        180
+      ],
+      [
+        200,
+        180,
+        140
+      ],
+      [
+        140,
+        200,
+        180
+      ],
+      [
+        180,
+        140,
+        200
+      ],
+      [
+        160,
+        200,
+        160
+      ]
+    ]
+  }
+}

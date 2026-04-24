@@ -1,0 +1,17 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource prefix="/">
+    <file>icon.png</file>
+    <file>icon.ico</file>
+  </qresource>
+  <qresource prefix="/themes">
+    <file>themes.json</file>
+    <file>theme_order.json</file>
+  </qresource>
+  <qresource prefix="/shaders">
+    <file alias="background.vert">../shaders/background.vert</file>
+    <file alias="background.frag">../shaders/background.frag</file>
+    <file alias="wireframe.vert">../shaders/wireframe.vert</file>
+    <file alias="wireframe.frag">../shaders/wireframe.frag</file>
+  </qresource>
+</RCC>

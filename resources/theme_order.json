@@ -1,0 +1,7 @@
+[
+  ["Basic",       ["Modern", "Nordic", "Renaissance"]],
+  ["Environment", ["Arcane", "Ashen", "Atherial", "Dwemer", "Glacial", "Verdant"]],
+  ["Factions",    ["College of Winterhold", "Companions", "Dark Brotherhood", "Dawnguard", "Imperial Legion", "Stormcloak", "Thieves Guild", "Volkihar Clan"]],
+  ["Divines",     ["Akatosh", "Arkay", "Julianos", "Kynareth", "Stendarr", "Talos", "Zenithar"]],
+  ["Daedra",      ["Azura", "Boethiah", "Clavicus Vile", "Hermaeus Mora", "Hircine", "Mehrunes Dagon", "Molag Bal", "Nocturnal", "Sheogorath", "Sanguine"]]
+]
