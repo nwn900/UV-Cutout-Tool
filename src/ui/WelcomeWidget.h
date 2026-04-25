@@ -40,6 +40,7 @@ signals:
 
 protected:
     void paintEvent(QPaintEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
     void dragEnterEvent(QDragEnterEvent* e) override;
     void dragMoveEvent(QDragMoveEvent* e) override;
     void dropEvent(QDropEvent* e) override;
@@ -53,6 +54,7 @@ private:
     QColor bg_canvas_;
     QColor bg_mid_;
 
+    QWidget*   inner_container_ = nullptr;
     QLabel*     title_    = nullptr;
     QLabel*     subtitle_ = nullptr;
     WarmButton* settings_btn_ = nullptr;

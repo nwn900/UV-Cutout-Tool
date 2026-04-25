@@ -17,7 +17,7 @@ struct Theme {
 
     QColor bg_deep, bg_mid, bg_panel, bg_toolbar, bg_canvas;
     QColor surface, surface_hi, surface_act;
-    QColor parchment, parchment_dim, parchment_faint;
+    QColor parchment, parchment_faint;
     QColor primary, primary_hi, primary_act;
     QColor secondary, secondary_hi;
     QColor tertiary, tertiary_txt;

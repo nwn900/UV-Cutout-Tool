@@ -26,7 +26,6 @@ Selected areas export with texture. Everything else is transparent.
 - **Middle drag / Right drag / Space+drag** - Pan
 - **Ctrl+Z** - Undo
 - **Ctrl+Shift+Z** - Redo
-- **F11** - Fullscreen
 
 ## Supported Files
 

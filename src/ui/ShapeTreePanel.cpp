@@ -200,7 +200,7 @@ void ShapeTreePanel::style_zoom_button(QLabel* label, bool hovered, bool pressed
         "}")
         .arg(top.name(QColor::HexRgb),
              bottom.name(QColor::HexRgb),
-             theme_->parchment_dim.name(QColor::HexRgb),
+             theme_->parchment.name(QColor::HexRgb),
              theme_->rule.name(QColor::HexRgb),
              theme_->rule_dim.name(QColor::HexRgb)));
 }
@@ -335,7 +335,7 @@ void ShapeTreePanel::refreshHighlights(const std::vector<geom::Mesh>& meshes,
         apply_row_palette(ir.row,      bg);
         apply_row_palette(ir.name_lbl, bg);
         QPalette lp = ir.name_lbl->palette();
-        lp.setColor(QPalette::WindowText, any_sel ? theme_->parchment : theme_->parchment_dim);
+        lp.setColor(QPalette::WindowText, any_sel ? theme_->parchment : theme_->parchment);
         ir.name_lbl->setPalette(lp);
     }
 }
@@ -374,7 +374,7 @@ void ShapeTreePanel::refreshSelectionCounter(const std::vector<geom::Mesh>& mesh
                               .arg(total_sel));
         if (theme_) {
             QPalette p = sel_lbl_->palette();
-            p.setColor(QPalette::WindowText, theme_->parchment_dim);
+            p.setColor(QPalette::WindowText, theme_->secondary);
             sel_lbl_->setPalette(p);
         }
     }
@@ -442,12 +442,12 @@ void ShapeTreePanel::applyTheme(const themes::Theme& t) {
         if (!b) continue;
         QPalette bp = b->palette();
         bp.setColor(QPalette::Window,     t.surface);
-        bp.setColor(QPalette::WindowText, t.parchment_dim);
+        bp.setColor(QPalette::WindowText, t.secondary);
         b->setPalette(bp);
         style_zoom_button(b, b->property("uvc.hovered").toBool(), b->property("uvc.pressed").toBool());
     }
-    if (zoom_pct_lbl_) style_side(zoom_pct_lbl_, t.bg_toolbar, t.parchment_dim);
-    if (sel_lbl_)      style_side(sel_lbl_,      t.bg_toolbar, t.parchment_faint);
+    if (zoom_pct_lbl_) style_side(zoom_pct_lbl_, t.bg_toolbar, t.secondary);
+    if (sel_lbl_)      style_side(sel_lbl_,      t.bg_toolbar, t.parchment);
 
     if (body_) {
         QPalette bp = body_->palette();

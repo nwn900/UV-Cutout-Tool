@@ -13,7 +13,6 @@
     "surface_hi": "#4a3828",
     "surface_act": "#5a4535",
     "parchment": "#e8d5a3",
-    "parchment_dim": "#a08060",
     "parchment_faint": "#8c6a54",
     "primary": "#8b2500",
     "primary_hi": "#a83010",
@@ -105,18 +104,17 @@
     "surface_hi": "#2e2e3c",
     "surface_act": "#38384a",
     "parchment": "#e8e8f0",
-    "parchment_dim": "#a0a0b8",
     "parchment_faint": "#70708b",
     "primary": "#2a60a9",
     "primary_hi": "#3a70b9",
     "primary_act": "#4a80c9",
-    "secondary": "#50d9a0",
+    "secondary": "#40a080",
     "secondary_hi": "#60e9b0",
     "tertiary": "#1a6050",
     "tertiary_txt": "#d0f0e0",
     "rule": "#2a2a38",
     "rule_dim": "#1a1a24",
-    "selection_color": "#ff50d0",
+    "selection_color": "#cc4070",
     "canvas_wire": "#70708b",
     "canvas_hover": "#70c0f0",
     "canvas_preview": "#404060",
@@ -197,7 +195,6 @@
     "surface_hi": "#3a4050",
     "surface_act": "#444860",
     "parchment": "#d8d0c0",
-    "parchment_dim": "#909098",
     "parchment_faint": "#74747e",
     "primary": "#6a6878",
     "primary_hi": "#7a7888",
@@ -289,7 +286,6 @@
     "surface_hi": "#382020",
     "surface_act": "#482828",
     "parchment": "#e0d0c8",
-    "parchment_dim": "#988888",
     "parchment_faint": "#7b6464",
     "primary": "#8b0000",
     "primary_hi": "#a01010",
@@ -379,20 +375,19 @@
     "bg_canvas": "#140e06",
     "surface": "#3a2818",
     "surface_hi": "#4a3820",
-    "surface_act": "#5a4828",
-    "parchment": "#f0e8d0",
-    "parchment_dim": "#a89868",
+"surface_act": "#5a4828",
+    "parchment": "#a89868",
     "parchment_faint": "#806d4f",
     "primary": "#c84800",
     "primary_hi": "#d85810",
     "primary_act": "#e86820",
-    "secondary": "#ffd700",
-    "secondary_hi": "#ffe740",
+    "secondary": "#b88600",
+    "secondary_hi": "#ccb830",
     "tertiary": "#2a4030",
     "tertiary_txt": "#d0e8d0",
     "rule": "#4a3820",
     "rule_dim": "#302010",
-    "selection_color": "#ffc040",
+    "selection_color": "#cc3050",
     "canvas_wire": "#806d4f",
     "canvas_hover": "#ffd878",
     "canvas_preview": "#604820",
@@ -473,12 +468,11 @@
     "surface_hi": "#303040",
     "surface_act": "#3a3a50",
     "parchment": "#d8d2c4",
-    "parchment_dim": "#8880a0",
     "parchment_faint": "#6c6c8c",
     "primary": "#5d3fd3",
     "primary_hi": "#6d4fe3",
     "primary_act": "#7d5ff3",
-    "secondary": "#9f8cff",
+    "secondary": "#9f6ccc",
     "secondary_hi": "#af9cff",
     "tertiary": "#2030a0",
     "tertiary_txt": "#d0d0ff",
@@ -565,7 +559,6 @@
     "surface_hi": "#5a5754",
     "surface_act": "#6a6764",
     "parchment": "#f0e8e0",
-    "parchment_dim": "#b0a098",
     "parchment_faint": "#8e857b",
     "primary": "#8b4010",
     "primary_hi": "#9b5020",
@@ -576,7 +569,7 @@
     "tertiary_txt": "#e0d8d0",
     "rule": "#4a4744",
     "rule_dim": "#353230",
-    "selection_color": "#ff4060",
+    "selection_color": "#dd3080",
     "canvas_wire": "#8e857b",
     "canvas_hover": "#f09080",
     "canvas_preview": "#605050",
@@ -657,7 +650,6 @@
     "surface_hi": "#5a5d6a",
     "surface_act": "#6a6d7a",
     "parchment": "#f6f7fb",
-    "parchment_dim": "#c0c0d0",
     "parchment_faint": "#8c8ca0",
     "primary": "#6080a0",
     "primary_hi": "#7090b0",
@@ -749,7 +741,6 @@
     "surface_hi": "#3a3128",
     "surface_act": "#4a4138",
     "parchment": "#fff8e8",
-    "parchment_dim": "#c0a070",
     "parchment_faint": "#81664c",
     "primary": "#8b5a2b",
     "primary_hi": "#a06a3b",
@@ -841,12 +832,11 @@
     "surface_hi": "#4a5e6a",
     "surface_act": "#5a6e7a",
     "parchment": "#f0fbff",
-    "parchment_dim": "#b8d8e8",
     "parchment_faint": "#718f9e",
     "primary": "#4080a0",
     "primary_hi": "#5090b0",
     "primary_act": "#60a0c0",
-    "secondary": "#a4d8f0",
+    "secondary": "#70b8d8",
     "secondary_hi": "#b4e8ff",
     "tertiary": "#203040",
     "tertiary_txt": "#d0e0f0",
@@ -933,7 +923,6 @@
     "surface_hi": "#4f5b4f",
     "surface_act": "#5f6b5f",
     "parchment": "#f0f8e8",
-    "parchment_dim": "#98a888",
     "parchment_faint": "#768c61",
     "primary": "#3a5020",
     "primary_hi": "#4a6030",
@@ -1025,7 +1014,6 @@
     "surface_hi": "#5a6578",
     "surface_act": "#6a7588",
     "parchment": "#e3eaf2",
-    "parchment_dim": "#98a8b8",
     "parchment_faint": "#8593a1",
     "primary": "#3a5f8a",
     "primary_hi": "#4a6f9a",
@@ -1117,7 +1105,6 @@
     "surface_hi": "#5a5550",
     "surface_act": "#6a6560",
     "parchment": "#f0f0e8",
-    "parchment_dim": "#a0a098",
     "parchment_faint": "#8a8780",
     "primary": "#6f7a86",
     "primary_hi": "#808b97",
@@ -1209,7 +1196,6 @@
     "surface_hi": "#2a2a2a",
     "surface_act": "#343434",
     "parchment": "#e8e8e0",
-    "parchment_dim": "#909090",
     "parchment_faint": "#6b6b6b",
     "primary": "#4a0000",
     "primary_hi": "#5a1010",
@@ -1301,7 +1287,6 @@
     "surface_hi": "#5a4a4a",
     "surface_act": "#6a5a5a",
     "parchment": "#f0f0e8",
-    "parchment_dim": "#a0a098",
     "parchment_faint": "#917b6f",
     "primary": "#5a1010",
     "primary_hi": "#6a2020",
@@ -1381,7 +1366,7 @@
   },
   "Stormcloak": {
     "name": "Stormcloak",
-    "desc": "Rebellion rebellion",
+    "desc": "Skyrim Belongs to the Nords!",
     "font_main": "Georgia",
     "font_title": "Georgia",
     "bg_deep": "#1a1c24",
@@ -1393,7 +1378,6 @@
     "surface_hi": "#4a4c54",
     "surface_act": "#5a5c64",
     "parchment": "#f0f4f8",
-    "parchment_dim": "#98a8b8",
     "parchment_faint": "#718192",
     "primary": "#1a2a50",
     "primary_hi": "#2a3a60",
@@ -1485,7 +1469,6 @@
     "surface_hi": "#323232",
     "surface_act": "#3c3c3c",
     "parchment": "#f0d878",
-    "parchment_dim": "#908030",
     "parchment_faint": "#727226",
     "primary": "#303030",
     "primary_hi": "#404040",
@@ -1576,468 +1559,7 @@
     "surface": "#4a4e55",
     "surface_hi": "#5a5e65",
     "surface_act": "#6a6e75",
-    "parchment": "#f0f4f8",
-    "parchment_dim": "#98a8b8",
-    "parchment_faint": "#8593a1",
-    "primary": "#b78b2a",
-    "primary_hi": "#c79b3a",
-    "primary_act": "#d7ab4a",
-    "secondary": "#5a8fc8",
-    "secondary_hi": "#6a9fd8",
-    "tertiary": "#24364c",
-    "tertiary_txt": "#d8e6f5",
-    "rule": "#4a4e55",
-    "rule_dim": "#383c48",
-    "selection_color": "#f0c95a",
-    "canvas_wire": "#8593a1",
-    "canvas_hover": "#d0c080",
-    "canvas_preview": "#605050",
-    "sel_colors": [
-      [
-        183,
-        139,
-        42
-      ],
-      [
-        90,
-        143,
-        200
-      ],
-      [
-        240,
-        201,
-        90
-      ],
-      [
-        230,
-        237,
-        245
-      ],
-      [
-        123,
-        147,
-        174
-      ],
-      [
-        91,
-        73,
-        48
-      ],
-      [
-        169,
-        127,
-        62
-      ],
-      [
-        61,
-        98,
-        141
-      ],
-      [
-        206,
-        177,
-        116
-      ],
-      [
-        86,
-        128,
-        173
-      ],
-      [
-        151,
-        96,
-        70
-      ],
-      [
-        154,
-        173,
-        108
-      ]
-    ]
-  },
-  "Arkay": {
-    "name": "Arkay",
-    "desc": "Death cycle",
-    "font_main": "Times New Roman",
-    "font_title": "Times New Roman",
-    "bg_deep": "#1c1c1c",
-    "bg_mid": "#2c2c2c",
-    "bg_panel": "#242424",
-    "bg_toolbar": "#282828",
-    "bg_canvas": "#101010",
-    "surface": "#3c3c3c",
-    "surface_hi": "#4c4c4c",
-    "surface_act": "#5c5c5c",
-    "parchment": "#d8d2c4",
-    "parchment_dim": "#8a8278",
-    "parchment_faint": "#857a6b",
-    "primary": "#5e5a54",
-    "primary_hi": "#6e6a64",
-    "primary_act": "#7e7a74",
-    "secondary": "#6e7f5a",
-    "secondary_hi": "#7e8f6a",
-    "tertiary": "#2a1f15",
-    "tertiary_txt": "#9a8f85",
-    "rule": "#3c3c3c",
-    "rule_dim": "#282828",
-    "selection_color": "#8880a0",
-    "canvas_wire": "#857a6b",
-    "canvas_hover": "#a09090",
-    "canvas_preview": "#584848",
-    "sel_colors": [
-      [
-        216,
-        210,
-        196
-      ],
-      [
-        94,
-        90,
-        84
-      ],
-      [
-        74,
-        63,
-        53
-      ],
-      [
-        110,
-        127,
-        90
-      ],
-      [
-        140,
-        130,
-        110
-      ],
-      [
-        110,
-        140,
-        130
-      ],
-      [
-        130,
-        110,
-        140
-      ],
-      [
-        160,
-        140,
-        120
-      ],
-      [
-        120,
-        160,
-        140
-      ],
-      [
-        140,
-        120,
-        160
-      ],
-      [
-        160,
-        120,
-        140
-      ],
-      [
-        140,
-        160,
-        120
-      ]
-    ]
-  },
-  "Julianos": {
-    "name": "Julianos",
-    "desc": "Wisdom logic",
-    "font_main": "Cambria",
-    "font_title": "Cambria",
-    "bg_deep": "#1e1e24",
-    "bg_mid": "#2e2e38",
-    "bg_panel": "#262630",
-    "bg_toolbar": "#2c2c38",
-    "bg_canvas": "#141418",
-    "surface": "#3e3e48",
-    "surface_hi": "#4e4e58",
-    "surface_act": "#5e5e68",
-    "parchment": "#e8d9b5",
-    "parchment_dim": "#988878",
-    "parchment_faint": "#937d66",
-    "primary": "#3a5f8a",
-    "primary_hi": "#4a6f9a",
-    "primary_act": "#5a7faa",
-    "secondary": "#6b7280",
-    "secondary_hi": "#7b8290",
-    "tertiary": "#2a5883",
-    "tertiary_txt": "#8fc8f3",
-    "rule": "#3e3e48",
-    "rule_dim": "#2c2c38",
-    "selection_color": "#5090d0",
-    "canvas_wire": "#937d66",
-    "canvas_hover": "#80a0c0",
-    "canvas_preview": "#485058",
-    "sel_colors": [
-      [
-        58,
-        95,
-        138
-      ],
-      [
-        30,
-        30,
-        36
-      ],
-      [
-        232,
-        217,
-        181
-      ],
-      [
-        107,
-        114,
-        128
-      ],
-      [
-        95,
-        168,
-        211
-      ],
-      [
-        180,
-        140,
-        100
-      ],
-      [
-        100,
-        180,
-        140
-      ],
-      [
-        140,
-        100,
-        180
-      ],
-      [
-        160,
-        140,
-        100
-      ],
-      [
-        100,
-        160,
-        140
-      ],
-      [
-        140,
-        180,
-        100
-      ],
-      [
-        180,
-        100,
-        140
-      ]
-    ]
-  },
-  "Kynareth": {
-    "name": "Kynareth",
-    "desc": "Sky wind",
-    "font_main": "Constantia",
-    "font_title": "Constantia",
-    "bg_deep": "#1a2028",
-    "bg_mid": "#2a3038",
-    "bg_panel": "#242830",
-    "bg_toolbar": "#282c34",
-    "bg_canvas": "#141820",
-    "surface": "#3a4048",
-    "surface_hi": "#4a5058",
-    "surface_act": "#5a6068",
-    "parchment": "#f0f6fa",
-    "parchment_dim": "#98b8d8",
-    "parchment_faint": "#688898",
-    "primary": "#5a93c0",
-    "primary_hi": "#6aa3d0",
-    "primary_act": "#7ab3e0",
-    "secondary": "#6f8f63",
-    "secondary_hi": "#7f9f73",
-    "tertiary": "#39534d",
-    "tertiary_txt": "#d6efe6",
-    "rule": "#3a4048",
-    "rule_dim": "#282c34",
-    "selection_color": "#9be7ff",
-    "canvas_wire": "#688898",
-    "canvas_hover": "#80d0f0",
-    "canvas_preview": "#406060",
-    "sel_colors": [
-      [
-        90,
-        147,
-        192
-      ],
-      [
-        111,
-        143,
-        99
-      ],
-      [
-        240,
-        246,
-        250
-      ],
-      [
-        155,
-        231,
-        255
-      ],
-      [
-        126,
-        186,
-        222
-      ],
-      [
-        77,
-        114,
-        132
-      ],
-      [
-        170,
-        213,
-        186
-      ],
-      [
-        104,
-        136,
-        156
-      ],
-      [
-        196,
-        232,
-        244
-      ],
-      [
-        134,
-        170,
-        121
-      ],
-      [
-        115,
-        159,
-        183
-      ],
-      [
-        177,
-        220,
-        202
-      ]
-    ]
-  },
-  "Stendarr": {
-    "name": "Stendarr",
-    "desc": "Mercy protection",
-    "font_main": "Cambria",
-    "font_title": "Cambria",
-    "bg_deep": "#2a2a30",
-    "bg_mid": "#3a3a40",
-    "bg_panel": "#323238",
-    "bg_toolbar": "#383840",
-    "bg_canvas": "#1a1a20",
-    "surface": "#4a4a50",
-    "surface_hi": "#5a5a60",
-    "surface_act": "#6a6a70",
-    "parchment": "#ffffff",
-    "parchment_dim": "#a8a8b0",
-    "parchment_faint": "#8d8d94",
-    "primary": "#6f8898",
-    "primary_hi": "#7f98a8",
-    "primary_act": "#8fa8b8",
-    "secondary": "#d8b84c",
-    "secondary_hi": "#e8c85c",
-    "tertiary": "#3f5f78",
-    "tertiary_txt": "#c9dced",
-    "rule": "#4a4a50",
-    "rule_dim": "#383840",
-    "selection_color": "#f1d77a",
-    "canvas_wire": "#8d8d94",
-    "canvas_hover": "#e8c080",
-    "canvas_preview": "#585850",
-    "sel_colors": [
-      [
-        216,
-        184,
-        76
-      ],
-      [
-        255,
-        255,
-        255
-      ],
-      [
-        111,
-        136,
-        152
-      ],
-      [
-        201,
-        220,
-        235
-      ],
-      [
-        79,
-        110,
-        134
-      ],
-      [
-        168,
-        180,
-        152
-      ],
-      [
-        141,
-        159,
-        172
-      ],
-      [
-        234,
-        220,
-        170
-      ],
-      [
-        123,
-        145,
-        158
-      ],
-      [
-        188,
-        205,
-        214
-      ],
-      [
-        102,
-        122,
-        136
-      ],
-      [
-        221,
-        202,
-        132
-      ]
-    ]
-  },
-  "Talos": {
-    "name": "Talos",
-    "desc": "Power empire",
-    "font_main": "Georgia",
-    "font_title": "Georgia",
-    "bg_deep": "#1a1c24",
-    "bg_mid": "#2a2c34",
-    "bg_panel": "#242830",
-    "bg_toolbar": "#282c34",
-    "bg_canvas": "#14161c",
-    "surface": "#3a3c44",
-    "surface_hi": "#4a4c54",
-    "surface_act": "#5a5c64",
-    "parchment": "#eaf1f7",
-    "parchment_dim": "#98a8b8",
+"parchment": "#f0f4f8",
     "parchment_faint": "#718192",
     "primary": "#7a2c2c",
     "primary_hi": "#8a3c3c",
@@ -2129,7 +1651,6 @@
     "surface_hi": "#5a5248",
     "surface_act": "#6a6258",
     "parchment": "#eaddc8",
-    "parchment_dim": "#989080",
     "parchment_faint": "#90846e",
     "primary": "#6e6e6e",
     "primary_hi": "#7e7e7e",
@@ -2221,7 +1742,6 @@
     "surface_hi": "#4f5a6a",
     "surface_act": "#5f6a7a",
     "parchment": "#e6c97a",
-    "parchment_dim": "#988850",
     "parchment_faint": "#a1894a",
     "primary": "#5a4b8a",
     "primary_hi": "#6a5b9a",
@@ -2313,7 +1833,6 @@
     "surface_hi": "#343434",
     "surface_act": "#3e3e3e",
     "parchment": "#d4af37",
-    "parchment_dim": "#8a7828",
     "parchment_faint": "#847023",
     "primary": "#8a7a2f",
     "primary_hi": "#9a8a3f",
@@ -2405,7 +1924,6 @@
     "surface_hi": "#4a5058",
     "surface_act": "#5a6068",
     "parchment": "#f5e9d4",
-    "parchment_dim": "#a89880",
     "parchment_faint": "#907d60",
     "primary": "#3d5f9a",
     "primary_hi": "#4d6faa",
@@ -2497,7 +2015,6 @@
     "surface_hi": "#3a403d",
     "surface_act": "#4a504d",
     "parchment": "#d0c060",
-    "parchment_dim": "#908030",
     "parchment_faint": "#856f2c",
     "primary": "#1f3d2b",
     "primary_hi": "#2f4d3b",
@@ -2589,7 +2106,6 @@
     "surface_hi": "#4a4038",
     "surface_act": "#5a5048",
     "parchment": "#d8d2c4",
-    "parchment_dim": "#8a8278",
     "parchment_faint": "#7f7465",
     "primary": "#5a3a2a",
     "primary_hi": "#6a4a3a",
@@ -2681,7 +2197,6 @@
     "surface_hi": "#4a4a4a",
     "surface_act": "#5a5a5a",
     "parchment": "#ffe0a0",
-    "parchment_dim": "#c8a060",
     "parchment_faint": "#967442",
     "primary": "#ff5a1f",
     "primary_hi": "#ff6a2f",
@@ -2773,7 +2288,6 @@
     "surface_hi": "#242424",
     "surface_act": "#2e2e2e",
     "parchment": "#d0d8d8",
-    "parchment_dim": "#809090",
     "parchment_faint": "#606a6a",
     "primary": "#6e0f0f",
     "primary_hi": "#7e1f1f",
@@ -2865,7 +2379,6 @@
     "surface_hi": "#1c2838",
     "surface_act": "#243448",
     "parchment": "#c0c0c0",
-    "parchment_dim": "#707080",
     "parchment_faint": "#676780",
     "primary": "#0b1a2a",
     "primary_hi": "#1b2a3a",
@@ -2957,7 +2470,6 @@
     "surface_hi": "#383838",
     "surface_act": "#484848",
     "parchment": "#f5f5f5",
-    "parchment_dim": "#a0a0a0",
     "parchment_faint": "#6f6f6f",
     "primary": "#6a0dad",
     "primary_hi": "#7a1ddd",
@@ -3049,7 +2561,6 @@
     "surface_hi": "#4c4854",
     "surface_act": "#5c5864",
     "parchment": "#e6c97a",
-    "parchment_dim": "#987850",
     "parchment_faint": "#a06f4a",
     "primary": "#6e1e2a",
     "primary_hi": "#7e2e3a",
@@ -3125,6 +2636,221 @@
         200,
         160
       ]
+    ]
+  },
+  "Arkay": {
+    "name": "Arkay",
+    "desc": "Death cycle",
+    "font_main": "Times New Roman",
+    "font_title": "Times New Roman",
+    "bg_deep": "#1c1c1c",
+    "bg_mid": "#2c2c2c",
+    "bg_panel": "#242424",
+    "bg_toolbar": "#282828",
+    "bg_canvas": "#101010",
+    "surface": "#3c3c3c",
+    "surface_hi": "#4c4c4c",
+    "surface_act": "#5c5c5c",
+    "parchment": "#d8d2c4",
+    "parchment_faint": "#857a6b",
+    "primary": "#5e5a54",
+    "primary_hi": "#6e6a64",
+    "primary_act": "#7e7a74",
+    "secondary": "#6e7f5a",
+    "secondary_hi": "#7e8f6a",
+    "tertiary": "#2a1f15",
+    "tertiary_txt": "#9a8f85",
+    "rule": "#3c3c3c",
+    "rule_dim": "#282828",
+    "selection_color": "#8880a0",
+    "canvas_wire": "#857a6b",
+    "canvas_hover": "#a09090",
+    "canvas_preview": "#584848",
+    "sel_colors": [
+      [216, 210, 196],
+      [94, 90, 84],
+      [74, 63, 53],
+      [110, 127, 90],
+      [140, 130, 110],
+      [110, 140, 130],
+      [130, 110, 140],
+      [160, 140, 120],
+      [120, 160, 140],
+      [140, 120, 160],
+      [160, 120, 140],
+      [140, 160, 120]
+    ]
+  },
+  "Julianos": {
+    "name": "Julianos",
+    "desc": "Wisdom logic",
+    "font_main": "Cambria",
+    "font_title": "Cambria",
+    "bg_deep": "#1e1e24",
+    "bg_mid": "#2e2e38",
+    "bg_panel": "#262630",
+    "bg_toolbar": "#2c2c38",
+    "bg_canvas": "#141418",
+    "surface": "#3e3e48",
+    "surface_hi": "#4e4e58",
+    "surface_act": "#5e5e68",
+    "parchment": "#e8d9b5",
+    "parchment_faint": "#937d66",
+    "primary": "#3a5f8a",
+    "primary_hi": "#4a6f9a",
+    "primary_act": "#5a7faa",
+    "secondary": "#6b7280",
+    "secondary_hi": "#7b8290",
+    "tertiary": "#2a5883",
+    "tertiary_txt": "#8fc8f3",
+    "rule": "#3e3e48",
+    "rule_dim": "#2c2c38",
+    "selection_color": "#5090d0",
+    "canvas_wire": "#937d66",
+    "canvas_hover": "#80a0c0",
+    "canvas_preview": "#485058",
+    "sel_colors": [
+      [58, 95, 138],
+      [30, 30, 36],
+      [232, 217, 181],
+      [107, 114, 128],
+      [95, 168, 211],
+      [180, 140, 100],
+      [100, 180, 140],
+      [140, 100, 180],
+      [160, 140, 100],
+      [100, 160, 140],
+      [140, 180, 100],
+      [180, 100, 140]
+    ]
+  },
+  "Kynareth": {
+    "name": "Kynareth",
+    "desc": "Sky wind",
+    "font_main": "Constantia",
+    "font_title": "Constantia",
+    "bg_deep": "#1a2028",
+    "bg_mid": "#2a3038",
+    "bg_panel": "#242830",
+    "bg_toolbar": "#282c34",
+    "bg_canvas": "#141820",
+    "surface": "#3a4048",
+    "surface_hi": "#4a5058",
+    "surface_act": "#5a6068",
+    "parchment": "#f0f6fa",
+    "parchment_faint": "#688898",
+    "primary": "#5a93c0",
+    "primary_hi": "#6aa3d0",
+    "primary_act": "#7ab3e0",
+    "secondary": "#6f8f63",
+    "secondary_hi": "#7f9f73",
+    "tertiary": "#39534d",
+    "tertiary_txt": "#d6efe6",
+    "rule": "#3a4048",
+    "rule_dim": "#282c34",
+    "selection_color": "#9be7ff",
+    "canvas_wire": "#688898",
+    "canvas_hover": "#80d0f0",
+    "canvas_preview": "#406060",
+    "sel_colors": [
+      [90, 147, 192],
+      [111, 143, 99],
+      [240, 246, 250],
+      [155, 231, 255],
+      [126, 186, 222],
+      [77, 114, 132],
+      [170, 213, 186],
+      [104, 136, 156],
+      [196, 232, 244],
+      [134, 170, 121],
+      [115, 159, 183],
+      [177, 220, 202]
+    ]
+  },
+  "Stendarr": {
+    "name": "Stendarr",
+    "desc": "Mercy protection",
+    "font_main": "Cambria",
+    "font_title": "Cambria",
+    "bg_deep": "#2a2a30",
+    "bg_mid": "#3a3a40",
+    "bg_panel": "#323238",
+    "bg_toolbar": "#383840",
+    "bg_canvas": "#1a1a20",
+    "surface": "#4a4a50",
+    "surface_hi": "#5a5a60",
+    "surface_act": "#6a6a70",
+    "parchment": "#ffffff",
+    "parchment_faint": "#8d8d94",
+    "primary": "#6f8898",
+    "primary_hi": "#7f98a8",
+    "primary_act": "#8fa8b8",
+    "secondary": "#d8b84c",
+    "secondary_hi": "#e8c85c",
+    "tertiary": "#3f5f78",
+    "tertiary_txt": "#c9dced",
+    "rule": "#4a4a50",
+    "rule_dim": "#383840",
+    "selection_color": "#f1d77a",
+    "canvas_wire": "#8d8d94",
+    "canvas_hover": "#e8c080",
+    "canvas_preview": "#585850",
+    "sel_colors": [
+      [216, 184, 76],
+      [255, 255, 255],
+      [111, 136, 152],
+      [201, 220, 235],
+      [79, 110, 134],
+      [168, 180, 152],
+      [141, 159, 172],
+      [234, 200, 100],
+      [100, 150, 150],
+      [180, 140, 140],
+      [140, 180, 140],
+      [180, 180, 100]
+    ]
+  },
+  "Talos": {
+    "name": "Talos",
+    "desc": "God of kings",
+    "font_main": "Georgia",
+    "font_title": "Georgia",
+    "bg_deep": "#1a1815",
+    "bg_mid": "#2a2820",
+    "bg_panel": "#242018",
+    "bg_toolbar": "#282420",
+    "bg_canvas": "#101008",
+    "surface": "#3a3020",
+    "surface_hi": "#4a4030",
+    "surface_act": "#5a5040",
+    "parchment": "#e8d8a0",
+    "parchment_faint": "#907840",
+    "primary": "#605030",
+    "primary_hi": "#706040",
+    "primary_act": "#807050",
+    "secondary": "#d4af37",
+    "secondary_hi": "#e4bf47",
+    "tertiary": "#304050",
+    "tertiary_txt": "#d0d0c0",
+    "rule": "#3a3020",
+    "rule_dim": "#201810",
+    "selection_color": "#ffd700",
+    "canvas_wire": "#907840",
+    "canvas_hover": "#ffe080",
+    "canvas_preview": "#504030",
+    "sel_colors": [
+      [255, 215, 0],
+      [180, 140, 50],
+      [80, 60, 40],
+      [140, 120, 80],
+      [100, 100, 100],
+      [180, 180, 140],
+      [140, 100, 100],
+      [255, 180, 50],
+      [255, 255, 150],
+      [180, 140, 100],
+      [100, 140, 100],
+      [140, 140, 180]
     ]
   }
 }

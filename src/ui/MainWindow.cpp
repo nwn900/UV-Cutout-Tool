@@ -78,7 +78,8 @@ QIcon make_gear_icon(const QColor& color) {
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     setWindowTitle("UV Cutout Tool");
-    setMinimumSize(960, 680);
+    setMinimumSize(1200, 800);
+    resize(1400, 900);
     setWindowIcon(QIcon(":/icon.png"));
 
     welcome_ = new WelcomeWidget(this);
@@ -118,10 +119,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     connect(undo_sc, &QShortcut::activated, this, &MainWindow::undo);
     auto* redo_sc = new QShortcut(QKeySequence("Ctrl+Shift+Z"), this);
     connect(redo_sc, &QShortcut::activated, this, &MainWindow::redo);
-    auto* fs_sc = new QShortcut(QKeySequence(Qt::Key_F11), this);
-    connect(fs_sc, &QShortcut::activated, this, &MainWindow::toggleFullscreen);
-    auto* esc_sc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-    connect(esc_sc, &QShortcut::activated, this, &MainWindow::exitFullscreen);
 
     startup_mode_ = loadStartupMode();
     applyCurrentTheme();
@@ -131,6 +128,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     if (hover_lbl_)  hover_lbl_->clear();
     updateWorkspaceChrome();
     showMaximized();
+    updateToolbarForSize();
     if (startup_mode_ == "workspace") {
         QTimer::singleShot(0, this, [this] { showWorkspace(); });
     }
@@ -188,9 +186,15 @@ void MainWindow::buildToolbar() {
     const QSize toolbar_button_size(112, 34);
     for (auto* b : {btn_home_, btn_mesh_, btn_diff_, alpha_btn_, btn_all_, btn_none_, btn_inv_,
                     btn_undo_, btn_redo_, btn_export_}) {
-        if (b) b->setFixedSize(toolbar_button_size);
+        if (b) {
+            b->setFixedSize(toolbar_button_size);
+            b->setMinimumWidth(60);
+            b->setMaximumWidth(150);
+        }
     }
     settings_btn_->setFixedSize(34, 34);
+    settings_btn_->setMinimumWidth(34);
+    settings_btn_->setMaximumWidth(34);
 
     lay->addWidget(left_group);
     lay->addStretch(1);
@@ -326,12 +330,12 @@ void MainWindow::applyThemeVisuals(const themes::Theme& t) {
             "}"
             "QStatusBar::item { border:none; }")
             .arg(t.bg_toolbar.name(QColor::HexRgb),
-                 t.parchment_dim.name(QColor::HexRgb),
+                 t.parchment.name(QColor::HexRgb),
                  t.rule.name(QColor::HexRgb)));
     }
     if (status_lbl_ || hover_lbl_) {
         const QString label_qss = QString("QLabel { color:%1; }")
-            .arg(t.parchment_dim.name(QColor::HexRgb));
+            .arg(t.parchment.name(QColor::HexRgb));
         if (status_lbl_) status_lbl_->setStyleSheet(label_qss);
         if (hover_lbl_)  hover_lbl_->setStyleSheet(label_qss);
     }
@@ -349,7 +353,7 @@ void MainWindow::applyThemeVisuals(const themes::Theme& t) {
                     btn_undo_, btn_redo_, btn_export_, settings_btn_})
         if (b) b->applyTheme(t);
     if (export_dialog_) export_dialog_->applyTheme(t);
-    if (settings_btn_) settings_btn_->setIcon(make_gear_icon(t.parchment_dim));
+    if (settings_btn_) settings_btn_->setIcon(make_gear_icon(t.secondary));
 
     welcome_->applyTheme(t);
     if (stack_) {
@@ -506,12 +510,7 @@ void MainWindow::showWorkspace() {
     toolbar_->show();
     updateWorkspaceChrome();
     resetWorkspaceStatus();
-    // Defer a re-fit after the layout ripple from showing the toolbar + dock
-    // so the canvas's width/height reflect the real workspace viewport. The
-    // canvas's own showEvent also runs a fit on first appearance; running it
-    // here too costs nothing and covers the case where the user toggles
-    // back-and-forth via "Open in Workspace" (showEvent only fires on the
-    // hidden→visible transition).
+    updateToolbarForSize();
     QTimer::singleShot(50, this, [this] {
         if (canvas_) canvas_->zoomFit();
     });
@@ -525,7 +524,7 @@ void MainWindow::resetWorkspaceStatus() {
         QString("%1\u00D7%2 UV space  \u00B7  "
                 "Click/drag to select  \u00B7  Scroll to zoom  \u00B7  "
                 "Space+drag to pan  \u00B7  "
-                "Ctrl+Z Undo  \u00B7  Ctrl+Shift+Z Redo  \u00B7  F11 fullscreen")
+                "Ctrl+Z Undo  \u00B7  Ctrl+Shift+Z Redo")
             .arg(W).arg(H));
 }
 void MainWindow::backToHome() {
@@ -1002,17 +1001,44 @@ void MainWindow::openThemeMenu(QWidget* anchor) {
     theme_dialog_->popupBelow(anchor);
 }
 
-void MainWindow::toggleFullscreen() {
-    if (isFullScreen()) showNormal();
-    else                showFullScreen();
-}
-void MainWindow::exitFullscreen() {
-    if (isFullScreen()) showNormal();
-}
-
 void MainWindow::applyTheme(const QString& name) {
     ThemeManager::instance().setCurrent(name);
     applyCurrentTheme();
+}
+
+void MainWindow::resizeEvent(QResizeEvent* e) {
+    QMainWindow::resizeEvent(e);
+    updateToolbarForSize();
+}
+
+void MainWindow::updateToolbarForSize() {
+    if (!toolbar_) return;
+
+    const int w = width();
+    const bool compact = w < 1400;
+    const bool very_compact = w < 1200;
+
+    const int btn_width = very_compact ? 85 : (compact ? 100 : 112);
+    const int alpha_width = very_compact ? 75 : (compact ? 90 : 100);
+
+    if (alpha_btn_) {
+        alpha_btn_->setFixedSize(alpha_width, 34);
+        alpha_btn_->setMinimumWidth(60);
+    }
+    for (auto* b : {btn_home_, btn_mesh_, btn_diff_, btn_all_, btn_none_, btn_inv_,
+                    btn_undo_, btn_redo_, btn_export_}) {
+        if (b) {
+            b->setFixedSize(btn_width, 34);
+            b->setMinimumWidth(60);
+        }
+    }
+
+    if (shape_dock_) {
+        const bool in_workspace = stack_ && stack_->currentWidget() == canvas_;
+        const bool show_dock = in_workspace && !very_compact;
+        if (show_dock) shape_dock_->show();
+        else         shape_dock_->hide();
+    }
 }
 
 } // namespace uvc::ui

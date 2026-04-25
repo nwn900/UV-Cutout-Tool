@@ -237,7 +237,7 @@ void ExportDialog::applyTheme(const themes::Theme& t) {
     }
 
     const QString dim_css =
-        QString("QLabel { color:%1; background:transparent; }").arg(t.parchment_dim.name(QColor::HexRgb));
+        QString("QLabel { color:%1; background:transparent; }").arg(t.parchment.name(QColor::HexRgb));
     if (hint_lbl_)     hint_lbl_->setStyleSheet(dim_css);
     if (filename_lbl_) filename_lbl_->setStyleSheet(dim_css);
 

@@ -40,8 +40,6 @@ public slots:
     void applyTheme(const QString& name);
     void undo();
     void redo();
-    void toggleFullscreen();
-    void exitFullscreen();
     void openSettingsMenuFromToolbar();
 
 private slots:
@@ -75,6 +73,9 @@ private:
     void saveSelectionSnapshot();
     void restoreSelectionSnapshot(const std::vector<std::vector<bool>>& state);
     std::vector<std::vector<bool>> captureSelectionSnapshot() const;
+
+    void resizeEvent(QResizeEvent* e) override;
+    void updateToolbarForSize();
 
     QStackedWidget* stack_ = nullptr;
     WelcomeWidget*  welcome_ = nullptr;

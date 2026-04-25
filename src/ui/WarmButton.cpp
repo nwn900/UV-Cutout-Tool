@@ -61,7 +61,7 @@ void WarmButton::applyTheme(const themes::Theme& t) {
             bg_ = t.primary;     bg_hi_ = t.primary_hi;  bg_act_ = t.primary_act; fg_ = t.parchment;
             break;
         case Secondary:
-            bg_ = t.surface;     bg_hi_ = t.surface_hi;  bg_act_ = t.surface_act; fg_ = t.parchment_dim;
+            bg_ = t.surface;   bg_hi_ = t.surface_hi;  bg_act_ = t.surface_act; fg_ = t.secondary;
             break;
         case Action:
             bg_ = t.tertiary;    bg_hi_ = t.tertiary_txt; bg_act_ = t.tertiary_txt; fg_ = t.bg_toolbar;

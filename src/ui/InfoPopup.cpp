@@ -99,8 +99,7 @@ InfoPopup::InfoPopup(QWidget* parent) : QDialog(parent) {
         "\u2022 Click island \u2014 toggle selection\n"
         "\u2022 Click+drag \u2014 box select islands\n"
         "\u2022 Space+drag \u2014 pan view\n"
-        "\u2022 Scroll \u2014 zoom\n"
-        "\u2022 F11 \u2014 fullscreen",
+        "\u2022 Scroll \u2014 zoom",
         10, false, false, 0, 20);
 
     add_title("Credits & Libraries:", 11, true, false, 0, 5);

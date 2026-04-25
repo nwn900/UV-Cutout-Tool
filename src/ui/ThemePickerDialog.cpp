@@ -195,7 +195,7 @@ void ThemePickerDialog::style_theme_row(QLabel* row, bool hovered) {
     const QColor bg = selected ? theme_->primary
                     : hovered ? theme_->surface_hi
                               : theme_->surface;
-    const QColor fg = selected ? theme_->parchment : theme_->parchment_dim;
+    const QColor fg = selected ? theme_->parchment : theme_->parchment;
     QPalette p = row->palette();
     p.setColor(QPalette::Window,     bg);
     p.setColor(QPalette::WindowText, fg);

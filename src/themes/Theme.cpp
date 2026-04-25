@@ -60,7 +60,6 @@ void ThemeManager::load() {
         t.surface_hi       = parse_color(obj.value("surface_hi"));
         t.surface_act      = parse_color(obj.value("surface_act"));
         t.parchment        = parse_color(obj.value("parchment"));
-        t.parchment_dim    = parse_color(obj.value("parchment_dim"));
         t.parchment_faint  = parse_color(obj.value("parchment_faint"));
         t.primary          = parse_color(obj.value("primary"));
         t.primary_hi       = parse_color(obj.value("primary_hi"));

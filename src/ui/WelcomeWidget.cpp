@@ -11,7 +11,7 @@
 #include <QLinearGradient>
 #include <QMimeData>
 #include <QPainter>
-#include <QPixmap>
+#include <QResizeEvent>
 #include <QStyle>
 #include <QVBoxLayout>
 
@@ -67,6 +67,7 @@ WelcomeWidget::WelcomeWidget(QWidget* parent) : QWidget(parent) {
     inner_container->setObjectName("welcomePanel");
     inner_container->setAttribute(Qt::WA_StyledBackground, true);
     inner_container->setAutoFillBackground(true);
+    inner_container_ = inner_container;
     auto* inner = new QVBoxLayout(inner_container);
     inner->setAlignment(Qt::AlignCenter);
     inner->setContentsMargins(38, 32, 38, 30);
@@ -134,7 +135,7 @@ WelcomeWidget::WelcomeWidget(QWidget* parent) : QWidget(parent) {
     inner->addSpacing(14);
 
     supports_strip_ = new QLabel(
-        "Supports NIF \u00B7 PNG \u00B7 TGA \u00B7 DDS \u00B7 JPG \u00B7 BMP  |  F11 Fullscreen",
+        "Supports NIF \u00B7 PNG \u00B7 TGA \u00B7 DDS \u00B7 JPG \u00B7 BMP",
         inner_container);
     supports_strip_->setAlignment(Qt::AlignCenter);
     QFont fs; fs.setPointSize(8);
@@ -179,8 +180,8 @@ void WelcomeWidget::applyTheme(const themes::Theme& t) {
         QPalette lp = lbl->palette();
         lp.setColor(QPalette::Window,     t.bg_canvas);
         QColor fg = (lbl == title_)      ? t.parchment
-                   : (lbl == subtitle_)  ? t.parchment_dim
-                                         : t.parchment_faint;
+                   : (lbl == subtitle_)  ? t.parchment
+                                         : t.parchment;
         lp.setColor(QPalette::WindowText, fg);
         lbl->setPalette(lp);
     }
@@ -192,7 +193,7 @@ void WelcomeWidget::applyTheme(const themes::Theme& t) {
     }
 
     settings_btn_->applyTheme(t);
-    settings_btn_->setIcon(make_gear_icon(t.parchment_dim));
+    settings_btn_->setIcon(make_gear_icon(t.secondary));
     load_mesh_->applyTheme(t);
     load_tex_ ->applyTheme(t);
     open_ws_  ->applyTheme(t);
@@ -215,6 +216,34 @@ void WelcomeWidget::paintEvent(QPaintEvent*) {
 
     QColor bg = bg_canvas_.isValid() ? bg_canvas_ : palette().color(QPalette::Window);
     p.fillRect(rect(), bg);
+}
+
+void WelcomeWidget::resizeEvent(QResizeEvent* e) {
+    QWidget::resizeEvent(e);
+    const int w = e->size().width();
+    const bool compact = w < 1000;
+
+    const int button_width = compact ? 280 : 320;
+    const int new_font_size = compact ? 11 : 13;
+
+    if (load_mesh_) load_mesh_->setFixedWidth(button_width);
+    if (load_tex_) load_tex_->setFixedWidth(button_width);
+    if (open_ws_) open_ws_->setFixedWidth(button_width);
+
+    QFont bf; bf.setPointSize(new_font_size); bf.setBold(true);
+    if (load_mesh_) load_mesh_->setFont(bf);
+    if (open_ws_) open_ws_->setFont(bf);
+
+    if (title_) {
+        QFont tf = title_->font();
+        tf.setPointSize(compact ? 24 : 30);
+        title_->setFont(tf);
+    }
+    if (subtitle_) {
+        QFont sf = subtitle_->font();
+        sf.setPointSize(compact ? 10 : 11);
+        subtitle_->setFont(sf);
+    }
 }
 
 void WelcomeWidget::setLoadedFiles(const QString& mesh_file, const QString& diffuse_file) {
