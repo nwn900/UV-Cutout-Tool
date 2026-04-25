@@ -23,7 +23,7 @@ struct Theme {
     QColor tertiary, tertiary_txt;
     QColor rule, rule_dim;
     QColor selection_color;
-    QColor canvas_wire, canvas_hover;
+    QColor canvas_wire, canvas_hover, canvas_preview;
     QVector<QColor> sel_colors;
 };
 

@@ -27,6 +27,7 @@
     "selection_color": "#e85020",
     "canvas_wire": "#8c6a54",
     "canvas_hover": "#d8b060",
+    "canvas_preview": "#705030",
     "sel_colors": [
       [
         178,
@@ -118,6 +119,7 @@
     "selection_color": "#ff50d0",
     "canvas_wire": "#70708b",
     "canvas_hover": "#70c0f0",
+    "canvas_preview": "#404060",
     "sel_colors": [
       [
         74,
@@ -209,6 +211,7 @@
     "selection_color": "#c0d0ff",
     "canvas_wire": "#74747e",
     "canvas_hover": "#b0b8d0",
+    "canvas_preview": "#485060",
     "sel_colors": [
       [
         180,
@@ -300,6 +303,7 @@
     "selection_color": "#c060ff",
     "canvas_wire": "#7b6464",
     "canvas_hover": "#d0a0a0",
+    "canvas_preview": "#503030",
     "sel_colors": [
       [
         139,
@@ -391,6 +395,7 @@
     "selection_color": "#ffc040",
     "canvas_wire": "#806d4f",
     "canvas_hover": "#ffd878",
+    "canvas_preview": "#604820",
     "sel_colors": [
       [
         255,
@@ -482,6 +487,7 @@
     "selection_color": "#00ffcc",
     "canvas_wire": "#6c6c8c",
     "canvas_hover": "#b0b0ff",
+    "canvas_preview": "#404060",
     "sel_colors": [
       [
         93,
@@ -573,6 +579,7 @@
     "selection_color": "#ff4060",
     "canvas_wire": "#8e857b",
     "canvas_hover": "#f09080",
+    "canvas_preview": "#605050",
     "sel_colors": [
       [
         106,
@@ -664,6 +671,7 @@
     "selection_color": "#ffe060",
     "canvas_wire": "#8c8ca0",
     "canvas_hover": "#f0e088",
+    "canvas_preview": "#505068",
     "sel_colors": [
       [
         246,
@@ -755,6 +763,7 @@
     "selection_color": "#ff9040",
     "canvas_wire": "#81664c",
     "canvas_hover": "#a8d0e8",
+    "canvas_preview": "#504030",
     "sel_colors": [
       [
         176,
@@ -846,6 +855,7 @@
     "selection_color": "#ffb060",
     "canvas_wire": "#718f9e",
     "canvas_hover": "#80c8e8",
+    "canvas_preview": "#406060",
     "sel_colors": [
       [
         240,
@@ -937,6 +947,7 @@
     "selection_color": "#70d070",
     "canvas_wire": "#768c61",
     "canvas_hover": "#90d890",
+    "canvas_preview": "#405030",
     "sel_colors": [
       [
         79,
@@ -1028,6 +1039,7 @@
     "selection_color": "#6080d0",
     "canvas_wire": "#8593a1",
     "canvas_hover": "#90a0c0",
+    "canvas_preview": "#485060",
     "sel_colors": [
       [
         58,
@@ -1119,6 +1131,7 @@
     "selection_color": "#d89a4a",
     "canvas_wire": "#8a8780",
     "canvas_hover": "#c0a060",
+    "canvas_preview": "#605040",
     "sel_colors": [
       [
         111,
@@ -1210,6 +1223,7 @@
     "selection_color": "#ff4040",
     "canvas_wire": "#6b6b6b",
     "canvas_hover": "#c0a0a0",
+    "canvas_preview": "#404040",
     "sel_colors": [
       [
         10,
@@ -1301,6 +1315,7 @@
     "selection_color": "#c0a030",
     "canvas_wire": "#917b6f",
     "canvas_hover": "#d0c060",
+    "canvas_preview": "#605040",
     "sel_colors": [
       [
         140,
@@ -1392,6 +1407,7 @@
     "selection_color": "#5080c0",
     "canvas_wire": "#718192",
     "canvas_hover": "#88a0b8",
+    "canvas_preview": "#485058",
     "sel_colors": [
       [
         46,
@@ -1483,6 +1499,7 @@
     "selection_color": "#c8a030",
     "canvas_wire": "#727226",
     "canvas_hover": "#e8d878",
+    "canvas_preview": "#706840",
     "sel_colors": [
       [
         20,
@@ -1574,6 +1591,7 @@
     "selection_color": "#f0c95a",
     "canvas_wire": "#8593a1",
     "canvas_hover": "#d0c080",
+    "canvas_preview": "#605050",
     "sel_colors": [
       [
         183,
@@ -1665,6 +1683,7 @@
     "selection_color": "#8880a0",
     "canvas_wire": "#857a6b",
     "canvas_hover": "#a09090",
+    "canvas_preview": "#584848",
     "sel_colors": [
       [
         216,
@@ -1756,6 +1775,7 @@
     "selection_color": "#5090d0",
     "canvas_wire": "#937d66",
     "canvas_hover": "#80a0c0",
+    "canvas_preview": "#485058",
     "sel_colors": [
       [
         58,
@@ -1847,6 +1867,7 @@
     "selection_color": "#9be7ff",
     "canvas_wire": "#688898",
     "canvas_hover": "#80d0f0",
+    "canvas_preview": "#406060",
     "sel_colors": [
       [
         90,
@@ -1938,6 +1959,7 @@
     "selection_color": "#f1d77a",
     "canvas_wire": "#8d8d94",
     "canvas_hover": "#e8c080",
+    "canvas_preview": "#585850",
     "sel_colors": [
       [
         216,
@@ -2029,6 +2051,7 @@
     "selection_color": "#ffd700",
     "canvas_wire": "#718192",
     "canvas_hover": "#f8d800",
+    "canvas_preview": "#505050",
     "sel_colors": [
       [
         46,
@@ -2120,6 +2143,7 @@
     "selection_color": "#d8b860",
     "canvas_wire": "#857a6b",
     "canvas_hover": "#c8b068",
+    "canvas_preview": "#605040",
     "sel_colors": [
       [
         201,
@@ -2211,6 +2235,7 @@
     "selection_color": "#a070d0",
     "canvas_wire": "#726878",
     "canvas_hover": "#b090d0",
+    "canvas_preview": "#484050",
     "sel_colors": [
       [
         90,
@@ -2302,6 +2327,7 @@
     "selection_color": "#d64a5f",
     "canvas_wire": "#786878",
     "canvas_hover": "#c08080",
+    "canvas_preview": "#503040",
     "sel_colors": [
       [
         138,
@@ -2393,6 +2419,7 @@
     "selection_color": "#ff9a3c",
     "canvas_wire": "#786858",
     "canvas_hover": "#d09060",
+    "canvas_preview": "#504030",
     "sel_colors": [
       [
         61,
@@ -2484,6 +2511,7 @@
     "selection_color": "#80ff40",
     "canvas_wire": "#585878",
     "canvas_hover": "#90e060",
+    "canvas_preview": "#384838",
     "sel_colors": [
       [
         31,
@@ -2575,6 +2603,7 @@
     "selection_color": "#50c060",
     "canvas_wire": "#787878",
     "canvas_hover": "#70d080",
+    "canvas_preview": "#404840",
     "sel_colors": [
       [
         47,
@@ -2666,6 +2695,7 @@
     "selection_color": "#ff3060",
     "canvas_wire": "#787878",
     "canvas_hover": "#f06080",
+    "canvas_preview": "#503040",
     "sel_colors": [
       [
         255,
@@ -2757,6 +2787,7 @@
     "selection_color": "#b030ff",
     "canvas_wire": "#706878",
     "canvas_hover": "#b860ff",
+    "canvas_preview": "#403060",
     "sel_colors": [
       [
         5,
@@ -2848,6 +2879,7 @@
     "selection_color": "#8040a0",
     "canvas_wire": "#706878",
     "canvas_hover": "#a070b0",
+    "canvas_preview": "#403050",
     "sel_colors": [
       [
         11,
@@ -2939,6 +2971,7 @@
     "selection_color": "#ffdd00",
     "canvas_wire": "#707078",
     "canvas_hover": "#ffe040",
+    "canvas_preview": "#505030",
     "sel_colors": [
       [
         212,
@@ -3030,6 +3063,7 @@
     "selection_color": "#ff3030",
     "canvas_wire": "#707078",
     "canvas_hover": "#ff5050",
+    "canvas_preview": "#502020",
     "sel_colors": [
       [
         110,

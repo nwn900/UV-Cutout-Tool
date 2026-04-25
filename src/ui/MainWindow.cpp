@@ -364,7 +364,7 @@ void MainWindow::applyThemeVisuals(const themes::Theme& t) {
     }
     update();
     canvas_->setThemeColors(t.canvas_wire, t.canvas_hover, t.selection_color);
-    canvas_->setPreviewColor(t.surface_hi);
+    canvas_->setPreviewColor(t.canvas_preview);
     canvas_->setBackgroundColors(t.bg_canvas, QColor(26, 26, 26), QColor(46, 46, 46));
     canvas_->setEmptyStateColors(t.parchment, QColor(t.surface.red(), t.surface.green(), t.surface.blue(), 230));
     if (shape_tree_) {
