@@ -65,6 +65,8 @@ set(PROJECT_SOURCES
     src/ui/ThemePickerDialog.cpp
     src/ui/InfoPopup.h
     src/ui/InfoPopup.cpp
+    src/ui/ExportDialog.h
+    src/ui/ExportDialog.cpp
 )
 
 qt_add_resources(PROJECT_RESOURCES resources/resources.qrc)

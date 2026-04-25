@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "ExportDialog.h"
 #include "InfoPopup.h"
 #include "ShapeTreePanel.h"
 #include "ThemePickerDialog.h"
@@ -24,6 +25,7 @@
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QImageReader>
+#include <QImageWriter>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPainter>
@@ -147,10 +149,9 @@ void MainWindow::buildToolbar() {
     btn_all_  = new WarmButton("Select All",     WarmButton::Secondary, toolbar_);
     btn_none_ = new WarmButton("Deselect All",   WarmButton::Secondary, toolbar_);
     btn_inv_  = new WarmButton("Invert",         WarmButton::Secondary, toolbar_);
-    btn_undo_ = new WarmButton("Undo",           WarmButton::Secondary, toolbar_);
-    btn_redo_ = new WarmButton("Redo",           WarmButton::Secondary, toolbar_);
-    btn_tga_  = new WarmButton("Export TGA",     WarmButton::Secondary, toolbar_);
-    btn_png_  = new WarmButton("Export PNG",     WarmButton::Secondary, toolbar_);
+    btn_undo_   = new WarmButton("Undo",     WarmButton::Secondary, toolbar_);
+    btn_redo_   = new WarmButton("Redo",     WarmButton::Secondary, toolbar_);
+    btn_export_ = new WarmButton("Export…",  WarmButton::Secondary, toolbar_);
     btn_mesh_->setDropKind(WarmButton::MeshDrop);
     btn_diff_->setDropKind(WarmButton::DiffuseDrop);
     settings_btn_ = new WarmButton(QString(), WarmButton::Secondary, toolbar_);
@@ -180,14 +181,13 @@ void MainWindow::buildToolbar() {
     auto* right_lay = new QHBoxLayout(right_group);
     right_lay->setContentsMargins(0, 0, 0, 0);
     right_lay->setSpacing(6);
-    right_lay->addWidget(btn_tga_);
-    right_lay->addWidget(btn_png_);
+    right_lay->addWidget(btn_export_);
     right_lay->addSpacing(8);
     right_lay->addWidget(settings_btn_);
 
     const QSize toolbar_button_size(112, 34);
     for (auto* b : {btn_home_, btn_mesh_, btn_diff_, alpha_btn_, btn_all_, btn_none_, btn_inv_,
-                    btn_undo_, btn_redo_, btn_tga_, btn_png_}) {
+                    btn_undo_, btn_redo_, btn_export_}) {
         if (b) b->setFixedSize(toolbar_button_size);
     }
     settings_btn_->setFixedSize(34, 34);
@@ -208,10 +208,9 @@ void MainWindow::buildToolbar() {
     connect(btn_all_,  &WarmButton::clicked, this, &MainWindow::selectAll);
     connect(btn_none_, &WarmButton::clicked, this, &MainWindow::deselectAll);
     connect(btn_inv_,  &WarmButton::clicked, this, &MainWindow::invertSelection);
-    connect(btn_undo_, &WarmButton::clicked, this, &MainWindow::undo);
-    connect(btn_redo_, &WarmButton::clicked, this, &MainWindow::redo);
-    connect(btn_tga_,  &WarmButton::clicked, this, &MainWindow::exportTGA);
-    connect(btn_png_,  &WarmButton::clicked, this, &MainWindow::exportPNG);
+    connect(btn_undo_,   &WarmButton::clicked, this, &MainWindow::undo);
+    connect(btn_redo_,   &WarmButton::clicked, this, &MainWindow::redo);
+    connect(btn_export_, &WarmButton::clicked, this, &MainWindow::openExportDialog);
     btn_undo_->setEnabled(false);
     btn_redo_->setEnabled(false);
 
@@ -347,8 +346,9 @@ void MainWindow::applyThemeVisuals(const themes::Theme& t) {
     }
 
     for (auto* b : {btn_home_, btn_mesh_, btn_diff_, alpha_btn_, btn_all_, btn_none_, btn_inv_,
-                    btn_undo_, btn_redo_, settings_btn_, btn_tga_, btn_png_})
+                    btn_undo_, btn_redo_, btn_export_, settings_btn_})
         if (b) b->applyTheme(t);
+    if (export_dialog_) export_dialog_->applyTheme(t);
     if (settings_btn_) settings_btn_->setIcon(make_gear_icon(t.parchment_dim));
 
     welcome_->applyTheme(t);
@@ -806,20 +806,14 @@ void MainWindow::redo() {
     updateUndoRedoButtons();
 }
 
-QImage MainWindow::buildExportImage() {
+QImage MainWindow::buildExportImage(ExportColorMode mode, bool alpha) {
     const QImage& diffuse = canvas_->diffuse();
     const auto& meshes = canvas_->meshes();
 
     const int w = diffuse.isNull() ? 1024 : diffuse.width();
     const int h = diffuse.isNull() ? 1024 : diffuse.height();
 
-    QImage out(w, h, QImage::Format_RGBA8888);
-    out.fill(Qt::transparent);
-
-    // Mask pass: rasterize selected triangles into an alpha mask, then compose the
-    // diffuse color into the output where the mask is set. Export uses hard-edged
-    // fills rather than antialiased triangle edges so the cutout stays solid and
-    // does not inherit faint UV seam lines around the selected area.
+    // Rasterize selected triangles into a grayscale mask.
     QImage mask(w, h, QImage::Format_Grayscale8);
     mask.fill(0);
     {
@@ -841,37 +835,73 @@ QImage MainWindow::buildExportImage() {
         }
     }
 
+    // ── Black & White mask ────────────────────────────────────────────────
+    if (mode == ExportColorMode::BlackWhite) {
+        QImage out(w, h, QImage::Format_RGBA8888);
+        for (int y = 0; y < h; ++y) {
+            const uint8_t* mline = mask.constScanLine(y);
+            uint8_t* dline = out.scanLine(y);
+            for (int x = 0; x < w; ++x) {
+                const bool sel = mline[x] != 0;
+                dline[x * 4 + 0] = sel ? 255 : 0;
+                dline[x * 4 + 1] = sel ? 255 : 0;
+                dline[x * 4 + 2] = sel ? 255 : 0;
+                // Alpha ON: non-selected = fully transparent (renders black on dark bg).
+                // Alpha OFF: everything opaque (hard black/white).
+                dline[x * 4 + 3] = (!alpha || sel) ? 255 : 0;
+            }
+        }
+        return out;
+    }
+
+    // ── Full Color / Grayscale ────────────────────────────────────────────
+    // alpha ON:  selected area keeps diffuse alpha; non-selected = transparent.
+    // alpha OFF: selected area is fully opaque; non-selected = opaque black.
+    QImage out(w, h, QImage::Format_RGBA8888);
+    out.fill(alpha ? Qt::transparent : Qt::black);
+
     for (int y = 0; y < h; ++y) {
         const uint8_t* mline = mask.constScanLine(y);
         uint8_t* dline = out.scanLine(y);
         const uint8_t* sline = diffuse.isNull() ? nullptr : diffuse.constScanLine(y);
         for (int x = 0; x < w; ++x) {
-            uint8_t m = mline[x];
-            if (!m) continue;
+            const uint8_t m = mline[x];
+            if (!m) continue; // non-selected: already filled (transparent or black)
+
+            uint8_t sr, sg, sb, sa;
             if (sline) {
-                dline[x * 4 + 0] = sline[x * 4 + 0];
-                dline[x * 4 + 1] = sline[x * 4 + 1];
-                dline[x * 4 + 2] = sline[x * 4 + 2];
-                dline[x * 4 + 3] = uint8_t((int(sline[x * 4 + 3]) * m) / 255);
+                sr = sline[x * 4 + 0];
+                sg = sline[x * 4 + 1];
+                sb = sline[x * 4 + 2];
+                // Alpha is driven purely by the selection mask, not the source
+                // texture's own alpha channel (which carries unrelated data like
+                // specular intensity and is not meaningful for a cutout export).
+                sa = alpha ? m : 255;
             } else {
-                dline[x * 4 + 0] = 255;
-                dline[x * 4 + 1] = 255;
-                dline[x * 4 + 2] = 255;
-                dline[x * 4 + 3] = m;
+                sr = sg = sb = 255; // no diffuse → white
+                sa = alpha ? m : 255;
             }
+
+            if (mode == ExportColorMode::Grayscale) {
+                const uint8_t lum = uint8_t(
+                    int(sr) * 299 / 1000 +
+                    int(sg) * 587 / 1000 +
+                    int(sb) * 114 / 1000);
+                dline[x * 4 + 0] = lum;
+                dline[x * 4 + 1] = lum;
+                dline[x * 4 + 2] = lum;
+            } else {
+                dline[x * 4 + 0] = sr;
+                dline[x * 4 + 1] = sg;
+                dline[x * 4 + 2] = sb;
+            }
+            dline[x * 4 + 3] = sa;
         }
     }
     return out;
 }
 
-void MainWindow::exportTGA() { doExport("tga"); }
-void MainWindow::exportPNG() { doExport("png"); }
-
-void MainWindow::doExport(const QString& fmt) {
-    // Validate selection, require diffuse, build default filename from the
-    // diffuse stem, anchor the save
-    // dialog in the exe directory, rasterize, write, then report the full
-    // written path in the status bar.
+void MainWindow::openExportDialog() {
     bool any_selected = false;
     for (const auto& m : canvas_->meshes()) {
         for (const auto& t : m.triangles) {
@@ -889,6 +919,28 @@ void MainWindow::doExport(const QString& fmt) {
         return;
     }
 
+    if (!export_dialog_) {
+        export_dialog_ = new ExportDialog(this);
+    }
+    export_dialog_->applyTheme(ThemeManager::instance().current());
+
+    // Derive the stem from the loaded diffuse path for the filename preview.
+    const QString stem = diffuse_path_.isEmpty()
+        ? QString()
+        : QFileInfo(diffuse_path_).completeBaseName();
+    export_dialog_->setDiffuseStem(stem);
+
+    if (export_dialog_->exec() != QDialog::Accepted) return;
+
+    doExport(export_dialog_->format(),
+             export_dialog_->colorMode(),
+             export_dialog_->includeAlpha(),
+             export_dialog_->pngQuality(),
+             export_dialog_->tgaRle());
+}
+
+void MainWindow::doExport(const QString& fmt, ExportColorMode mode, bool alpha,
+                          int png_quality, bool tga_rle) {
     const QString exe_dir = QCoreApplication::applicationDirPath();
     QString default_name;
     if (!diffuse_path_.isEmpty()) {
@@ -899,6 +951,8 @@ void MainWindow::doExport(const QString& fmt) {
     }
 
     const QString fmt_upper = fmt.toUpper();
+    // Put the selected format first in the filter so the save dialog uses the
+    // right extension by default; the "All files" fallback lets users override.
     const QString filter = QString("%1 files (*.%2);;All files (*.*)")
         .arg(fmt_upper, fmt);
     const QString path = QFileDialog::getSaveFileName(
@@ -911,10 +965,15 @@ void MainWindow::doExport(const QString& fmt) {
     status_lbl_->setText(QString("Exporting %1...").arg(fmt_upper));
     QApplication::processEvents();
 
-    QImage img = buildExportImage();
+    QImage img = buildExportImage(mode, alpha);
     bool ok;
-    if (fmt == "tga") ok = codec::write_tga(path, img);
-    else              ok = img.save(path, "PNG");
+    if (fmt == "tga") {
+        ok = codec::write_tga(path, img, tga_rle, alpha);
+    } else {
+        QImageWriter writer(path, "PNG");
+        writer.setQuality(png_quality);
+        ok = writer.write(img);
+    }
 
     if (!ok) {
         QMessageBox::critical(this, "Export",

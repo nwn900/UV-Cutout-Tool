@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ExportDialog.h"
+
 #include <QDockWidget>
 #include <QLabel>
 #include <QMainWindow>
@@ -27,8 +29,7 @@ public:
 public slots:
     void loadMesh();
     void loadDiffuse();
-    void exportTGA();
-    void exportPNG();
+    void openExportDialog();
     void selectAll();
     void deselectAll();
     void invertSelection();
@@ -63,21 +64,15 @@ private:
     void openThemeMenu(QWidget* anchor);
     bool loadMeshFromPath(const QString& path);
     bool loadDiffuseFromPath(const QString& path);
-    QImage buildExportImage();
-    // Shared body of exportTGA/exportPNG: validate state, choose a default
-    // filename from the diffuse stem, rasterize the cutout, save, and update status.
-    void doExport(const QString& fmt);
-    // Set the left-side status label to the workspace intro hint.
+    QImage buildExportImage(ExportColorMode mode, bool alpha);
+    void doExport(const QString& fmt, ExportColorMode mode, bool alpha,
+                  int png_quality, bool tga_rle);
     void resetWorkspaceStatus();
     void updateUndoRedoButtons();
     QString loadStartupMode() const;
     void saveStartupMode(const QString& mode) const;
 
-    // Capture the current selection bits into the undo stack and clear redo.
-    // Called via the canvas's `selectionAboutToChange` signal and directly
-    // from shape-tree interactions.
     void saveSelectionSnapshot();
-    // Apply a snapshot to `canvas_`'s mesh vector and rebuild derived state.
     void restoreSelectionSnapshot(const std::vector<std::vector<bool>>& state);
     std::vector<std::vector<bool>> captureSelectionSnapshot() const;
 
@@ -88,6 +83,7 @@ private:
     QDockWidget*    shape_dock_ = nullptr;
     ShapeTreePanel* shape_tree_ = nullptr;
     ThemePickerDialog* theme_dialog_ = nullptr;
+    ExportDialog*   export_dialog_ = nullptr;
     QPointer<QMenu> settings_menu_;
     QPointer<QWidget> last_settings_anchor_;
     qint64 last_settings_menu_close_ms_ = 0;
@@ -97,8 +93,7 @@ private:
     WarmButton*     btn_all_  = nullptr;
     WarmButton*     btn_none_ = nullptr;
     WarmButton*     btn_inv_  = nullptr;
-    WarmButton*     btn_tga_  = nullptr;
-    WarmButton*     btn_png_  = nullptr;
+    WarmButton*     btn_export_ = nullptr;
     WarmButton*     btn_undo_ = nullptr;
     WarmButton*     btn_redo_ = nullptr;
     WarmButton*     settings_btn_ = nullptr;
@@ -109,8 +104,6 @@ private:
 
     bool alpha_on_ = true;
     QString mesh_path_;
-    // Source path of the currently-loaded diffuse, if any. Used to derive the
-    // default export filename ("{stem}_cutout.{fmt}") in doExport.
     QString diffuse_path_;
 
     std::vector<std::vector<std::vector<bool>>> undo_stack_;
