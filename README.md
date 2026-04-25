@@ -16,7 +16,7 @@ Useful for isolating armor pieces, weapons, leather, trim, ornaments, or anythin
 4. Click or drag-select the UV islands you want.
 5. Export as PNG or TGA.
 
-Selected areas export transparent. Everything else is cut out.
+Selected areas export with texture. Everything else is transparent.
 
 ## Controls
 
