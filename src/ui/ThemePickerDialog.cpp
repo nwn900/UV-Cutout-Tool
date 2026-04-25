@@ -7,10 +7,13 @@
 #include <QFrame>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QResizeEvent>
 #include <QPainter>
 #include <QScreen>
 #include <QSizePolicy>
 #include <QVBoxLayout>
+
+#include <algorithm>
 
 namespace uvc::ui {
 
@@ -19,14 +22,15 @@ constexpr const char* kCatIdxProp   = "uvc.cat_idx";
 constexpr const char* kThemeNameProp = "uvc.theme_name";
 constexpr const char* kRoleProp     = "uvc.role";
 constexpr const char* kHoveredProp  = "uvc.hovered";
+constexpr const char* kRowHeightProp = "uvc.row_height";
 } // namespace
 
 ThemePickerDialog::ThemePickerDialog(QWidget* parent)
     : QDialog(parent, Qt::Dialog) {
     setAttribute(Qt::WA_DeleteOnClose, false);
     setWindowTitle("Themes");
-    resize(560, 480);
-    setMinimumSize(560, 480);
+    resize(640, 540);
+    setMinimumSize(620, 520);
 
     auto* outer = new QVBoxLayout(this);
     outer->setContentsMargins(0, 0, 0, 10);
@@ -86,8 +90,9 @@ void ThemePickerDialog::build_rows() {
         c.header = new QLabel(QString("> %1").arg(c.name), body_);
         c.header->setAutoFillBackground(true);
         c.header->setCursor(Qt::PointingHandCursor);
-        c.header->setMargin(6);
-        c.header->setFixedHeight(32);
+        c.header->setMargin(0);
+        c.header->setIndent(12);
+        c.header->setMinimumHeight(36);
         c.header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         QFont hf = c.header->font();
         hf.setBold(true);
@@ -103,11 +108,13 @@ void ThemePickerDialog::build_rows() {
         bl->setSpacing(0);
         for (const QString& tname : cats[ci].second) {
             const auto& th = mgr.get(tname);
-            auto* row = new QLabel(QString("  %1  -  %2").arg(th.name, th.desc), c.body);
+            auto* row = new QLabel(QString("%1  -  %2").arg(th.name, th.desc), c.body);
             row->setAutoFillBackground(true);
             row->setCursor(Qt::PointingHandCursor);
-            row->setMargin(6);
-            row->setMinimumHeight(32);
+            row->setMargin(0);
+            row->setIndent(14);
+            row->setWordWrap(false);
+            row->setFixedHeight(44);
             row->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
             row->setProperty(kThemeNameProp, tname);
             row->setProperty(kRoleProp, "theme_row");
@@ -128,6 +135,7 @@ void ThemePickerDialog::popupBelow(QWidget* anchor) {
     original_theme_name_ = themes::ThemeManager::instance().currentName();
     pending_theme_name_ = original_theme_name_;
     updateButtonState();
+    refresh_rows();
     if (anchor) {
         QWidget* host = anchor->window();
         if (host) {
@@ -165,14 +173,55 @@ void ThemePickerDialog::style_header(QLabel* h, bool hovered) {
     p.setColor(QPalette::Window,     hovered ? theme_->surface_hi : theme_->bg_toolbar);
     p.setColor(QPalette::WindowText, theme_->secondary);
     h->setPalette(p);
+    h->setStyleSheet(QString(
+        "QLabel {"
+        " background:%1;"
+        " color:%2;"
+        " border-top:1px solid %3;"
+        " border-bottom:1px solid %4;"
+        " padding:0px;"
+        "}")
+        .arg((hovered ? theme_->surface_hi : theme_->bg_toolbar).name(QColor::HexRgb),
+             theme_->secondary.name(QColor::HexRgb),
+             theme_->surface_hi.name(QColor::HexRgb),
+             theme_->rule.name(QColor::HexRgb)));
+    h->setMinimumHeight(36);
+    h->setMaximumHeight(36);
 }
 
 void ThemePickerDialog::style_theme_row(QLabel* row, bool hovered) {
     if (!theme_) return;
+    const bool selected = row->property(kThemeNameProp).toString() == pending_theme_name_;
+    const QColor bg = selected ? theme_->primary
+                    : hovered ? theme_->surface_hi
+                              : theme_->surface;
+    const QColor fg = selected ? theme_->parchment : theme_->parchment_dim;
     QPalette p = row->palette();
-    p.setColor(QPalette::Window,     hovered ? theme_->surface_hi : theme_->surface);
-    p.setColor(QPalette::WindowText, theme_->parchment);
+    p.setColor(QPalette::Window,     bg);
+    p.setColor(QPalette::WindowText, fg);
     row->setPalette(p);
+}
+
+void ThemePickerDialog::update_theme_row_height(QLabel* row) {
+    if (!row) return;
+    const int row_height = 44;
+    row->setProperty(kRowHeightProp, row_height);
+    row->setFixedHeight(row_height);
+}
+
+void ThemePickerDialog::refresh_rows() {
+    if (!theme_) return;
+    for (auto& c : categories_) {
+        style_header(c.header, false);
+        for (auto* r : c.theme_rows) {
+            r->setStyleSheet(QString(
+                "QLabel { border-bottom:1px solid %1; padding:0px; }")
+                .arg(theme_->rule_dim.name(QColor::HexRgb)));
+            update_theme_row_height(r);
+            style_theme_row(r, r->property(kHoveredProp).toBool());
+        }
+    }
+    if (body_layout_) body_layout_->invalidate();
 }
 
 void ThemePickerDialog::applyTheme(const themes::Theme& t) {
@@ -183,11 +232,40 @@ void ThemePickerDialog::applyTheme(const themes::Theme& t) {
     p.setColor(QPalette::WindowText, t.parchment);
     setPalette(p);
     setAutoFillBackground(true);
+    setStyleSheet(QString(
+        "ThemePickerDialog {"
+        " background:%1;"
+        " border:1px solid %2;"
+        "}"
+        "QPushButton {"
+        " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %3, stop:1 %4);"
+        " color:%5;"
+        " border:1px solid %2;"
+        " padding:6px 14px;"
+        "}"
+        "QPushButton:hover { background:%6; }")
+        .arg(t.surface.name(QColor::HexRgb),
+             t.rule.name(QColor::HexRgb),
+             t.surface_hi.name(QColor::HexRgb),
+             t.surface.name(QColor::HexRgb),
+             t.parchment.name(QColor::HexRgb),
+             t.primary_hi.name(QColor::HexRgb)));
 
     QPalette tp = title_->palette();
     tp.setColor(QPalette::Window,     t.bg_toolbar);
     tp.setColor(QPalette::WindowText, t.parchment);
     title_->setPalette(tp);
+    title_->setStyleSheet(QString(
+        "QLabel {"
+        " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %1, stop:1 %2);"
+        " color:%3;"
+        " border-bottom:1px solid %4;"
+        " padding:8px 10px;"
+        "}")
+        .arg(t.surface.name(QColor::HexRgb),
+             t.bg_toolbar.name(QColor::HexRgb),
+             t.parchment.name(QColor::HexRgb),
+             t.rule.name(QColor::HexRgb)));
 
     if (body_) {
         QPalette bp = body_->palette();
@@ -216,10 +294,7 @@ void ThemePickerDialog::applyTheme(const themes::Theme& t) {
         cancel_btn_->setAutoFillBackground(true);
     }
 
-    for (auto& c : categories_) {
-        style_header(c.header, false);
-        for (auto* r : c.theme_rows) style_theme_row(r, r->property(kHoveredProp).toBool());
-    }
+    refresh_rows();
 }
 
 void ThemePickerDialog::updateButtonState() {
@@ -229,6 +304,11 @@ void ThemePickerDialog::updateButtonState() {
 void ThemePickerDialog::reject() {
     emit themeSelectionCanceled(original_theme_name_);
     hide();
+}
+
+void ThemePickerDialog::resizeEvent(QResizeEvent* e) {
+    QDialog::resizeEvent(e);
+    refresh_rows();
 }
 
 bool ThemePickerDialog::eventFilter(QObject* obj, QEvent* e) {
@@ -246,14 +326,23 @@ bool ThemePickerDialog::eventFilter(QObject* obj, QEvent* e) {
     }
     if (role == "theme_row") {
         auto* row = qobject_cast<QLabel*>(obj);
-        if (e->type() == QEvent::Enter)      { row->setProperty(kHoveredProp, true);  style_theme_row(row, true);  return false; }
-        if (e->type() == QEvent::Leave)      { row->setProperty(kHoveredProp, false); style_theme_row(row, false); return false; }
+        if (e->type() == QEvent::Enter) {
+            row->setProperty(kHoveredProp, true);
+            style_theme_row(row, true);
+            return false;
+        }
+        if (e->type() == QEvent::Leave) {
+            row->setProperty(kHoveredProp, false);
+            style_theme_row(row, false);
+            return false;
+        }
         if (e->type() == QEvent::MouseButtonRelease) {
             auto* me = static_cast<QMouseEvent*>(e);
             if (me->button() == Qt::LeftButton) {
                 pending_theme_name_ = obj->property(kThemeNameProp).toString();
-                emit themePreviewed(pending_theme_name_);
+                emit themeSelected(pending_theme_name_);
                 updateButtonState();
+                refresh_rows();
                 return true;
             }
         }

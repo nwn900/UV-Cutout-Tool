@@ -36,6 +36,28 @@ constexpr uint32_t FCC_BC4S  = 0x53344342u;
 constexpr uint32_t FCC_BC5U  = 0x55354342u;
 constexpr uint32_t FCC_BC5S  = 0x53354342u;
 
+constexpr uint32_t DXGI_FORMAT_BC1_TYPELESS = 70;
+constexpr uint32_t DXGI_FORMAT_BC1_UNORM = 71;
+constexpr uint32_t DXGI_FORMAT_BC1_UNORM_SRGB = 72;
+constexpr uint32_t DXGI_FORMAT_BC2_TYPELESS = 73;
+constexpr uint32_t DXGI_FORMAT_BC2_UNORM = 74;
+constexpr uint32_t DXGI_FORMAT_BC2_UNORM_SRGB = 75;
+constexpr uint32_t DXGI_FORMAT_BC3_TYPELESS = 76;
+constexpr uint32_t DXGI_FORMAT_BC3_UNORM = 77;
+constexpr uint32_t DXGI_FORMAT_BC3_UNORM_SRGB = 78;
+constexpr uint32_t DXGI_FORMAT_BC4_TYPELESS = 79;
+constexpr uint32_t DXGI_FORMAT_BC4_UNORM = 80;
+constexpr uint32_t DXGI_FORMAT_BC4_SNORM = 81;
+constexpr uint32_t DXGI_FORMAT_BC5_TYPELESS = 82;
+constexpr uint32_t DXGI_FORMAT_BC5_UNORM = 83;
+constexpr uint32_t DXGI_FORMAT_BC5_SNORM = 84;
+constexpr uint32_t DXGI_FORMAT_BC6H_TYPELESS = 94;
+constexpr uint32_t DXGI_FORMAT_BC6H_UF16 = 95;
+constexpr uint32_t DXGI_FORMAT_BC6H_SF16 = 96;
+constexpr uint32_t DXGI_FORMAT_BC7_TYPELESS = 97;
+constexpr uint32_t DXGI_FORMAT_BC7_UNORM = 98;
+constexpr uint32_t DXGI_FORMAT_BC7_UNORM_SRGB = 99;
+
 inline uint32_t rd_u32(const uint8_t* p) {
     return uint32_t(p[0]) | (uint32_t(p[1]) << 8) | (uint32_t(p[2]) << 16) | (uint32_t(p[3]) << 24);
 }
@@ -107,11 +129,41 @@ QImage load_dds_image(const QString& path) {
                 throw std::runtime_error("DDS DX10 header truncated");
             uint32_t dx10_format = rd_u32(hdr + DDS_HEADER_SIZE);
             switch (dx10_format) {
-                case 98: fmt = BCFormat::BC7; break;
-                case 99: fmt = BCFormat::BC5; break;
-                case 95: fmt = BCFormat::BC4; break;
-                case 97: fmt = BCFormat::BC3; break;
-                case 96: fmt = BCFormat::BC1; break;
+                case DXGI_FORMAT_BC1_TYPELESS:
+                case DXGI_FORMAT_BC1_UNORM:
+                case DXGI_FORMAT_BC1_UNORM_SRGB:
+                    fmt = BCFormat::BC1;
+                    break;
+                case DXGI_FORMAT_BC2_TYPELESS:
+                case DXGI_FORMAT_BC2_UNORM:
+                case DXGI_FORMAT_BC2_UNORM_SRGB:
+                    fmt = BCFormat::BC2;
+                    break;
+                case DXGI_FORMAT_BC3_TYPELESS:
+                case DXGI_FORMAT_BC3_UNORM:
+                case DXGI_FORMAT_BC3_UNORM_SRGB:
+                    fmt = BCFormat::BC3;
+                    break;
+                case DXGI_FORMAT_BC4_TYPELESS:
+                case DXGI_FORMAT_BC4_UNORM:
+                    fmt = BCFormat::BC4;
+                    break;
+                case DXGI_FORMAT_BC5_TYPELESS:
+                case DXGI_FORMAT_BC5_UNORM:
+                    fmt = BCFormat::BC5;
+                    break;
+                case DXGI_FORMAT_BC7_TYPELESS:
+                case DXGI_FORMAT_BC7_UNORM:
+                case DXGI_FORMAT_BC7_UNORM_SRGB:
+                    fmt = BCFormat::BC7;
+                    break;
+                case DXGI_FORMAT_BC4_SNORM:
+                case DXGI_FORMAT_BC5_SNORM:
+                    fail("Signed BC4/BC5 DDS textures are not supported");
+                case DXGI_FORMAT_BC6H_TYPELESS:
+                case DXGI_FORMAT_BC6H_UF16:
+                case DXGI_FORMAT_BC6H_SF16:
+                    fail("BC6H DDS textures are not supported");
                 default:
                     throw std::runtime_error("Unsupported DX10 format");
             }

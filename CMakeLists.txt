@@ -6,20 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-option(UVC_BUILD_BC7_COMPARE_TOOL "Build the standalone BC7 block comparison utility" OFF)
 
 if(POLICY CMP0071)
     cmake_policy(SET CMP0071 NEW)
-endif()
-
-if(UVC_BUILD_BC7_COMPARE_TOOL)
-    add_executable(UVCutoutToolBC7Compare
-        tools/BC7Compare.cpp
-        src/codec/BCDecoder.h
-        src/codec/BCDecoder.cpp
-    )
-    target_include_directories(UVCutoutToolBC7Compare PRIVATE src)
-    set_target_properties(UVCutoutToolBC7Compare PROPERTIES OUTPUT_NAME "bc7-compare")
 endif()
 
 if(MSVC)
@@ -42,8 +31,6 @@ set(PROJECT_SOURCES
     src/codec/TGAIO.h
     src/codec/TGAIO.cpp
 
-    src/parsers/OBJParser.h
-    src/parsers/OBJParser.cpp
     src/parsers/NiflyParser.h
     src/parsers/NiflyParser.cpp
 
@@ -84,9 +71,9 @@ qt_add_resources(PROJECT_RESOURCES resources/resources.qrc)
 
 if(WIN32 AND MSVC)
     # app.rc is only compiled under MSVC. mingw's windres chokes on include
-    # paths containing spaces (the source tree is "UV Cutout Tool C++/..."),
-    # and the .rc only supplies the shell/taskbar icon — the window icon
-    # comes from the Qt resource (:/icon.png), so dropping it on mingw is a
+    # paths containing spaces.
+    # The .rc only supplies the shell/taskbar icon. The window icon comes from
+    # the Qt resource (:/icon.png), so dropping it on mingw is a
     # safe tradeoff.
     add_executable(UVCutoutTool WIN32 ${PROJECT_SOURCES} ${PROJECT_RESOURCES} resources/app.rc)
 elseif(WIN32)
@@ -116,7 +103,7 @@ install(TARGETS UVCutoutTool RUNTIME DESTINATION .)
 if(WIN32)
     get_filename_component(QT_ROOT_DIR "${Qt6_DIR}/../../.." ABSOLUTE)
     set(QT_PLUGINS_DIR "${QT_ROOT_DIR}/plugins")
-    set(NIFLY_SRC "${CMAKE_SOURCE_DIR}/../pynifly_lib/io_scene_nifly/pyn/NiflyDLL.dll")
+    set(NIFLY_SRC "${CMAKE_SOURCE_DIR}/third_party/nifly/NiflyDLL.dll")
 
     function(uvc_portable_runtime_file path)
         if(EXISTS "${path}")

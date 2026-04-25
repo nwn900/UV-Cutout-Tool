@@ -10,11 +10,12 @@
 
 namespace uvc::themes { struct Theme; }
 
+class QResizeEvent;
+
 namespace uvc::ui {
 
-// 1:1 port of Python `_show_theme_window`: a frameless popup anchored below the
-// "Theme: …" button on the welcome screen. Categories (THEME_ORDER) are
-// collapsible; clicking a theme row applies it immediately.
+// Frameless theme popup anchored below the theme button on the welcome screen.
+// Categories are collapsible; clicking a theme row applies it immediately.
 class ThemePickerDialog : public QDialog {
     Q_OBJECT
 public:
@@ -22,12 +23,10 @@ public:
 
     void applyTheme(const themes::Theme& t);
 
-    // Anchor the popup directly below the given widget (mirrors
-    // `self._theme_popup.geometry(f"+{x}+{y}")` where y = btn_y + btn_h).
+    // Anchor the popup directly below the given widget.
     void popupBelow(QWidget* anchor);
 
 signals:
-    void themePreviewed(const QString& name);
     void themeSelected(const QString& name);
     void themeSelectionCanceled(const QString& revert_name);
 
@@ -44,6 +43,8 @@ private:
     void toggle_category(int idx);
     void style_header(QLabel* h, bool hovered);
     void style_theme_row(QLabel* row, bool hovered);
+    void update_theme_row_height(QLabel* row);
+    void refresh_rows();
     void updateButtonState();
 
     QVBoxLayout*  body_layout_ = nullptr;
@@ -58,6 +59,7 @@ private:
     QString pending_theme_name_;
 
     bool eventFilter(QObject* obj, QEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
     void reject() override;
 };
 

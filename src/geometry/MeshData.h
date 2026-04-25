@@ -15,7 +15,7 @@ struct BBox { float min_u = 0.f, min_v = 0.f, max_u = 0.f, max_v = 0.f; };
 
 struct Triangle {
     std::array<UV, 3>  uv{};
-    std::array<Vec3, 3> verts{};          // optional (NIF only); all-zero for OBJ
+    std::array<Vec3, 3> verts{};
     std::array<uint32_t, 3> indices{};    // optional (NIF only)
     float avg_z = 0.f;
     BBox  bbox{};

@@ -25,7 +25,7 @@ std::vector<std::vector<int>> compute_islands(std::vector<Triangle>& triangles) 
     std::vector<std::vector<int>> islands;
     if (triangles.empty()) return islands;
 
-    // Python: uv_precision = 3  → round to 3 decimal places.
+    // Quantize UVs to three decimal places before linking shared edges.
     constexpr float kScale = 1000.0f;
     auto quantize = [](float x) -> int32_t {
         return int32_t(std::lround(double(x) * double(kScale)));

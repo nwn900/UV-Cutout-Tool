@@ -11,10 +11,9 @@
 
 namespace uvc::render {
 
-// GPU-driven renderer: all 3000+ wireframe lines become a single glDrawArrays(GL_LINES, ...) call
+// GPU-driven renderer: all wireframe lines become a single glDrawArrays(GL_LINES, ...) call
 // backed by one VBO of precomputed {uv, rgba} vertices. Background is a textured quad with a
-// checker-pattern fragment path for alpha. This is the main performance win versus Python's
-// per-line Tk canvas objects.
+// checker-pattern fragment path for alpha.
 class GpuCanvasRenderer : public CanvasRenderer {
 public:
     GpuCanvasRenderer();

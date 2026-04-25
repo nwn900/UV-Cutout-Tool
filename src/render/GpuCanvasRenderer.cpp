@@ -19,8 +19,7 @@ QString load_shader(const char* path) {
 }
 
 struct EdgeKey {
-    // Quantized endpoints to dedupe near-coincident edges (matches Python's "edges seen"
-    // map, which keyed on raw floats sorted as a pair).
+    // Quantized endpoints to dedupe near-coincident edges.
     int32_t a_u, a_v, b_u, b_v;
     bool operator==(const EdgeKey& o) const noexcept {
         return a_u == o.a_u && a_v == o.a_v && b_u == o.b_u && b_v == o.b_v;
@@ -157,7 +156,7 @@ void GpuCanvasRenderer::onSelectionChanged(const std::vector<geom::Mesh>& meshes
 
 void GpuCanvasRenderer::rebuild_line_vertices(const std::vector<geom::Mesh>& meshes, const SceneState& scene) {
     // One vertex (uv + rgba) per line endpoint. For each triangle we emit 3 edges = 6 vertices,
-    // then dedupe shared edges using a hash set matching the Python `seen` map.
+    // then dedupe shared edges using a hash set.
     const float wr = scene.wire_color.redF();
     const float wg = scene.wire_color.greenF();
     const float wb = scene.wire_color.blueF();
@@ -190,8 +189,7 @@ void GpuCanvasRenderer::rebuild_line_vertices(const std::vector<geom::Mesh>& mes
             const auto& t = m.triangles[ti];
             bool hover = (int(mi) == scene.hover_mesh_idx && int(ti) == scene.hover_tri_idx);
             // Whole-island hover: tint every triangle whose (mesh, island)
-            // matches the hover target, matching Python's behavior of coloring
-            // full islands on hover rather than a single triangle.
+            // matches the hover target.
             if (!hover && scene.hover_island_idx >= 0 &&
                 int(mi) == scene.hover_island_mesh_idx &&
                 t.island_id.has_value() &&
@@ -268,7 +266,7 @@ void GpuCanvasRenderer::render(const CanvasView& view, const SceneState& scene) 
     bg_prog_->setUniformValue("u_uv_origin",QVector2D(view.pan_x, view.pan_y));
     bg_prog_->setUniformValue("u_uv_size",  QVector2D(uvw, uvh));
     bg_prog_->setUniformValue("u_has_tex",  has_texture_);
-    bg_prog_->setUniformValue("u_alpha_on", view.alpha_on);
+    bg_prog_->setUniformValue("u_alpha_on", view.alpha_on && view.content_supports_alpha);
     bg_prog_->setUniformValue("u_bg_color",
                               QVector3D(scene.bg_canvas_color.redF(),
                                         scene.bg_canvas_color.greenF(),

@@ -23,6 +23,7 @@ struct Theme {
     QColor tertiary, tertiary_txt;
     QColor rule, rule_dim;
     QColor selection_color;
+    QColor canvas_wire, canvas_hover;
     QVector<QColor> sel_colors;
 };
 
@@ -42,8 +43,7 @@ public:
     QString loadPreferredName() const;
     void    savePreferredName(const QString& name) const;
 
-    // Categorized ordering from Python's THEME_ORDER dict. Entries preserve the
-    // Python declaration order, which drives the theme picker's section layout.
+    // Categorized ordering for the theme picker's section layout.
     const QVector<QPair<QString, QStringList>>& categoryOrder() const { return category_order_; }
 
 private:

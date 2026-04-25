@@ -86,9 +86,9 @@ InfoPopup::InfoPopup(QWidget* parent) : QDialog(parent) {
 
     add_title("Workflow:", 11, true, false, 0, 5);
     add_title(
-        "1. Load a NIF mesh\n"
-        "2. Load a diffuse texture (PNG, TGA, DDS, JPG, JPEG, or BMP)\n"
-        "3. You can also drag and drop either file directly into the app\n"
+        "1. Load a NIF mesh or drag it into the app\n"
+        "2. Load a diffuse texture (PNG, TGA, DDS, JPG, JPEG, or BMP) or drag it into the app\n"
+        "3. You can also drag and drop both files at the same time\n"
         "4. Click or drag to select UV islands\n"
         "5. Export selection as TGA or PNG\n"
         "6. Mask/edit in Photoshop",

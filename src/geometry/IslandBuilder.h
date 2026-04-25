@@ -5,8 +5,8 @@
 
 namespace uvc::geom {
 
-// Populates triangle.island_id and returns a list of islands (each an ordered
-// list of triangle indices). Mirrors compute_islands() in the Python source.
+// Populates triangle.island_id and returns each UV island as an ordered list of
+// triangle indices.
 std::vector<std::vector<int>> compute_islands(std::vector<Triangle>& triangles);
 
 } // namespace uvc::geom

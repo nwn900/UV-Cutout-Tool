@@ -12,7 +12,8 @@ QImage CpuCanvasRenderer::composed_background(const CanvasView& view, const Scen
     QImage img(out_w, out_h, QImage::Format_RGBA8888);
     img.fill(scene.bg_canvas_color);
     QPainter p(&img);
-    if (view.alpha_on) {
+    const bool show_checker = view.alpha_on && view.content_supports_alpha;
+    if (show_checker) {
         // Simple checkerboard in screen space.
         const int cs = 16;
         for (int y = 0; y < out_h; y += cs) {

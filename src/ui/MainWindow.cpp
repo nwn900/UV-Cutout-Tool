@@ -10,7 +10,6 @@
 #include "../codec/DDSLoader.h"
 #include "../codec/TGAIO.h"
 #include "../parsers/NiflyParser.h"
-#include "../parsers/OBJParser.h"
 #include "../themes/Theme.h"
 
 #include <QApplication>
@@ -23,13 +22,15 @@
 #include <QFileInfo>
 #include <QFrame>
 #include <QHBoxLayout>
+#include <QIcon>
 #include <QImageReader>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPainter>
+#include <QPixmap>
 #include <QShortcut>
-#include <QSignalBlocker>
 #include <QStatusBar>
+#include <QStyle>
 #include <QTimer>
 #include <QVBoxLayout>
 
@@ -41,13 +42,34 @@ namespace {
 
 bool is_mesh_file(const QString& path) {
     const QString ext = QFileInfo(path).suffix().toLower();
-    return ext == "nif" || ext == "obj";
+    return ext == "nif";
 }
 
 bool is_diffuse_file(const QString& path) {
     const QString ext = QFileInfo(path).suffix().toLower();
     return ext == "png" || ext == "tga" || ext == "dds"
         || ext == "jpg" || ext == "jpeg" || ext == "bmp";
+}
+
+QIcon make_gear_icon(const QColor& color) {
+    QPixmap pm(24, 24);
+    pm.fill(Qt::transparent);
+
+    QPainter p(&pm);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    p.translate(12, 12);
+    p.setPen(Qt::NoPen);
+    p.setBrush(color);
+    for (int i = 0; i < 8; ++i) {
+        p.save();
+        p.rotate(i * 45.0);
+        p.drawRoundedRect(QRectF(-2.0, -11.0, 4.0, 5.0), 1.0, 1.0);
+        p.restore();
+    }
+    p.drawEllipse(QPointF(0, 0), 7.0, 7.0);
+    p.setCompositionMode(QPainter::CompositionMode_Clear);
+    p.drawEllipse(QPointF(0, 0), 3.0, 3.0);
+    return QIcon(pm);
 }
 
 } // namespace
@@ -67,12 +89,15 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     buildStatusBar();
     buildShapeTreeDock();
 
+    welcome_->acceptDrops();
     connect(welcome_, &WelcomeWidget::loadMeshRequested,    this, &MainWindow::loadMesh);
     connect(welcome_, &WelcomeWidget::loadDiffuseRequested, this, &MainWindow::loadDiffuse);
     connect(welcome_, &WelcomeWidget::openWorkspaceRequested, this, &MainWindow::showWorkspace);
     connect(welcome_, &WelcomeWidget::settingsRequested, this, [this] {
         if (welcome_ && welcome_->settingsButton()) openSettingsMenu(welcome_->settingsButton());
     });
+    connect(welcome_, &WelcomeWidget::meshFileDropped, this, &MainWindow::loadMeshFromPath);
+    connect(welcome_, &WelcomeWidget::diffuseFileDropped, this, &MainWindow::loadDiffuseFromPath);
     if (welcome_->meshButton()) {
         welcome_->meshButton()->setDropKind(WarmButton::MeshDrop);
         connect(welcome_->meshButton(), &WarmButton::fileDropped, this, &MainWindow::loadMeshFromPath);
@@ -111,6 +136,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
 void MainWindow::buildToolbar() {
     toolbar_ = new QWidget(this);
+    toolbar_->setObjectName("workspaceToolbar");
     auto* lay = new QHBoxLayout(toolbar_);
     lay->setContentsMargins(12, 5, 12, 5);
     lay->setSpacing(0);
@@ -127,23 +153,12 @@ void MainWindow::buildToolbar() {
     btn_png_  = new WarmButton("Export PNG",     WarmButton::Secondary, toolbar_);
     btn_mesh_->setDropKind(WarmButton::MeshDrop);
     btn_diff_->setDropKind(WarmButton::DiffuseDrop);
-    settings_btn_ = new WarmButton(QString::fromUtf8("\xE2\x9A\x99"), WarmButton::Secondary, toolbar_);
-    QFont sf; sf.setPointSize(14); sf.setBold(true);
-    settings_btn_->setFont(sf);
+    settings_btn_ = new WarmButton(QString(), WarmButton::Secondary, toolbar_);
+    settings_btn_->setToolTip("Settings");
+    settings_btn_->setAccessibleName("Settings");
+    settings_btn_->setIconSize(QSize(18, 18));
 
-    alpha_btn_ = new QLabel("Alpha: ON", toolbar_);
-    alpha_btn_->setAutoFillBackground(true);
-    alpha_btn_->setCursor(Qt::PointingHandCursor);
-    alpha_btn_->setMargin(6);
-    struct AlphaClick : QObject {
-        MainWindow* w;
-        explicit AlphaClick(MainWindow* w) : w(w) {}
-        bool eventFilter(QObject*, QEvent* e) override {
-            if (e->type() == QEvent::MouseButtonRelease) w->toggleAlpha();
-            return false;
-        }
-    };
-    alpha_btn_->installEventFilter(new AlphaClick(this));
+    alpha_btn_ = new WarmButton("Alpha: ON", WarmButton::Primary, toolbar_);
 
     auto* left_group = new QWidget(toolbar_);
     auto* left_lay = new QHBoxLayout(left_group);
@@ -170,6 +185,13 @@ void MainWindow::buildToolbar() {
     right_lay->addSpacing(8);
     right_lay->addWidget(settings_btn_);
 
+    const QSize toolbar_button_size(112, 34);
+    for (auto* b : {btn_home_, btn_mesh_, btn_diff_, alpha_btn_, btn_all_, btn_none_, btn_inv_,
+                    btn_undo_, btn_redo_, btn_tga_, btn_png_}) {
+        if (b) b->setFixedSize(toolbar_button_size);
+    }
+    settings_btn_->setFixedSize(34, 34);
+
     lay->addWidget(left_group);
     lay->addStretch(1);
     lay->addWidget(middle_group);
@@ -181,6 +203,7 @@ void MainWindow::buildToolbar() {
     connect(btn_diff_, &WarmButton::clicked, this, &MainWindow::loadDiffuse);
     connect(btn_mesh_, &WarmButton::fileDropped, this, &MainWindow::loadMeshFromPath);
     connect(btn_diff_, &WarmButton::fileDropped, this, &MainWindow::loadDiffuseFromPath);
+    connect(alpha_btn_, &WarmButton::clicked, this, &MainWindow::toggleAlpha);
     connect(settings_btn_, &WarmButton::clicked, this, &MainWindow::openSettingsMenuFromToolbar);
     connect(btn_all_,  &WarmButton::clicked, this, &MainWindow::selectAll);
     connect(btn_none_, &WarmButton::clicked, this, &MainWindow::deselectAll);
@@ -244,8 +267,7 @@ void MainWindow::buildShapeTreeDock() {
             });
 
     // Focus / leave cleanup: when the canvas drops hover + drag state, drop
-    // the sidebar highlight too and replace the hover tooltip with the
-    // workspace intro hint (Python `_on_focus_out` -> `_reset_workspace_status`).
+    // the sidebar highlight too and restore the workspace intro hint.
     connect(canvas_, &UVCanvasWidget::interactionStateCleared, this, [this] {
         if (shape_tree_) shape_tree_->refreshHighlights(canvas_->meshes(), -1, -1);
         if (hover_lbl_) hover_lbl_->clear();
@@ -267,6 +289,14 @@ void MainWindow::applyThemeVisuals(const themes::Theme& t) {
     p.setColor(QPalette::Base,       t.bg_panel);
     p.setColor(QPalette::Text,       t.parchment);
     setPalette(p);
+    if (centralWidget()) {
+        centralWidget()->setPalette(p);
+        centralWidget()->setAutoFillBackground(true);
+    }
+    if (stack_) {
+        stack_->setPalette(p);
+        stack_->setAutoFillBackground(true);
+    }
 
     auto apply_palette = [&](QWidget* w, QColor bg, QColor fg) {
         if (!w) return;
@@ -277,14 +307,63 @@ void MainWindow::applyThemeVisuals(const themes::Theme& t) {
         w->setAutoFillBackground(true);
     };
     apply_palette(toolbar_, t.bg_toolbar, t.parchment);
-    apply_palette(alpha_btn_, alpha_on_ ? t.primary : t.surface, alpha_on_ ? t.parchment : t.parchment_dim);
+    if (toolbar_) {
+        toolbar_->setStyleSheet(QString(
+            "QWidget#workspaceToolbar {"
+            " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %1, stop:1 %2);"
+            " border-bottom:1px solid %3;"
+            "}")
+            .arg(t.surface.name(QColor::HexRgb),
+                 t.bg_toolbar.name(QColor::HexRgb),
+                 t.rule.name(QColor::HexRgb)));
+    }
+    if (alpha_btn_) alpha_btn_->setStyleKind(alpha_on_ ? WarmButton::Primary : WarmButton::Secondary);
+    if (statusBar()) {
+        statusBar()->setStyleSheet(QString(
+            "QStatusBar {"
+            " background:%1;"
+            " color:%2;"
+            " border-top:1px solid %3;"
+            "}"
+            "QStatusBar::item { border:none; }")
+            .arg(t.bg_toolbar.name(QColor::HexRgb),
+                 t.parchment_dim.name(QColor::HexRgb),
+                 t.rule.name(QColor::HexRgb)));
+    }
+    if (status_lbl_ || hover_lbl_) {
+        const QString label_qss = QString("QLabel { color:%1; }")
+            .arg(t.parchment_dim.name(QColor::HexRgb));
+        if (status_lbl_) status_lbl_->setStyleSheet(label_qss);
+        if (hover_lbl_)  hover_lbl_->setStyleSheet(label_qss);
+    }
+    if (shape_dock_) {
+        shape_dock_->setStyleSheet(QString(
+            "QDockWidget#shape_tree_dock {"
+            " background:%1;"
+            " border-left:1px solid %2;"
+            "}")
+            .arg(t.bg_panel.name(QColor::HexRgb),
+                 t.rule.name(QColor::HexRgb)));
+    }
 
-    for (auto* b : {btn_home_, btn_mesh_, btn_diff_, btn_all_, btn_none_, btn_inv_,
+    for (auto* b : {btn_home_, btn_mesh_, btn_diff_, alpha_btn_, btn_all_, btn_none_, btn_inv_,
                     btn_undo_, btn_redo_, settings_btn_, btn_tga_, btn_png_})
         if (b) b->applyTheme(t);
+    if (settings_btn_) settings_btn_->setIcon(make_gear_icon(t.parchment_dim));
 
     welcome_->applyTheme(t);
-    canvas_->setThemeColors(t.parchment_faint, t.primary_hi, t.selection_color);
+    if (stack_) {
+        stack_->style()->unpolish(stack_);
+        stack_->style()->polish(stack_);
+        stack_->update();
+    }
+    if (centralWidget()) {
+        centralWidget()->style()->unpolish(centralWidget());
+        centralWidget()->style()->polish(centralWidget());
+        centralWidget()->update();
+    }
+    update();
+    canvas_->setThemeColors(t.canvas_wire, t.canvas_hover, t.selection_color);
     canvas_->setPreviewColor(t.surface_hi);
     canvas_->setBackgroundColors(t.bg_canvas, QColor(26, 26, 26), QColor(46, 46, 46));
     canvas_->setEmptyStateColors(t.parchment, QColor(t.surface.red(), t.surface.green(), t.surface.blue(), 230));
@@ -292,6 +371,25 @@ void MainWindow::applyThemeVisuals(const themes::Theme& t) {
         shape_tree_->applyTheme(t);
         shape_tree_->refreshHighlights(canvas_->meshes());
     }
+    if (theme_dialog_) theme_dialog_->applyTheme(t);
+    if (settings_menu_) applySettingsMenuTheme(t);
+    for (auto* dlg : findChildren<InfoPopup*>()) {
+        if (dlg) dlg->applyTheme(t);
+    }
+}
+
+void MainWindow::applySettingsMenuTheme(const themes::Theme& t) {
+    if (!settings_menu_) return;
+    settings_menu_->setStyleSheet(QString(
+        "QMenu { background:%1; color:%2; border:1px solid %3; padding:4px; }"
+        "QMenu::item { padding:7px 24px 7px 18px; border:1px solid transparent; }"
+        "QMenu::item:selected { background:%4; color:%2; border-color:%5; }"
+        "QMenu::separator { height:1px; background:%3; margin:5px 10px; }")
+        .arg(t.surface.name(QColor::HexRgb),
+             t.parchment.name(QColor::HexRgb),
+             t.rule.name(QColor::HexRgb),
+             t.surface_hi.name(QColor::HexRgb),
+             t.secondary.name(QColor::HexRgb)));
 }
 
 void MainWindow::applyCurrentTheme() {
@@ -305,10 +403,14 @@ void MainWindow::updateWelcomeState() {
 }
 
 void MainWindow::updateWorkspaceChrome() {
+    const bool in_workspace = (stack_ && stack_->currentWidget() == canvas_);
     if (shape_dock_) {
-        const bool in_workspace = (stack_ && stack_->currentWidget() == canvas_);
         if (in_workspace) shape_dock_->show();
         else              shape_dock_->hide();
+    }
+    if (statusBar()) {
+        if (in_workspace) statusBar()->show();
+        else              statusBar()->hide();
     }
 }
 
@@ -386,16 +488,7 @@ void MainWindow::openSettingsMenu(QWidget* anchor) {
     });
     connect(info_act, &QAction::triggered, this, &MainWindow::showInfoPopup);
 
-    const auto& t = ThemeManager::instance().current();
-    menu->setStyleSheet(QString(
-        "QMenu { background:%1; color:%2; border:1px solid %3; }"
-        "QMenu::item { padding:6px 20px 6px 18px; }"
-        "QMenu::item:selected { background:%4; color:%2; }"
-        "QMenu::separator { height:1px; background:%3; margin:4px 10px; }")
-        .arg(t.surface.name(QColor::HexRgb),
-             t.parchment.name(QColor::HexRgb),
-             t.rule.name(QColor::HexRgb),
-             t.surface_hi.name(QColor::HexRgb)));
+    applySettingsMenuTheme(ThemeManager::instance().current());
 
     if (anchor) menu->popup(anchor->mapToGlobal(QPoint(0, anchor->height())));
     else        menu->popup(QCursor::pos());
@@ -436,8 +529,8 @@ void MainWindow::resetWorkspaceStatus() {
             .arg(W).arg(H));
 }
 void MainWindow::backToHome() {
-    // Full reset to a fresh welcome session. Matches Python `_go_home`: the
-    // workspace owns mesh data, diffuse, selection history, and status text,
+    // Full reset to a fresh welcome session. The workspace owns mesh data,
+    // diffuse, selection history, and status text,
     // and every one of those has to leave with the workspace or the welcome
     // screen shows stale fragments (status bar hint, "Open in Workspace"
     // button, shape-tree rows, hover tooltips) while the user is trying to
@@ -467,7 +560,7 @@ void MainWindow::backToHome() {
 
     // Normalize the alpha-checker toggle back to its default ON state so a
     // fresh session starts with the same transparency preview the first one
-    // did (otherwise the label says "Alpha: ON" while the underlying state
+    // did (otherwise the button says "Alpha: ON" while the underlying state
     // is a stale OFF from the previous session, or vice-versa).
     alpha_on_ = true;
     if (canvas_) canvas_->setAlphaEnabled(true);
@@ -480,7 +573,7 @@ void MainWindow::backToHome() {
 void MainWindow::loadMesh() {
     const QString path = QFileDialog::getOpenFileName(
         this, "Load Mesh", QString(),
-        "Mesh Files (*.nif *.obj);;NIF (*.nif);;OBJ (*.obj)");
+        "NIF Meshes (*.nif)");
     if (path.isEmpty()) return;
     loadMeshFromPath(path);
 }
@@ -497,17 +590,11 @@ bool MainWindow::loadMeshFromPath(const QString& path) {
 
     std::vector<geom::Mesh> meshes;
     try {
-        QFileInfo fi(path);
-        if (fi.suffix().compare("nif", Qt::CaseInsensitive) == 0) {
-            parsers::NiflyParser p;
-            meshes = p.parse(path, [this](float, const QString& msg) {
-                status_lbl_->setText(msg);
-                QApplication::processEvents();
-            });
-        } else {
-            parsers::OBJParser p;
-            meshes = p.parse(path);
-        }
+        parsers::NiflyParser p;
+        meshes = p.parse(path, [this](float, const QString& msg) {
+            status_lbl_->setText(msg);
+            QApplication::processEvents();
+        });
     } catch (const std::exception& ex) {
         QMessageBox::critical(this, "Load failed", ex.what());
         if (workspace_shown) resetWorkspaceStatus();
@@ -516,8 +603,7 @@ bool MainWindow::loadMeshFromPath(const QString& path) {
     }
 
     if (meshes.empty()) {
-        // Matches Python `_load_mesh` line 3674 — the only post-parse failure
-        // message: the parser drops meshes that yielded no UV triangles, so an
+        // The parser drops meshes that yielded no UV triangles, so an
         // empty vector always means "no textured geometry".
         QMessageBox::warning(this, "No UV Data",
                              "The mesh contains no UV coordinates.");
@@ -782,8 +868,8 @@ void MainWindow::exportTGA() { doExport("tga"); }
 void MainWindow::exportPNG() { doExport("png"); }
 
 void MainWindow::doExport(const QString& fmt) {
-    // Match Python `_do_export` (lines 4763-4805): validate selection, require
-    // diffuse, build default filename from the diffuse stem, anchor the save
+    // Validate selection, require diffuse, build default filename from the
+    // diffuse stem, anchor the save
     // dialog in the exe directory, rasterize, write, then report the full
     // written path in the status bar.
     bool any_selected = false;
@@ -848,15 +934,6 @@ void MainWindow::openThemeMenu() {
 void MainWindow::openThemeMenu(QWidget* anchor) {
     if (!theme_dialog_) {
         theme_dialog_ = new ThemePickerDialog(this);
-        connect(theme_dialog_, &ThemePickerDialog::themePreviewed, this, [this](const QString& name) {
-            const auto& mgr = ThemeManager::instance();
-            const auto& t = mgr.get(name);
-            if (!t.name.isEmpty()) {
-                QSignalBlocker blocker(theme_dialog_);
-                applyThemeVisuals(t);
-                theme_dialog_->applyTheme(t);
-            }
-        });
         connect(theme_dialog_, &ThemePickerDialog::themeSelected, this, &MainWindow::applyTheme);
         connect(theme_dialog_, &ThemePickerDialog::themeSelectionCanceled, this, [this](const QString& revert_name) {
             applyTheme(revert_name);
@@ -877,7 +954,6 @@ void MainWindow::exitFullscreen() {
 void MainWindow::applyTheme(const QString& name) {
     ThemeManager::instance().setCurrent(name);
     applyCurrentTheme();
-    if (theme_dialog_) theme_dialog_->applyTheme(ThemeManager::instance().current());
 }
 
 } // namespace uvc::ui

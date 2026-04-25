@@ -72,6 +72,10 @@ void ThemeManager::load() {
         t.rule             = parse_color(obj.value("rule"));
         t.rule_dim         = parse_color(obj.value("rule_dim"));
         t.selection_color  = parse_color(obj.value("selection_color"));
+        t.canvas_wire      = parse_color(obj.value("canvas_wire"));
+        t.canvas_hover     = parse_color(obj.value("canvas_hover"));
+        if (!t.canvas_wire.isValid())  t.canvas_wire  = t.parchment_faint;
+        if (!t.canvas_hover.isValid()) t.canvas_hover = t.primary_hi;
         t.sel_colors       = parse_sel_colors(obj.value("sel_colors").toArray());
 
         themes_.insert(key, t);

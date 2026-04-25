@@ -2,13 +2,49 @@
 #include "WarmButton.h"
 #include "../themes/Theme.h"
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QFileInfo>
 #include <QFrame>
 #include <QHBoxLayout>
+#include <QIcon>
+#include <QLinearGradient>
+#include <QMimeData>
+#include <QPainter>
+#include <QPixmap>
+#include <QStyle>
 #include <QVBoxLayout>
 
 namespace uvc::ui {
 
+namespace {
+
+QIcon make_gear_icon(const QColor& color) {
+    QPixmap pm(24, 24);
+    pm.fill(Qt::transparent);
+
+    QPainter p(&pm);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    p.translate(12, 12);
+    p.setPen(Qt::NoPen);
+    p.setBrush(color);
+    for (int i = 0; i < 8; ++i) {
+        p.save();
+        p.rotate(i * 45.0);
+        p.drawRoundedRect(QRectF(-2.0, -11.0, 4.0, 5.0), 1.0, 1.0);
+        p.restore();
+    }
+    p.drawEllipse(QPointF(0, 0), 7.0, 7.0);
+    p.setCompositionMode(QPainter::CompositionMode_Clear);
+    p.drawEllipse(QPointF(0, 0), 3.0, 3.0);
+    return QIcon(pm);
+}
+
+} // namespace
+
 WelcomeWidget::WelcomeWidget(QWidget* parent) : QWidget(parent) {
+    setObjectName("welcomeRoot");
+    setAttribute(Qt::WA_OpaquePaintEvent, true);
     setAutoFillBackground(true);
 
     auto* outer = new QVBoxLayout(this);
@@ -18,35 +54,41 @@ WelcomeWidget::WelcomeWidget(QWidget* parent) : QWidget(parent) {
     auto* top_row = new QHBoxLayout();
     top_row->setContentsMargins(0, 0, 0, 0);
     top_row->addStretch();
-    settings_btn_ = new WarmButton(QString::fromUtf8("\xE2\x9A\x99"), WarmButton::Secondary, this);
-    QFont gearf; gearf.setPointSize(14);
-    settings_btn_->setFont(gearf);
+    settings_btn_ = new WarmButton(QString(), WarmButton::Secondary, this);
+    settings_btn_->setToolTip("Settings");
+    settings_btn_->setAccessibleName("Settings");
+    settings_btn_->setIconSize(QSize(18, 18));
     settings_btn_->setFixedSize(38, 34);
     top_row->addWidget(settings_btn_, 0, Qt::AlignRight);
     outer->addLayout(top_row);
     outer->addSpacing(8);
 
     auto* inner_container = new QWidget(this);
+    inner_container->setObjectName("welcomePanel");
+    inner_container->setAttribute(Qt::WA_StyledBackground, true);
+    inner_container->setAutoFillBackground(true);
     auto* inner = new QVBoxLayout(inner_container);
     inner->setAlignment(Qt::AlignCenter);
+    inner->setContentsMargins(38, 32, 38, 30);
 
     title_ = new QLabel("UV Cutout Tool", inner_container);
     title_->setAlignment(Qt::AlignCenter);
-    QFont tf; tf.setPointSize(28); tf.setBold(true); tf.setFamily("Segoe UI");
+    QFont tf; tf.setPointSize(30); tf.setBold(true); tf.setFamily("Georgia");
     title_->setFont(tf);
     inner->addWidget(title_);
 
     subtitle_ = new QLabel("Create Texture Cutouts from Mesh UV Layouts", inner_container);
     subtitle_->setAlignment(Qt::AlignCenter);
-    QFont sf; sf.setPointSize(11); sf.setItalic(true); sf.setFamily("Segoe UI");
+    QFont sf; sf.setPointSize(11); sf.setItalic(true); sf.setFamily("Georgia");
     subtitle_->setFont(sf);
     inner->addWidget(subtitle_);
 
     inner->addSpacing(24);
     auto* rule = new QFrame(inner_container);
-    rule->setFrameShape(QFrame::HLine);
+    rule->setObjectName("welcomeRule");
+    rule->setFrameShape(QFrame::NoFrame);
     rule->setFixedWidth(320);
-    rule->setFixedHeight(1);
+    rule->setFixedHeight(3);
     inner->addWidget(rule, 0, Qt::AlignCenter);
     inner->addSpacing(18);
 
@@ -108,10 +150,29 @@ WelcomeWidget::WelcomeWidget(QWidget* parent) : QWidget(parent) {
 }
 
 void WelcomeWidget::applyTheme(const themes::Theme& t) {
+    bg_deep_ = t.bg_deep;
+    bg_canvas_ = t.bg_canvas;
+    bg_mid_ = t.bg_mid;
+
     QPalette p = palette();
     p.setColor(QPalette::Window,     t.bg_canvas);
     p.setColor(QPalette::WindowText, t.parchment);
     setPalette(p);
+    setAutoFillBackground(true);
+    setStyleSheet(QString(
+        "QWidget#welcomePanel {"
+        " background:%1;"
+        " border:1px solid %2;"
+        " border-top-color:%3;"
+        "}"
+        "QFrame#welcomeRule {"
+        " background:qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 transparent, stop:0.18 %2, stop:0.5 %4, stop:0.82 %2, stop:1 transparent);"
+        " border:none;"
+        "}")
+        .arg(QColor(t.bg_panel.red(), t.bg_panel.green(), t.bg_panel.blue(), 220).name(QColor::HexArgb),
+             t.rule.name(QColor::HexRgb),
+             t.surface_hi.name(QColor::HexRgb),
+             t.secondary.name(QColor::HexRgb)));
 
     for (auto* lbl : {title_, subtitle_, mesh_file_lbl_, diffuse_file_lbl_, supports_strip_}) {
         if (!lbl) continue;
@@ -126,15 +187,36 @@ void WelcomeWidget::applyTheme(const themes::Theme& t) {
 
     if (footer_rule_) {
         QPalette rp = footer_rule_->palette();
-        rp.setColor(QPalette::Window, t.rule_dim);
+        rp.setColor(QPalette::Window, t.rule);
         footer_rule_->setPalette(rp);
     }
 
     settings_btn_->applyTheme(t);
+    settings_btn_->setIcon(make_gear_icon(t.parchment_dim));
     load_mesh_->applyTheme(t);
     load_tex_ ->applyTheme(t);
     open_ws_  ->applyTheme(t);
+
+    for (auto* w : findChildren<QWidget*>()) {
+        if (!w) continue;
+        w->style()->unpolish(w);
+        w->style()->polish(w);
+        w->update();
+    }
+    style()->unpolish(this);
+    style()->polish(this);
+    updateGeometry();
+    update();
 }
+
+void WelcomeWidget::paintEvent(QPaintEvent*) {
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing, false);
+
+    QColor bg = bg_canvas_.isValid() ? bg_canvas_ : palette().color(QPalette::Window);
+    p.fillRect(rect(), bg);
+}
+
 void WelcomeWidget::setLoadedFiles(const QString& mesh_file, const QString& diffuse_file) {
     if (mesh_file_lbl_)
         mesh_file_lbl_->setText(QString("Mesh: %1").arg(mesh_file.isEmpty() ? "none loaded" : mesh_file));
@@ -145,6 +227,91 @@ void WelcomeWidget::setWorkspaceButtonHasLoadedContent(bool has_loaded_content) 
     if (!open_ws_) return;
     open_ws_->setText(has_loaded_content ? "  Open in Workspace  "
                                          : "  Enter Workspace  ");
+}
+
+bool WelcomeWidget::is_mesh_file(const QString& path) {
+    const QString ext = QFileInfo(path).suffix().toLower();
+    return ext == "nif";
+}
+
+bool WelcomeWidget::is_diffuse_file(const QString& path) {
+    const QString ext = QFileInfo(path).suffix().toLower();
+    return ext == "png" || ext == "tga" || ext == "dds"
+        || ext == "jpg" || ext == "jpeg" || ext == "bmp";
+}
+
+QString WelcomeWidget::dropped_local_file(const QMimeData* mime) {
+    if (!mime || !mime->hasUrls()) return {};
+    const auto urls = mime->urls();
+    if (urls.isEmpty()) return {};
+    QStringList paths;
+    for (const auto& url : urls) {
+        if (url.isLocalFile()) paths.append(url.toLocalFile());
+    }
+    return paths.join("|||");
+}
+
+void WelcomeWidget::dragEnterEvent(QDragEnterEvent* e) {
+    const QString paths = dropped_local_file(e->mimeData());
+    if (paths.isEmpty()) {
+        e->ignore();
+        return;
+    }
+    const auto parts = paths.split("|||");
+    bool has_mesh = false, has_diffuse = false;
+    for (const QString& p : parts) {
+        if (is_mesh_file(p)) has_mesh = true;
+        else if (is_diffuse_file(p)) has_diffuse = true;
+    }
+    if (has_mesh || has_diffuse) {
+        e->acceptProposedAction();
+        return;
+    }
+    e->ignore();
+}
+
+void WelcomeWidget::dragMoveEvent(QDragMoveEvent* e) {
+    const QString paths = dropped_local_file(e->mimeData());
+    if (paths.isEmpty()) {
+        e->ignore();
+        return;
+    }
+    const auto parts = paths.split("|||");
+    bool has_mesh = false, has_diffuse = false;
+    for (const QString& p : parts) {
+        if (is_mesh_file(p)) has_mesh = true;
+        else if (is_diffuse_file(p)) has_diffuse = true;
+    }
+    if (has_mesh || has_diffuse) {
+        e->acceptProposedAction();
+        return;
+    }
+    e->ignore();
+}
+
+void WelcomeWidget::dropEvent(QDropEvent* e) {
+    const QString paths = dropped_local_file(e->mimeData());
+    if (paths.isEmpty()) {
+        e->ignore();
+        return;
+    }
+    const auto parts = paths.split("|||");
+    bool mesh_emitted = false, diffuse_emitted = false;
+    for (const QString& p : parts) {
+        if (is_mesh_file(p) && !mesh_emitted) {
+            emit meshFileDropped(p);
+            mesh_emitted = true;
+        }
+        else if (is_diffuse_file(p) && !diffuse_emitted) {
+            emit diffuseFileDropped(p);
+            diffuse_emitted = true;
+        }
+    }
+    if (mesh_emitted || diffuse_emitted) {
+        e->acceptProposedAction();
+        return;
+    }
+    e->ignore();
 }
 
 } // namespace uvc::ui

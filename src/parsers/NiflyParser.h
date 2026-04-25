@@ -15,7 +15,7 @@ public:
     NiflyParser();
     ~NiflyParser();
 
-    // Dynamically loads NiflyDLL.dll from the portable app folder or known dev layouts and parses the NIF.
+    // Dynamically loads NiflyDLL.dll from the portable app folder and parses the NIF.
     // Throws std::runtime_error on failure.
     std::vector<geom::Mesh> parse(const QString& filepath, ProgressCallback cb = {});
 

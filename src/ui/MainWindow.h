@@ -55,6 +55,7 @@ private:
     void buildShapeTreeDock();
     void applyCurrentTheme();
     void applyThemeVisuals(const themes::Theme& t);
+    void applySettingsMenuTheme(const themes::Theme& t);
     void openSettingsMenu(QWidget* anchor);
     void showInfoPopup();
     void updateWelcomeState();
@@ -63,13 +64,10 @@ private:
     bool loadMeshFromPath(const QString& path);
     bool loadDiffuseFromPath(const QString& path);
     QImage buildExportImage();
-    // Shared body of exportTGA/exportPNG — matches Python `_do_export(fmt)`
-    // at lines 4763-4805: validation, default filename from diffuse stem,
-    // save dialog anchored in exe dir, rasterize, write, status w/ path.
+    // Shared body of exportTGA/exportPNG: validate state, choose a default
+    // filename from the diffuse stem, rasterize the cutout, save, and update status.
     void doExport(const QString& fmt);
-    // Set the left-side status label to the workspace intro hint
-    // ("{W}×{H} UV space  ·  Click/drag to select  ·  ..."). Mirrors Python
-    // `_reset_workspace_status`.
+    // Set the left-side status label to the workspace intro hint.
     void resetWorkspaceStatus();
     void updateUndoRedoButtons();
     QString loadStartupMode() const;
@@ -104,7 +102,7 @@ private:
     WarmButton*     btn_undo_ = nullptr;
     WarmButton*     btn_redo_ = nullptr;
     WarmButton*     settings_btn_ = nullptr;
-    QLabel*         alpha_btn_ = nullptr;
+    WarmButton*     alpha_btn_ = nullptr;
     QLabel*         status_lbl_ = nullptr;
     QLabel*         hover_lbl_  = nullptr;
     QString         startup_mode_ = "welcome";
@@ -112,8 +110,7 @@ private:
     bool alpha_on_ = true;
     QString mesh_path_;
     // Source path of the currently-loaded diffuse, if any. Used to derive the
-    // default export filename ("{stem}_cutout.{fmt}") in doExport — matches
-    // Python `self.diffuse_path` (lines 4779-4783).
+    // default export filename ("{stem}_cutout.{fmt}") in doExport.
     QString diffuse_path_;
 
     std::vector<std::vector<std::vector<bool>>> undo_stack_;

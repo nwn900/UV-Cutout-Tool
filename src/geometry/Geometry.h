@@ -5,7 +5,7 @@
 
 namespace uvc::geom {
 
-// Mirrors the Python point_in_triangle_barycentric.
+// Barycentric point-in-triangle test in UV space.
 bool point_in_triangle_barycentric(float px, float py, const std::array<UV, 3>& uvs);
 
 inline BBox compute_bbox(const std::array<UV, 3>& uvs) {

@@ -27,6 +27,7 @@ constexpr const char* kRoleProp       = "uvc.role"; // "mesh_cb", "mesh_lbl", "i
 
 QLabel* makeClickableLabel(const QString& text, QWidget* parent) {
     auto* l = new QLabel(text, parent);
+    l->setObjectName("shapeTreeLabel");
     l->setAutoFillBackground(true);
     l->setCursor(Qt::PointingHandCursor);
     l->setMargin(2);
@@ -67,6 +68,7 @@ ShapeTreePanel::ShapeTreePanel(QWidget* parent) : QWidget(parent) {
 
     // Footer: zoom controls row on top, selection counter below.
     footer_ = new QWidget(this);
+    footer_->setObjectName("shapeFooter");
     auto* fv = new QVBoxLayout(footer_);
     fv->setContentsMargins(6, 6, 6, 6);
     fv->setSpacing(4);
@@ -81,6 +83,8 @@ ShapeTreePanel::ShapeTreePanel(QWidget* parent) : QWidget(parent) {
         l->setFixedHeight(22);
         l->setMinimumWidth(28);
         l->setProperty(kRoleProp, role);
+        l->setProperty("uvc.hovered", false);
+        l->setProperty("uvc.pressed", false);
         l->installEventFilter(this);
         return l;
     };
@@ -147,6 +151,16 @@ void ShapeTreePanel::apply_row_palette(QWidget* w, const QColor& bg) {
     p.setColor(QPalette::Window, bg);
     w->setPalette(p);
     w->setAutoFillBackground(true);
+    if (theme_) {
+        const QString selector = qobject_cast<QLabel*>(w)
+            ? QStringLiteral("QLabel#shapeTreeLabel")
+            : QStringLiteral("QWidget#shapeTreeRow");
+        w->setStyleSheet(QString(
+            "%1 { background:%2; border-bottom:1px solid %3; }")
+            .arg(selector,
+                 bg.name(QColor::HexRgb),
+                 theme_->rule_dim.name(QColor::HexRgb)));
+    }
 }
 
 void ShapeTreePanel::paint_checkbox(QLabel* cb, bool checked) {
@@ -168,6 +182,29 @@ void ShapeTreePanel::paint_checkbox(QLabel* cb, bool checked) {
     cb->setPixmap(pm);
 }
 
+void ShapeTreePanel::style_zoom_button(QLabel* label, bool hovered, bool pressed) {
+    if (!label || !theme_) return;
+    const QColor base = pressed ? theme_->surface_act
+                      : hovered ? theme_->surface_hi
+                                : theme_->surface;
+    const QColor top = base.lighter(pressed ? 105 : 128);
+    const QColor bottom = base.darker(pressed ? 138 : 118);
+    label->setStyleSheet(QString(
+        "QLabel {"
+        " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %1, stop:1 %2);"
+        " color:%3;"
+        " border:1px solid %4;"
+        " border-bottom-color:%5;"
+        " padding:2px 6px;"
+        " font-weight:600;"
+        "}")
+        .arg(top.name(QColor::HexRgb),
+             bottom.name(QColor::HexRgb),
+             theme_->parchment_dim.name(QColor::HexRgb),
+             theme_->rule.name(QColor::HexRgb),
+             theme_->rule_dim.name(QColor::HexRgb)));
+}
+
 void ShapeTreePanel::rebuild(const std::vector<geom::Mesh>& meshes) {
     clear_rows();
 
@@ -186,6 +223,7 @@ void ShapeTreePanel::rebuild(const std::vector<geom::Mesh>& meshes) {
         MeshRow mr;
         mr.mesh_idx = mi;
         mr.row = new QWidget(body_);
+        mr.row->setObjectName("shapeTreeRow");
         auto* hl = new QHBoxLayout(mr.row);
         hl->setContentsMargins(4, 2, 4, 2);
         hl->setSpacing(6);
@@ -219,6 +257,7 @@ void ShapeTreePanel::rebuild(const std::vector<geom::Mesh>& meshes) {
             ir.mesh_idx = mi;
             ir.island_idx = ii;
             ir.row = new QWidget(body_);
+            ir.row->setObjectName("shapeTreeRow");
             auto* ihl = new QHBoxLayout(ir.row);
             ihl->setContentsMargins(4, 1, 4, 1);
             ihl->setSpacing(6);
@@ -304,8 +343,8 @@ void ShapeTreePanel::refreshHighlights(const std::vector<geom::Mesh>& meshes,
 void ShapeTreePanel::refreshSelectionCounter(const std::vector<geom::Mesh>& meshes) {
     if (!sel_lbl_) return;
     int total_sel = 0;
-    // Deduplicate islands by (mesh_ptr, island_idx) — matches Python which uses
-    // `id(m)` to distinguish meshes with identical island indices.
+    // Deduplicate islands by mesh pointer and island index so identical island
+    // numbers in different meshes stay distinct.
     std::vector<std::pair<const geom::Mesh*, int>> selected_islands;
     for (const auto& m : meshes) {
         for (const auto& t : m.triangles) {
@@ -352,6 +391,13 @@ void ShapeTreePanel::applyTheme(const themes::Theme& t) {
     p.setColor(QPalette::WindowText, t.parchment);
     setPalette(p);
     setAutoFillBackground(true);
+    setStyleSheet(QString(
+        "ShapeTreePanel {"
+        " background:%1;"
+        " border-left:1px solid %2;"
+        "}")
+        .arg(t.bg_panel.name(QColor::HexRgb),
+             t.rule.name(QColor::HexRgb)));
 
     auto style_side = [&](QLabel* l, const QColor& bg, const QColor& fg) {
         QPalette pp = l->palette();
@@ -362,12 +408,35 @@ void ShapeTreePanel::applyTheme(const themes::Theme& t) {
     };
     style_side(header_, t.bg_toolbar,  t.parchment);
     style_side(status_, t.bg_panel,    t.parchment_faint);
+    if (header_) {
+        header_->setStyleSheet(QString(
+            "QLabel {"
+            " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %1, stop:1 %2);"
+            " color:%3;"
+            " border-bottom:1px solid %4;"
+            " padding:8px 10px;"
+            "}")
+            .arg(t.surface.name(QColor::HexRgb),
+                 t.bg_toolbar.name(QColor::HexRgb),
+                 t.parchment.name(QColor::HexRgb),
+                 t.rule.name(QColor::HexRgb)));
+    }
+    if (status_) {
+        status_->setStyleSheet(QString(
+            "QLabel { color:%1; border-bottom:1px solid %2; padding:5px 10px; }")
+            .arg(t.parchment_faint.name(QColor::HexRgb),
+                 t.rule_dim.name(QColor::HexRgb)));
+    }
 
     if (footer_) {
         QPalette fp = footer_->palette();
         fp.setColor(QPalette::Window, t.bg_toolbar);
         footer_->setPalette(fp);
         footer_->setAutoFillBackground(true);
+        footer_->setStyleSheet(QString(
+            "QWidget#shapeFooter { background:%1; border-top:1px solid %2; }")
+            .arg(t.bg_toolbar.name(QColor::HexRgb),
+                 t.rule.name(QColor::HexRgb)));
     }
     for (auto* b : {zoom_out_btn_, zoom_fit_btn_, zoom_in_btn_}) {
         if (!b) continue;
@@ -375,6 +444,7 @@ void ShapeTreePanel::applyTheme(const themes::Theme& t) {
         bp.setColor(QPalette::Window,     t.surface);
         bp.setColor(QPalette::WindowText, t.parchment_dim);
         b->setPalette(bp);
+        style_zoom_button(b, b->property("uvc.hovered").toBool(), b->property("uvc.pressed").toBool());
     }
     if (zoom_pct_lbl_) style_side(zoom_pct_lbl_, t.bg_toolbar, t.parchment_dim);
     if (sel_lbl_)      style_side(sel_lbl_,      t.bg_toolbar, t.parchment_faint);
@@ -391,18 +461,15 @@ void ShapeTreePanel::applyTheme(const themes::Theme& t) {
         scroll_->viewport()->setPalette(sp);
         scroll_->viewport()->setAutoFillBackground(true);
 
-        // Themed scrollbar — 14px track, rounded `surface_hi` thumb with no
-        // step arrows. Mirrors the custom Canvas-based scrollbar Python
-        // draws at lines 3185-3213 (track line in `surface_hi`, rounded
-        // rectangle thumb in `surface_hi`).
+        // Themed scrollbar with a 14px track, rounded thumb, and no step arrows.
         const QString panel = t.bg_panel.name(QColor::HexRgb);
         const QString thumb = t.surface_hi.name(QColor::HexRgb);
         const QString qss = QString(
-            "QScrollBar:vertical { background: %1; width: 14px; margin: 0; border: none; }"
-            "QScrollBar::handle:vertical { background: %2; border-radius: 4px; min-height: 20px; margin: 2px 3px; }"
+            "QScrollBar:vertical { background: %1; width: 14px; margin: 0; border-left:1px solid %3; }"
+            "QScrollBar::handle:vertical { background: %2; border:1px solid %4; border-radius: 2px; min-height: 20px; margin: 2px 3px; }"
             "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; background: none; border: none; }"
             "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }"
-        ).arg(panel, thumb);
+        ).arg(panel, thumb, t.rule_dim.name(QColor::HexRgb), t.rule.name(QColor::HexRgb));
         scroll_->verticalScrollBar()->setStyleSheet(qss);
     }
 
@@ -411,11 +478,36 @@ void ShapeTreePanel::applyTheme(const themes::Theme& t) {
 }
 
 bool ShapeTreePanel::eventFilter(QObject* obj, QEvent* e) {
+    const QString role = obj->property(kRoleProp).toString();
+    const bool is_zoom =
+        role == "zoom_out" || role == "zoom_fit" || role == "zoom_in";
+    if (is_zoom) {
+        auto* label = qobject_cast<QLabel*>(obj);
+        if (e->type() == QEvent::Enter) {
+            obj->setProperty("uvc.hovered", true);
+            style_zoom_button(label, true, obj->property("uvc.pressed").toBool());
+            return false;
+        }
+        if (e->type() == QEvent::Leave) {
+            obj->setProperty("uvc.hovered", false);
+            obj->setProperty("uvc.pressed", false);
+            style_zoom_button(label, false, false);
+            return false;
+        }
+        if (e->type() == QEvent::MouseButtonPress) {
+            obj->setProperty("uvc.pressed", true);
+            style_zoom_button(label, obj->property("uvc.hovered").toBool(), true);
+            return false;
+        }
+        if (e->type() == QEvent::MouseButtonRelease) {
+            obj->setProperty("uvc.pressed", false);
+            style_zoom_button(label, obj->property("uvc.hovered").toBool(), false);
+        }
+    }
+
     // Hover lockstep: fire hover-change signals when the pointer enters or
-    // leaves an island row label. Python mirrors the canvas island highlight
-    // through `_on_island_row_enter/leave` (lines 3501-3536).
+    // leaves an island row label.
     if (e->type() == QEvent::Enter || e->type() == QEvent::Leave) {
-        const QString role = obj->property(kRoleProp).toString();
         if (role == "island_lbl") {
             if (e->type() == QEvent::Enter) {
                 const int mi = obj->property(kMeshIdxProp).toInt();
@@ -432,7 +524,6 @@ bool ShapeTreePanel::eventFilter(QObject* obj, QEvent* e) {
     auto* me = static_cast<QMouseEvent*>(e);
     if (me->button() != Qt::LeftButton) return false;
 
-    const QString role = obj->property(kRoleProp).toString();
     const int mi = obj->property(kMeshIdxProp).toInt();
 
     if (role == "mesh_cb") {

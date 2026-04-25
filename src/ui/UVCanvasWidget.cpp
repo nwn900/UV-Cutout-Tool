@@ -22,7 +22,7 @@ namespace {
 
 bool is_mesh_file(const QString& path) {
     const QString ext = QFileInfo(path).suffix().toLower();
-    return ext == "nif" || ext == "obj";
+    return ext == "nif";
 }
 
 bool is_diffuse_file(const QString& path) {
@@ -34,12 +34,28 @@ bool is_diffuse_file(const QString& path) {
 QString dropped_local_file(const QMimeData* mime) {
     if (!mime || !mime->hasUrls()) return {};
     const auto urls = mime->urls();
-    if (urls.size() != 1 || !urls.front().isLocalFile()) return {};
-    return urls.front().toLocalFile();
+    if (urls.isEmpty()) return {};
+    QStringList paths;
+    for (const auto& url : urls) {
+        if (url.isLocalFile()) paths.append(url.toLocalFile());
+    }
+    return paths.join("|||");
 }
 
 bool has_scene_content(const std::vector<geom::Mesh>& meshes, const QImage& diffuse) {
     return !meshes.empty() || !diffuse.isNull();
+}
+
+bool image_has_transparency(const QImage& img) {
+    if (img.isNull() || !img.hasAlphaChannel()) return false;
+    const QImage rgba = img.convertToFormat(QImage::Format_ARGB32);
+    for (int y = 0; y < rgba.height(); ++y) {
+        const auto* row = reinterpret_cast<const QRgb*>(rgba.constScanLine(y));
+        for (int x = 0; x < rgba.width(); ++x) {
+            if (qAlpha(row[x]) < 255) return true;
+        }
+    }
+    return false;
 }
 
 } // namespace
@@ -90,6 +106,7 @@ void UVCanvasWidget::setMeshes(std::vector<geom::Mesh> meshes) {
     } else {
         zoomFit();
     }
+    view_.content_supports_alpha = diffuse_has_alpha_ || (!meshes_.empty() && diffuse_.isNull());
     updateCursorShape();
     emit selectionChanged();
     update();
@@ -98,17 +115,18 @@ void UVCanvasWidget::setMeshes(std::vector<geom::Mesh> meshes) {
 void UVCanvasWidget::setDiffuse(const QImage& img) {
     const bool size_changed = (img.size() != diffuse_.size());
     diffuse_ = img;
+    diffuse_has_alpha_ = image_has_transparency(diffuse_);
+    view_.content_supports_alpha = diffuse_has_alpha_ || (!meshes_.empty() && diffuse_.isNull());
     if (gpu_ok_ && gpu_) {
         makeCurrent();
         gpu_->onTextureChanged(diffuse_.isNull() ? nullptr : &diffuse_);
         doneCurrent();
     }
     // Whenever the diffuse dimensions change the UV 0..1 region maps to a new
-    // pixel box, so the previous fit is stale. Re-fit so a 2048×2048 diffuse
+    // pixel box, so the previous fit is stale. Re-fit so a 2048x2048 diffuse
     // loaded after a 1024-default fit (or any two different textures across a
     // session) ends up centered and sized to the canvas. This also catches
-    // the texture-first, mesh-second load order which never hit zoomFit before
-    // (Python `_load_diffuse` triggers a re-fit too).
+    // the texture-first, mesh-second load order.
     if (size_changed && !diffuse_.isNull()) zoomFit();
     else if (diffuse_.isNull() && meshes_.empty()) zoomFit();
     updateCursorShape();
@@ -156,9 +174,8 @@ void UVCanvasWidget::updateCursorShape() {
 
 void UVCanvasWidget::zoomFit() {
     if (width() <= 0 || height() <= 0) return;
-    // Match Python `_zoom_fit` (lines 4649-4668): fit the actual UV-space
-    // width/height (diffuse dimensions when loaded, else 1024) into the
-    // canvas and clamp to 100% so small textures don't magnify above 1:1.
+    // Fit the actual UV-space width/height into the canvas and clamp to 100%
+    // so small textures do not magnify above 1:1.
     const float W = diffuse_.isNull() ? 1024.0f : float(diffuse_.width());
     const float H = diffuse_.isNull() ? 1024.0f : float(diffuse_.height());
     const float margin = 20.0f;
@@ -245,9 +262,8 @@ void UVCanvasWidget::showEvent(QShowEvent* e) {
 
 void UVCanvasWidget::resizeGL(int w, int h) {
     view_.canvas_pixels = QSize(w, h);
-    // Match Python `_on_window_resize`: only re-fit once the initial fit has
-    // run, once meshes are loaded, and only when the delta exceeds a 5px
-    // debounce threshold. The 50 ms QTimer gives Qt time to settle layout
+    // Only re-fit once the initial fit has run, once meshes are loaded, and
+    // only when the delta exceeds a 5px debounce threshold.
     // before we sample the final canvas size.
     if (!initial_fit_done_ || meshes_.empty()) return;
     if (w <= 1 || h <= 1) return;
@@ -260,36 +276,56 @@ void UVCanvasWidget::resizeGL(int w, int h) {
 }
 
 void UVCanvasWidget::dragEnterEvent(QDragEnterEvent* e) {
-    const QString path = dropped_local_file(e->mimeData());
-    if (!path.isEmpty() && (is_mesh_file(path) || is_diffuse_file(path))) {
-        e->acceptProposedAction();
+    const QString paths = dropped_local_file(e->mimeData());
+    if (paths.isEmpty()) {
+        e->ignore();
         return;
+    }
+    const auto parts = paths.split("|||");
+    for (const QString& p : parts) {
+        if (is_mesh_file(p) || is_diffuse_file(p)) {
+            e->acceptProposedAction();
+            return;
+        }
     }
     e->ignore();
 }
 
 void UVCanvasWidget::dragMoveEvent(QDragMoveEvent* e) {
-    const QString path = dropped_local_file(e->mimeData());
-    if (!path.isEmpty() && (is_mesh_file(path) || is_diffuse_file(path))) {
-        e->acceptProposedAction();
+    const QString paths = dropped_local_file(e->mimeData());
+    if (paths.isEmpty()) {
+        e->ignore();
         return;
+    }
+    const auto parts = paths.split("|||");
+    for (const QString& p : parts) {
+        if (is_mesh_file(p) || is_diffuse_file(p)) {
+            e->acceptProposedAction();
+            return;
+        }
     }
     e->ignore();
 }
 
 void UVCanvasWidget::dropEvent(QDropEvent* e) {
-    const QString path = dropped_local_file(e->mimeData());
-    if (path.isEmpty()) {
+    const QString paths = dropped_local_file(e->mimeData());
+    if (paths.isEmpty()) {
         e->ignore();
         return;
     }
-    if (is_mesh_file(path)) {
-        emit meshFileDropped(path);
-        e->acceptProposedAction();
-        return;
+    const auto parts = paths.split("|||");
+    bool mesh_emitted = false, diffuse_emitted = false;
+    for (const QString& p : parts) {
+        if (is_mesh_file(p) && !mesh_emitted) {
+            emit meshFileDropped(p);
+            mesh_emitted = true;
+        }
+        else if (is_diffuse_file(p) && !diffuse_emitted) {
+            emit diffuseFileDropped(p);
+            diffuse_emitted = true;
+        }
     }
-    if (is_diffuse_file(path)) {
-        emit diffuseFileDropped(path);
+    if (mesh_emitted || diffuse_emitted) {
         e->acceptProposedAction();
         return;
     }
@@ -453,8 +489,7 @@ int UVCanvasWidget::global_island_id(int mesh_idx, int island_idx) const {
 void UVCanvasWidget::mousePressEvent(QMouseEvent* e) {
     setFocus();
     const bool has_content = has_scene_content(meshes_, diffuse_);
-    // Pan on middle, right, or space+left — matches Python bindings where
-    // <ButtonPress-3> is the primary pan binding.
+    // Pan on middle, right, or space+left.
     if (has_content && (e->button() == Qt::MiddleButton
         || e->button() == Qt::RightButton
         || (e->button() == Qt::LeftButton && space_held_))) {
@@ -468,10 +503,9 @@ void UVCanvasWidget::mousePressEvent(QMouseEvent* e) {
         int mi = -1;
         int ti = hit_test(uv, &mi);
         if (ti >= 0) {
-            // Match Python `_toggle_island_selection` (lines 4120-4146):
-            // clicking flips the WHOLE CLICKED ISLAND between all-selected
-            // and not-selected, and does NOT clear any other selection.
-            // This is what makes multi-click accumulation work — every
+            // Clicking flips the whole clicked island between all-selected
+            // and not-selected, without clearing any other selection.
+            // This is what makes multi-click accumulation work: every
             // click toggles one more island on or off without touching
             // anything the user already selected.
             emit selectionAboutToChange();
@@ -520,8 +554,7 @@ void UVCanvasWidget::mouseMoveEvent(QMouseEvent* e) {
     if (dragging_rect_) {
         drag_current_uv_ = uv;
         // Recompute which islands intersect the current marquee so the GPU
-        // wireframe rebuild paints them in the preview color. Python
-        // `_update_drag_preview_islands` does the same scan per motion event.
+        // wireframe rebuild paints them in the preview color.
         const float ru1 = float(std::min(drag_start_uv_.x(), drag_current_uv_.x()));
         const float rv1 = float(std::min(drag_start_uv_.y(), drag_current_uv_.y()));
         const float ru2 = float(std::max(drag_start_uv_.x(), drag_current_uv_.x()));
@@ -596,10 +629,10 @@ void UVCanvasWidget::mouseReleaseEvent(QMouseEvent* e) {
     if (e->button() == Qt::LeftButton && dragging_rect_) {
         dragging_rect_ = false;
         drag_preview_islands_.clear();
-        // Match Python `_finish_drag_select` (lines 4170-4201): collect every
+        // Collect every island whose bbox intersects the marquee, then set every triangle
         // island whose bbox intersects the marquee, then set every triangle
-        // in those islands to selected. This is **additive** — existing
-        // selections are not cleared, mirroring the click toggle semantics.
+        // in those islands to selected. This is additive; existing selections
+        // are not cleared.
         const float x1 = std::min(drag_start_uv_.x(), drag_current_uv_.x());
         const float y1 = std::min(drag_start_uv_.y(), drag_current_uv_.y());
         const float x2 = std::max(drag_start_uv_.x(), drag_current_uv_.x());
@@ -644,9 +677,8 @@ void UVCanvasWidget::wheelEvent(QWheelEvent* e) {
     const float cw = float(width());
     const float ch = float(height());
 
-    // Match Python `_on_scroll`: once the scaled image fits entirely in the
-    // canvas on both axes, snap back to a centered layout instead of letting
-    // the cursor anchor drift it off-center.
+    // Once the scaled image fits entirely in the canvas on both axes, snap
+    // back to a centered layout instead of letting the cursor anchor drift it off-center.
     if (W * view_.zoom <= cw && H * view_.zoom <= ch) {
         view_.pan_x = (cw - W * view_.zoom) * 0.5f;
         view_.pan_y = (ch - H * view_.zoom) * 0.5f;

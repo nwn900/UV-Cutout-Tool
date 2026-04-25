@@ -25,7 +25,7 @@ public:
     WarmButton(const QString& text, Style style, QWidget* parent = nullptr);
 
     void applyTheme(const themes::Theme& t);
-    void setStyleKind(Style s) { style_ = s; repaintState(); }
+    void setStyleKind(Style s) { style_ = s; }
     void setDropKind(DropKind kind);
 
 signals:

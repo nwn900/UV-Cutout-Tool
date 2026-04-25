@@ -24,7 +24,7 @@ bool write_tga(const QString& path, const QImage& image) {
 
     if (f.write(reinterpret_cast<const char*>(hdr), sizeof(hdr)) != sizeof(hdr)) return false;
 
-    // TGA stores BGRA. Python wrote `px[:, :, [2, 1, 0, 3]].tobytes()`.
+    // TGA stores pixels in BGRA byte order.
     std::vector<uint8_t> row(size_t(w) * 4);
     for (int y = 0; y < h; ++y) {
         const uint8_t* src = img.constScanLine(y);

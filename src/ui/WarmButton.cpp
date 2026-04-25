@@ -14,7 +14,7 @@ namespace {
 
 bool is_mesh_file(const QString& path) {
     const QString ext = QFileInfo(path).suffix().toLower();
-    return ext == "nif" || ext == "obj";
+    return ext == "nif";
 }
 
 bool is_diffuse_file(const QString& path) {
@@ -76,22 +76,35 @@ void WarmButton::applyTheme(const themes::Theme& t) {
 void WarmButton::repaintState() {
     const bool active_hover = hovered_ || drag_hovered_;
     const QColor bg = isDown() ? bg_act_ : (active_hover ? bg_hi_ : bg_);
+    const int light_ratio = active_hover ? 120 : 100;
+    const int dark_ratio = isDown() ? 85 : 115;
+    QColor border = bg.lighter(light_ratio + 35);
+    QColor shadow = bg.darker(dark_ratio + 55);
     QPalette p = palette();
     p.setColor(QPalette::Button, bg);
     p.setColor(QPalette::ButtonText, fg_);
     p.setColor(QPalette::Window, bg);
     p.setColor(QPalette::WindowText, fg_);
     setPalette(p);
+    const QString padding = text().isEmpty() ? QStringLiteral("6px") : QStringLiteral("9px 16px");
     setStyleSheet(QString(
         "QPushButton {"
         " background:%1;"
         " color:%2;"
-        " border:none;"
-        " border-radius:0px;"
-        " padding:10px 14px;"
+        " border:1px solid %3;"
+        " border-bottom-color:%4;"
+        " border-right-color:%4;"
+        " border-radius:2px;"
+        " padding:%5;"
+        " font-weight:600;"
         "}"
-        "QPushButton:focus { outline: none; }")
-        .arg(bg.name(QColor::HexArgb), fg_.name(QColor::HexArgb)));
+        "QPushButton:focus { outline: none; border:1px solid %6; }")
+        .arg(bg.name(QColor::HexArgb),
+             fg_.name(QColor::HexArgb),
+             border.name(QColor::HexArgb),
+             shadow.name(QColor::HexArgb),
+             padding,
+             fg_.name(QColor::HexArgb)));
 }
 
 void WarmButton::enterEvent(QEnterEvent* e) {

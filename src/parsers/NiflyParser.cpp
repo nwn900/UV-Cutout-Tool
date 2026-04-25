@@ -117,11 +117,6 @@ static QStringList candidate_dll_paths() {
 
     // Portable app-folder layout first.
     out << QDir(exe).filePath("NiflyDLL.dll");
-    out << QDir(exe).filePath("pynifly_lib/io_scene_nifly/pyn/NiflyDLL.dll");
-
-    // Development fallbacks.
-    out << QDir(exe).filePath("../pynifly_lib/io_scene_nifly/pyn/NiflyDLL.dll");
-    out << QDir(exe).filePath("../../pynifly_lib/io_scene_nifly/pyn/NiflyDLL.dll");
     return out;
 }
 
@@ -133,7 +128,7 @@ std::vector<Mesh> NiflyParser::parse(const QString& filepath, ProgressCallback c
             if (!validated.isEmpty()) { found = validated; break; }
         }
         if (found.isEmpty())
-            throw std::runtime_error("NiflyDLL.dll not found in the app folder or supported dev paths");
+            throw std::runtime_error("NiflyDLL.dll not found in the app folder");
         if (!d_->load_library(found))
             throw std::runtime_error(("Failed to load NiflyDLL from " + found).toStdString());
     }

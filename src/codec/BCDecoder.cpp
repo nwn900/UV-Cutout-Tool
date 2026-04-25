@@ -333,7 +333,7 @@ static inline int bc7_separate_color_endpoint_bits(int mode) {
 }
 
 static inline int bc7_separate_alpha_endpoint_bits(int mode) {
-    return 6;
+    return (mode == 5) ? 8 : 6;
 }
 
 static inline int bc7_separate_color_index_bits(int mode, int index_mode) {
@@ -571,15 +571,15 @@ void unpack_bc7_block(const uint8_t* block, Block4x4& pixels) {
         if (mode == 4) {
             int idx2[16] = {};
             int idx3[16] = {};
-            bc7_read_single_subset_index_stream(br, idx2, 2, index_mode == 0);
-            bc7_read_single_subset_index_stream(br, idx3, 3, index_mode != 0);
+            bc7_read_single_subset_index_stream(br, idx2, 2, true);
+            bc7_read_single_subset_index_stream(br, idx3, 3, true);
             for (int i = 0; i < 16; ++i) {
                 color_weights[i] = index_mode ? idx3[i] : idx2[i];
                 alpha_weights[i] = index_mode ? idx2[i] : idx3[i];
             }
         } else {
             bc7_read_single_subset_index_stream(br, color_weights, color_wb, true);
-            bc7_read_single_subset_index_stream(br, alpha_weights, alpha_wb, false);
+            bc7_read_single_subset_index_stream(br, alpha_weights, alpha_wb, true);
         }
 
         uint8_t block_colors[16][3] = {};

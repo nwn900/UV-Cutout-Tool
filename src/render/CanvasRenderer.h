@@ -20,6 +20,7 @@ struct CanvasView {
     float pan_x = 0.0f;
     float pan_y = 0.0f;
     bool  alpha_on = true;   // checkerboard background for transparent areas
+    bool  content_supports_alpha = false;
     // Device pixel ratio of the window the canvas is drawn into. Used to
     // scale the GL viewport up to the physical framebuffer size while all
     // pan/zoom math stays in logical (Qt) pixels. 1.0 on non-HiDPI systems,
@@ -34,8 +35,7 @@ struct SceneState {
     int hover_mesh_idx = -1;
     int hover_tri_idx  = -1;
     // When the hover target belongs to a named island, this is the island
-    // index (so every triangle in that island gets tinted — Python highlights
-    // whole islands on hover, not just the directly-hovered triangle).
+    // index, so every triangle in that island gets tinted together.
     int hover_island_mesh_idx = -1;
     int hover_island_idx      = -1;
 
@@ -47,17 +47,16 @@ struct SceneState {
     QColor hover_color     {200, 200, 128};
     QColor selected_color  {255,  48,  48};
 
-    // Optional marquee drag-rect (in UV space). Empty rect → disabled.
+    // Optional marquee drag-rect (in UV space). Empty rect means disabled.
     QRectF drag_rect;
 
-    // Live drag-marquee preview — islands whose bbox intersects `drag_rect`
+    // Live drag-marquee preview: islands whose bbox intersects `drag_rect`
     // are rendered with `preview_color` (unless they are already selected,
     // which wins). Keys are packed as `(uint64_t(mesh_idx) << 32) | island_idx`.
-    // Matches Python `_drag_preview_islands` in lines 4321-4349.
     std::unordered_set<uint64_t> drag_preview_islands;
     QColor preview_color{176, 148, 116};  // default ~ parchment
 
-    // Optional diffuse texture (null → checker/black background only).
+    // Optional diffuse texture (null means checker/black background only).
     const QImage* diffuse = nullptr;
 
     // Logical size of the UV 0..1 region in image pixels (width/height of the diffuse,
@@ -72,7 +71,7 @@ public:
     // Called when the diffuse texture changes so GPU backends can re-upload.
     virtual void onTextureChanged(const QImage* img) = 0;
 
-    // Called when mesh data changes (new NIF/OBJ loaded, islands rebuilt, selection
+    // Called when mesh data changes (new NIF loaded, islands rebuilt, selection
     // toggled) so GPU backends can re-upload geometry.
     virtual void onMeshesChanged(const std::vector<geom::Mesh>& meshes,
                                  const SceneState& scene) = 0;
