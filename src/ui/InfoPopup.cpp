@@ -99,6 +99,7 @@ InfoPopup::InfoPopup(QWidget* parent) : QDialog(parent) {
         "\u2022 Click island \u2014 toggle selection\n"
         "\u2022 Click+drag \u2014 box select islands\n"
         "\u2022 Space+drag \u2014 pan view\n"
+        "\u2022 Right drag \u2014 pan view (when zoomed in)\n"
         "\u2022 Scroll \u2014 zoom",
         10, false, false, 0, 20);
 

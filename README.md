@@ -23,7 +23,8 @@ Selected areas export with texture. Everything else is transparent.
 - **Left click** - Toggle island selection
 - **Left drag** - Box select islands
 - **Mouse wheel** - Zoom
-- **Middle drag / Right drag / Space+drag** - Pan
+- **Middle drag / Space+drag** - Pan
+- **Right drag** - Pan (when zoomed in)
 - **Ctrl+Z** - Undo
 - **Ctrl+Shift+Z** - Redo
 

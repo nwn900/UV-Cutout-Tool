@@ -523,8 +523,7 @@ void MainWindow::resetWorkspaceStatus() {
     status_lbl_->setText(
         QString("%1\u00D7%2 UV space  \u00B7  "
                 "Click/drag to select  \u00B7  Scroll to zoom  \u00B7  "
-                "Space+drag to pan  \u00B7  "
-                "Ctrl+Z Undo  \u00B7  Ctrl+Shift+Z Redo")
+"Space+drag or right-drag to pan  \u00B7  Ctrl+Z Undo  \u00B7  Ctrl+Shift+Z Redo")
             .arg(W).arg(H));
 }
 void MainWindow::backToHome() {
