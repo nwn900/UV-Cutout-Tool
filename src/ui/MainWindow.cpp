@@ -24,7 +24,6 @@
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QIcon>
-#include <QImageReader>
 #include <QImageWriter>
 #include <QMenu>
 #include <QMessageBox>
@@ -678,9 +677,7 @@ bool MainWindow::loadDiffuseFromPath(const QString& path) {
         if (fi.suffix().compare("dds", Qt::CaseInsensitive) == 0) {
             img = codec::load_dds_image(path);
         } else if (fi.suffix().compare("tga", Qt::CaseInsensitive) == 0) {
-            QImageReader r(path);
-            r.setFormat("tga");
-            img = r.read();
+            img = codec::load_tga_image(path);
         } else {
             img.load(path);
         }

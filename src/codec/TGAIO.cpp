@@ -1,12 +1,35 @@
 #include "TGAIO.h"
 
+#include <QByteArray>
 #include <QFile>
+
+#include <cstdint>
 #include <cstring>
+#include <stdexcept>
 #include <vector>
 
 namespace uvc::codec {
 
 namespace {
+
+uint16_t read_le16(const uint8_t* p) {
+    return uint16_t(p[0]) | (uint16_t(p[1]) << 8);
+}
+
+void require_bytes(const QByteArray& bytes, qsizetype pos, qsizetype count,
+                   const char* message) {
+    if (pos < 0 || count < 0 || pos + count > bytes.size())
+        throw std::runtime_error(message);
+}
+
+void store_tga_pixel(QImage& img, int dst_x, int dst_y, const uint8_t* src,
+                     int src_bpp) {
+    uint8_t* dst = img.scanLine(dst_y) + dst_x * 4;
+    dst[0] = src[2];                      // R
+    dst[1] = src[1];                      // G
+    dst[2] = src[0];                      // B
+    dst[3] = (src_bpp == 4) ? src[3] : 255; // A
+}
 
 // Encode one row of already-BGRA (or BGR) pixels into TGA RLE packets.
 // Packets never cross scanline boundaries.
@@ -50,6 +73,92 @@ void encode_rle_row(const uint8_t* row, int pixel_count, int bpp,
 }
 
 } // namespace
+
+QImage load_tga_image(const QString& path) {
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly))
+        throw std::runtime_error("Could not open TGA file");
+
+    const QByteArray bytes = f.readAll();
+    if (bytes.size() < 18)
+        throw std::runtime_error("TGA file is too small");
+
+    const auto* hdr = reinterpret_cast<const uint8_t*>(bytes.constData());
+    const int id_len = hdr[0];
+    const int color_map_type = hdr[1];
+    const int image_type = hdr[2];
+    const uint16_t color_map_len = read_le16(hdr + 5);
+    const int color_map_entry_bits = hdr[7];
+    const int w = int(read_le16(hdr + 12));
+    const int h = int(read_le16(hdr + 14));
+    const int bits = hdr[16];
+    const int desc = hdr[17];
+
+    if (w <= 0 || h <= 0)
+        throw std::runtime_error("TGA has invalid dimensions");
+    if (w > 32768 || h > 32768 || qint64(w) * qint64(h) > 2147483647)
+        throw std::runtime_error("TGA dimensions are too large");
+    if (color_map_type != 0 || color_map_len != 0 || color_map_entry_bits != 0)
+        throw std::runtime_error("Color-mapped TGA files are not supported");
+    if (image_type != 2 && image_type != 10)
+        throw std::runtime_error("Only true-color TGA files are supported");
+    if (bits != 24 && bits != 32)
+        throw std::runtime_error("Only 24-bit and 32-bit TGA files are supported");
+
+    const int src_bpp = bits / 8;
+    qsizetype pos = 18 + id_len;
+    require_bytes(bytes, pos, 0, "TGA header is truncated");
+
+    QImage img(w, h, QImage::Format_RGBA8888);
+    if (img.isNull())
+        throw std::runtime_error("Could not allocate TGA image");
+
+    const bool top_origin = (desc & 0x20) != 0;
+    const bool right_origin = (desc & 0x10) != 0;
+
+    auto write_pixel_index = [&](int pixel_index, const uint8_t* px) {
+        const int file_x = pixel_index % w;
+        const int file_y = pixel_index / w;
+        const int dst_x = right_origin ? (w - 1 - file_x) : file_x;
+        const int dst_y = top_origin ? file_y : (h - 1 - file_y);
+        store_tga_pixel(img, dst_x, dst_y, px, src_bpp);
+    };
+
+    const int pixel_count = w * h;
+    if (image_type == 2) {
+        require_bytes(bytes, pos, qsizetype(pixel_count) * src_bpp,
+                      "TGA pixel data is truncated");
+        const auto* src = reinterpret_cast<const uint8_t*>(bytes.constData() + pos);
+        for (int i = 0; i < pixel_count; ++i)
+            write_pixel_index(i, src + i * src_bpp);
+    } else {
+        int out_i = 0;
+        while (out_i < pixel_count) {
+            require_bytes(bytes, pos, 1, "TGA RLE data is truncated");
+            const uint8_t packet = uint8_t(bytes.at(pos++));
+            const int count = (packet & 0x7F) + 1;
+            if (out_i + count > pixel_count)
+                throw std::runtime_error("TGA RLE packet overruns image");
+
+            if (packet & 0x80) {
+                require_bytes(bytes, pos, src_bpp, "TGA RLE run is truncated");
+                const auto* px = reinterpret_cast<const uint8_t*>(bytes.constData() + pos);
+                pos += src_bpp;
+                for (int i = 0; i < count; ++i)
+                    write_pixel_index(out_i++, px);
+            } else {
+                require_bytes(bytes, pos, qsizetype(count) * src_bpp,
+                              "TGA RLE raw packet is truncated");
+                const auto* px = reinterpret_cast<const uint8_t*>(bytes.constData() + pos);
+                for (int i = 0; i < count; ++i)
+                    write_pixel_index(out_i++, px + i * src_bpp);
+                pos += qsizetype(count) * src_bpp;
+            }
+        }
+    }
+
+    return img;
+}
 
 bool write_tga(const QString& path, const QImage& src_image,
                bool rle, bool with_alpha) {

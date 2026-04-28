@@ -56,7 +56,7 @@ InfoPopup::InfoPopup(QWidget* parent) : QDialog(parent) {
         if (pad_bot) lay->addSpacing(pad_bot);
     };
 
-    auto title_lbl = new QLabel("UV Cutout Tool v1.1.0", body);
+    auto title_lbl = new QLabel("UV Cutout Tool v1.1.1", body);
     { QFont f; f.setPointSize(14); f.setBold(true); f.setFamily("Georgia");
       title_lbl->setFont(f); title_lbl->setAlignment(Qt::AlignHCenter); }
     lay->addWidget(title_lbl);
