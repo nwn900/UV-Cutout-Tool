@@ -19,16 +19,16 @@ jobs:
           host: windows
           target: desktop
           arch: win64_msvc2022_64
-          archives: qtsvg qtimageformats
+          archives: qtbase qtsvg qtimageformats
           cache: true
 
       - name: Configure
-        shell: cmd
+        shell: pwsh
         run: |
-          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="%Qt6_DIR%"
+          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="$env:QT_ROOT_DIR"
 
       - name: Build
-        shell: cmd
+        shell: pwsh
         run: |
           cmake --build build --config Release --target UVCutoutTool
 
