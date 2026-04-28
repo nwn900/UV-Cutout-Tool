@@ -20,6 +20,8 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets)
 
 set(PROJECT_SOURCES
     src/main.cpp
+    src/headless/HeadlessRunner.h
+    src/headless/HeadlessRunner.cpp
 
     src/app/AppSettings.h
     src/app/AppSettings.cpp
