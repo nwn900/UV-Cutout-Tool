@@ -8,6 +8,7 @@
 #include <QMenu>
 #include <QPointer>
 #include <QStackedWidget>
+#include <QStringList>
 
 #include <vector>
 
@@ -104,7 +105,7 @@ private:
     QString         startup_mode_ = "welcome";
 
     bool alpha_on_ = true;
-    QString mesh_path_;
+    QStringList mesh_paths_;
     QString diffuse_path_;
 
     std::vector<std::vector<std::vector<bool>>> undo_stack_;

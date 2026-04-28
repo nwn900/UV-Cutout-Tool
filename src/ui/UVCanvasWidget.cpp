@@ -316,7 +316,7 @@ void UVCanvasWidget::dropEvent(QDropEvent* e) {
     const auto parts = paths.split("|||");
     bool mesh_emitted = false, diffuse_emitted = false;
     for (const QString& p : parts) {
-        if (is_mesh_file(p) && !mesh_emitted) {
+        if (is_mesh_file(p)) {
             emit meshFileDropped(p);
             mesh_emitted = true;
         }

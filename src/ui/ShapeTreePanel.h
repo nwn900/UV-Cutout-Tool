@@ -66,6 +66,10 @@ private:
         QLabel*  name_lbl = nullptr;
         int      mesh_idx = -1;
     };
+    struct SourceRow {
+        QWidget* row = nullptr;
+        QLabel*  name_lbl = nullptr;
+    };
     struct IslandRow {
         QWidget* row = nullptr;
         QLabel*  name_lbl = nullptr;
@@ -93,6 +97,7 @@ private:
     QLabel*      sel_lbl_       = nullptr;
 
     std::vector<MeshRow>   mesh_rows_;
+    std::vector<SourceRow> source_rows_;
     std::vector<IslandRow> island_rows_;
 
     const themes::Theme* theme_ = nullptr;

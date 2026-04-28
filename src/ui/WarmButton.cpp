@@ -75,36 +75,40 @@ void WarmButton::applyTheme(const themes::Theme& t) {
 
 void WarmButton::repaintState() {
     const bool active_hover = hovered_ || drag_hovered_;
-    const QColor bg = isDown() ? bg_act_ : (active_hover ? bg_hi_ : bg_);
-    const int light_ratio = active_hover ? 120 : 100;
-    const int dark_ratio = isDown() ? 85 : 115;
-    QColor border = bg.lighter(light_ratio + 35);
-    QColor shadow = bg.darker(dark_ratio + 55);
+    const bool pressed      = isDown();
+    const QColor bg  = pressed ? bg_act_ : (active_hover ? bg_hi_ : bg_);
+    // Classical raised-panel effect: top catch-light fades to a slight base
+    // shadow. When pressed the gradient inverts so the button reads as sunken.
+    const QColor top = pressed ? bg.darker(108)  : bg.lighter(112);
+    const QColor bot = pressed ? bg.lighter(106) : bg.darker(106);
+    const QColor border = bg.lighter((active_hover ? 120 : 100) + 35);
+    const QColor shadow = bg.darker((pressed ? 85 : 115) + 55);
     QPalette p = palette();
-    p.setColor(QPalette::Button, bg);
+    p.setColor(QPalette::Button,     bg);
     p.setColor(QPalette::ButtonText, fg_);
-    p.setColor(QPalette::Window, bg);
+    p.setColor(QPalette::Window,     bg);
     p.setColor(QPalette::WindowText, fg_);
     setPalette(p);
     const QString padding = text().isEmpty() ? QStringLiteral("6px") : QStringLiteral("9px 16px");
     setStyleSheet(QString(
         "QPushButton {"
-        " background:%1;"
-        " color:%2;"
-        " border:1px solid %3;"
-        " border-bottom-color:%4;"
-        " border-right-color:%4;"
+        " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %1, stop:1 %2);"
+        " color:%3;"
+        " border:1px solid %4;"
+        " border-bottom-color:%5;"
+        " border-right-color:%5;"
         " border-radius:2px;"
-        " padding:%5;"
+        " padding:%6;"
         " font-weight:600;"
         "}"
-        "QPushButton:focus { outline: none; border:1px solid %6; }")
-        .arg(bg.name(QColor::HexArgb),
-             fg_.name(QColor::HexArgb),
-             border.name(QColor::HexArgb),
-             shadow.name(QColor::HexArgb),
-             padding,
-             fg_.name(QColor::HexArgb)));
+        "QPushButton:focus { outline:none; border:1px solid %7; }")
+        .arg(top.name(QColor::HexArgb),    // %1 gradient top (catch-light)
+             bot.name(QColor::HexArgb),    // %2 gradient bottom (shadow)
+             fg_.name(QColor::HexArgb),    // %3 text
+             border.name(QColor::HexArgb), // %4 light border (top/left)
+             shadow.name(QColor::HexArgb), // %5 dark border (bot/right)
+             padding,                       // %6
+             fg_.name(QColor::HexArgb)));  // %7 focus ring
 }
 
 void WarmButton::enterEvent(QEnterEvent* e) {

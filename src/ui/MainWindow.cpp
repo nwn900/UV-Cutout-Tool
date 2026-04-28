@@ -311,12 +311,18 @@ void MainWindow::applyThemeVisuals(const themes::Theme& t) {
     };
     apply_palette(toolbar_, t.bg_toolbar, t.parchment);
     if (toolbar_) {
+        // Three-stop gradient: surface_hi catch-light at the very top (6 %),
+        // then surface mid-band, then bg_toolbar at the bottom — classical
+        // moulded-cornice effect without being heavy.
         toolbar_->setStyleSheet(QString(
             "QWidget#workspaceToolbar {"
-            " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %1, stop:1 %2);"
-            " border-bottom:1px solid %3;"
+            " background:qlineargradient(x1:0,y1:0,x2:0,y2:1,"
+            "  stop:0.00 %1, stop:0.10 %2, stop:1.00 %3);"
+            " border-top:1px solid %1;"
+            " border-bottom:1px solid %4;"
             "}")
-            .arg(t.surface.name(QColor::HexRgb),
+            .arg(t.surface_hi.name(QColor::HexRgb),
+                 t.surface.name(QColor::HexRgb),
                  t.bg_toolbar.name(QColor::HexRgb),
                  t.rule.name(QColor::HexRgb)));
     }
@@ -330,14 +336,18 @@ void MainWindow::applyThemeVisuals(const themes::Theme& t) {
             "}"
             "QStatusBar::item { border:none; }")
             .arg(t.bg_toolbar.name(QColor::HexRgb),
-                 t.parchment.name(QColor::HexRgb),
+                 t.parchment_faint.name(QColor::HexRgb),
                  t.rule.name(QColor::HexRgb)));
     }
+    // Apply the theme's body font to the status-bar labels so the running text
+    // feels consistent with whichever typeface the active theme prescribes.
     if (status_lbl_ || hover_lbl_) {
+        const QString body_family = t.font_main.isEmpty() ? "Segoe UI" : t.font_main;
+        const QFont   body_font(body_family, 8);
         const QString label_qss = QString("QLabel { color:%1; }")
-            .arg(t.parchment.name(QColor::HexRgb));
-        if (status_lbl_) status_lbl_->setStyleSheet(label_qss);
-        if (hover_lbl_)  hover_lbl_->setStyleSheet(label_qss);
+            .arg(t.parchment_faint.name(QColor::HexRgb));
+        if (status_lbl_) { status_lbl_->setFont(body_font); status_lbl_->setStyleSheet(label_qss); }
+        if (hover_lbl_)  { hover_lbl_->setFont(body_font);  hover_lbl_->setStyleSheet(label_qss); }
     }
     if (shape_dock_) {
         shape_dock_->setStyleSheet(QString(
@@ -402,8 +412,14 @@ void MainWindow::applyCurrentTheme() {
 
 void MainWindow::updateWelcomeState() {
     if (!welcome_) return;
-    welcome_->setLoadedFiles(QFileInfo(mesh_path_).fileName(), QFileInfo(diffuse_path_).fileName());
-    welcome_->setWorkspaceButtonHasLoadedContent(!mesh_path_.isEmpty() || !diffuse_path_.isEmpty());
+    QString mesh_label;
+    if (mesh_paths_.size() == 1) {
+        mesh_label = QFileInfo(mesh_paths_.front()).fileName();
+    } else if (mesh_paths_.size() > 1) {
+        mesh_label = QString("%1 NIF meshes loaded").arg(mesh_paths_.size());
+    }
+    welcome_->setLoadedFiles(mesh_label, QFileInfo(diffuse_path_).fileName());
+    welcome_->setWorkspaceButtonHasLoadedContent(!mesh_paths_.isEmpty() || !diffuse_path_.isEmpty());
 }
 
 void MainWindow::updateWorkspaceChrome() {
@@ -553,7 +569,7 @@ void MainWindow::backToHome() {
 
     // Reset welcome-screen state and the "Open in Workspace" hook — neither
     // asset is loaded anymore.
-    mesh_path_.clear();
+    mesh_paths_.clear();
     diffuse_path_.clear();
 
     // Normalize the alpha-checker toggle back to its default ON state so a
@@ -569,11 +585,13 @@ void MainWindow::backToHome() {
 }
 
 void MainWindow::loadMesh() {
-    const QString path = QFileDialog::getOpenFileName(
+    const QStringList paths = QFileDialog::getOpenFileNames(
         this, "Load Mesh", QString(),
         "NIF Meshes (*.nif)");
-    if (path.isEmpty()) return;
-    loadMeshFromPath(path);
+    if (paths.isEmpty()) return;
+    for (const QString& path : paths) {
+        if (!path.isEmpty()) loadMeshFromPath(path);
+    }
 }
 
 bool MainWindow::loadMeshFromPath(const QString& path) {
@@ -610,10 +628,19 @@ bool MainWindow::loadMeshFromPath(const QString& path) {
         return false;
     }
 
+    const QString source_name = QFileInfo(path).fileName();
+    for (auto& m : meshes) {
+        m.source_name = source_name.toStdString();
+    }
+
     int total_tris = 0;
     for (const auto& m : meshes) total_tris += int(m.triangles.size());
-    canvas_->setMeshes(std::move(meshes));
-    mesh_path_ = path;
+
+    auto combined_meshes = canvas_->meshes();
+    combined_meshes.reserve(combined_meshes.size() + meshes.size());
+    for (auto& m : meshes) combined_meshes.push_back(std::move(m));
+    canvas_->setMeshes(std::move(combined_meshes));
+    mesh_paths_.append(path);
     undo_stack_.clear();
     redo_stack_.clear();
     updateUndoRedoButtons();

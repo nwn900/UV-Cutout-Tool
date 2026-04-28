@@ -173,18 +173,26 @@ void ThemePickerDialog::style_header(QLabel* h, bool hovered) {
     p.setColor(QPalette::Window,     hovered ? theme_->surface_hi : theme_->bg_toolbar);
     p.setColor(QPalette::WindowText, theme_->secondary);
     h->setPalette(p);
+    // Classical section-divider treatment: a 3 px left accent bar in the
+    // secondary (gold/amber/ice) colour anchors the header like a rubric drop
+    // cap, with a subtle top-to-bottom gradient on the background itself.
+    const QColor bg_top = hovered ? theme_->surface_hi.lighter(110)
+                                  : theme_->surface.lighter(105);
+    const QColor bg_bot = hovered ? theme_->surface_hi : theme_->bg_toolbar;
     h->setStyleSheet(QString(
         "QLabel {"
-        " background:%1;"
-        " color:%2;"
-        " border-top:1px solid %3;"
-        " border-bottom:1px solid %4;"
-        " padding:0px;"
+        " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %1, stop:1 %2);"
+        " color:%3;"
+        " border-top:1px solid %4;"
+        " border-bottom:1px solid %5;"
+        " border-left:3px solid %3;"
+        " padding:0px 0px 0px 10px;"
         "}")
-        .arg((hovered ? theme_->surface_hi : theme_->bg_toolbar).name(QColor::HexRgb),
-             theme_->secondary.name(QColor::HexRgb),
-             theme_->surface_hi.name(QColor::HexRgb),
-             theme_->rule.name(QColor::HexRgb)));
+        .arg(bg_top.name(QColor::HexRgb),          // %1 gradient top
+             bg_bot.name(QColor::HexRgb),           // %2 gradient bottom
+             theme_->secondary.name(QColor::HexRgb),// %3 text + left accent
+             theme_->surface_hi.name(QColor::HexRgb),// %4 top edge
+             theme_->rule.name(QColor::HexRgb)));    // %5 bottom rule
     h->setMinimumHeight(36);
     h->setMaximumHeight(36);
 }
@@ -227,11 +235,17 @@ void ThemePickerDialog::refresh_rows() {
 void ThemePickerDialog::applyTheme(const themes::Theme& t) {
     theme_ = &t;
 
+    // Resolve fonts once — title uses font_title, list body uses font_main.
+    const QString title_family = t.font_title.isEmpty() ? "Georgia"  : t.font_title;
+    const QString body_family  = t.font_main.isEmpty()  ? "Segoe UI" : t.font_main;
+
     QPalette p = palette();
     p.setColor(QPalette::Window,     t.surface);
     p.setColor(QPalette::WindowText, t.parchment);
     setPalette(p);
     setAutoFillBackground(true);
+    // Dialog buttons inherit from the dialog-level QSS but get classical bevel
+    // treatment: gradient top-to-bottom with light/dark border edges.
     setStyleSheet(QString(
         "ThemePickerDialog {"
         " background:%1;"
@@ -240,21 +254,33 @@ void ThemePickerDialog::applyTheme(const themes::Theme& t) {
         "QPushButton {"
         " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %3, stop:1 %4);"
         " color:%5;"
-        " border:1px solid %2;"
+        " border:1px solid %6;"
+        " border-bottom-color:%7;"
+        " border-right-color:%7;"
+        " border-radius:2px;"
         " padding:6px 14px;"
+        " font-weight:600;"
         "}"
-        "QPushButton:hover { background:%6; }")
-        .arg(t.surface.name(QColor::HexRgb),
-             t.rule.name(QColor::HexRgb),
-             t.surface_hi.name(QColor::HexRgb),
-             t.surface.name(QColor::HexRgb),
-             t.parchment.name(QColor::HexRgb),
-             t.primary_hi.name(QColor::HexRgb)));
+        "QPushButton:hover {"
+        " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %8, stop:1 %4);"
+        "}")
+        .arg(t.surface.name(QColor::HexRgb),              // %1
+             t.rule.name(QColor::HexRgb),                  // %2
+             t.surface_hi.lighter(108).name(QColor::HexRgb),// %3 btn grad top
+             t.surface.name(QColor::HexRgb),               // %4 btn grad bottom
+             t.parchment.name(QColor::HexRgb),             // %5 btn text
+             t.surface_hi.lighter(130).name(QColor::HexRgb),// %6 light border
+             t.surface.darker(140).name(QColor::HexRgb),   // %7 dark border
+             t.primary_hi.lighter(110).name(QColor::HexRgb)));// %8 hover top
 
+    // Title bar: the theme font at a slightly larger weight, with the same
+    // gradient treatment as the ShapeTreePanel header.
     QPalette tp = title_->palette();
     tp.setColor(QPalette::Window,     t.bg_toolbar);
     tp.setColor(QPalette::WindowText, t.parchment);
     title_->setPalette(tp);
+    QFont title_font(title_family, 11, QFont::Bold);
+    title_->setFont(title_font);
     title_->setStyleSheet(QString(
         "QLabel {"
         " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %1, stop:1 %2);"
@@ -266,6 +292,19 @@ void ThemePickerDialog::applyTheme(const themes::Theme& t) {
              t.bg_toolbar.name(QColor::HexRgb),
              t.parchment.name(QColor::HexRgb),
              t.rule.name(QColor::HexRgb)));
+
+    // Apply the body font to every theme-row label so list text uses the
+    // theme-appropriate typeface (e.g. Palatino for Arcane rows).
+    for (auto& c : categories_) {
+        if (c.header) {
+            QFont hf(body_family);
+            hf.setBold(true);
+            c.header->setFont(hf);
+        }
+        for (auto* r : c.theme_rows) {
+            if (r) r->setFont(QFont(body_family));
+        }
+    }
 
     if (body_) {
         QPalette bp = body_->palette();

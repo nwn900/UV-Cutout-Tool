@@ -56,7 +56,7 @@ InfoPopup::InfoPopup(QWidget* parent) : QDialog(parent) {
         if (pad_bot) lay->addSpacing(pad_bot);
     };
 
-    auto title_lbl = new QLabel("UV Cutout Tool v1.0.0", body);
+    auto title_lbl = new QLabel("UV Cutout Tool v1.1.0", body);
     { QFont f; f.setPointSize(14); f.setBold(true); f.setFamily("Georgia");
       title_lbl->setFont(f); title_lbl->setAlignment(Qt::AlignHCenter); }
     lay->addWidget(title_lbl);
@@ -65,16 +65,25 @@ InfoPopup::InfoPopup(QWidget* parent) : QDialog(parent) {
     add_title("What is this?", 11, true, false, 0, 5);
     add_title(
         "A tool for quickly creating texture cutouts from NIF mesh UV layouts. "
-        "Load a mesh and texture, visualize UV islands, select triangles, and "
-        "export just the texture areas you need.",
+        "Load one or more meshes with a matching texture, visualize UV islands, "
+        "select triangles, and export just the texture areas you need.",
         10, false, false, 0, 15);
 
     add_title("Best For:", 11, true, false, 0, 5);
     add_title(
         "\u2022 Armor and clothing pieces\n"
         "\u2022 Weapons and props\n"
-        "\u2022 Simple meshes with single diffuse textures\n"
+        "\u2022 Texture sets shared by several NIF meshes\n"
         "\u2022 Quick isolation of specific UV islands",
+        10, false, false, 0, 15);
+
+    add_title("Multiple NIFs:", 11, true, false, 0, 5);
+    add_title(
+        "You can load several NIF meshes into the same workspace when they share "
+        "one diffuse texture. Additional NIFs are appended to the current scene. "
+        "When more than one NIF is loaded, the Shapes panel groups each mesh's "
+        "shapes under the source file name so armor parts, weapon pieces, and "
+        "matching accessory meshes stay organized.",
         10, false, false, 0, 15);
 
     add_title("Limitations:", 11, true, false, 0, 5);
@@ -86,9 +95,9 @@ InfoPopup::InfoPopup(QWidget* parent) : QDialog(parent) {
 
     add_title("Workflow:", 11, true, false, 0, 5);
     add_title(
-        "1. Load a NIF mesh or drag it into the app\n"
+        "1. Load one or more NIF meshes or drag them into the app\n"
         "2. Load a diffuse texture (PNG, TGA, DDS, JPG, JPEG, or BMP) or drag it into the app\n"
-        "3. You can also drag and drop both files at the same time\n"
+        "3. You can also drag and drop meshes and a texture at the same time\n"
         "4. Click or drag to select UV islands\n"
         "5. Export selection as TGA or PNG\n"
         "6. Mask/edit in Photoshop",

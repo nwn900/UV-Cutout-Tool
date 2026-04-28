@@ -16,6 +16,9 @@
 #include <QScrollBar>
 #include <QSpacerItem>
 
+#include <algorithm>
+#include <set>
+
 namespace uvc::ui {
 
 namespace {
@@ -139,8 +142,10 @@ void ShapeTreePanel::updateSummaryText(int mesh_count, int island_count) {
 }
 
 void ShapeTreePanel::clear_rows() {
+    for (auto& r : source_rows_) if (r.row) r.row->deleteLater();
     for (auto& r : mesh_rows_)   if (r.row) r.row->deleteLater();
     for (auto& r : island_rows_) if (r.row) r.row->deleteLater();
+    source_rows_.clear();
     mesh_rows_.clear();
     island_rows_.clear();
 }
@@ -216,16 +221,47 @@ void ShapeTreePanel::rebuild(const std::vector<geom::Mesh>& meshes) {
 
     int total_islands = 0;
     int global_idx = 1;
+    std::set<std::string> source_names;
+    for (const auto& m : meshes) {
+        if (!m.source_name.empty()) source_names.insert(m.source_name);
+    }
+    const bool show_source_groups = source_names.size() > 1;
+    std::string last_source_name;
 
     for (int mi = 0; mi < int(meshes.size()); ++mi) {
         const auto& m = meshes[mi];
+        if (show_source_groups && m.source_name != last_source_name) {
+            last_source_name = m.source_name;
+
+            SourceRow sr;
+            sr.row = new QWidget(body_);
+            sr.row->setObjectName("shapeSourceRow");
+            auto* shl = new QHBoxLayout(sr.row);
+            shl->setContentsMargins(6, 7, 6, 4);
+            shl->setSpacing(0);
+
+            const QString source_label = last_source_name.empty()
+                ? QStringLiteral("Unnamed NIF")
+                : QString::fromStdString(last_source_name);
+            sr.name_lbl = new QLabel(source_label, sr.row);
+            sr.name_lbl->setObjectName("shapeSourceLabel");
+            sr.name_lbl->setAutoFillBackground(true);
+            QFont sf = sr.name_lbl->font();
+            sf.setBold(true);
+            sf.setPointSize(std::max(8, sf.pointSize()));
+            sr.name_lbl->setFont(sf);
+            shl->addWidget(sr.name_lbl, 1);
+
+            vlay_->addWidget(sr.row);
+            source_rows_.push_back(sr);
+        }
 
         MeshRow mr;
         mr.mesh_idx = mi;
         mr.row = new QWidget(body_);
         mr.row->setObjectName("shapeTreeRow");
         auto* hl = new QHBoxLayout(mr.row);
-        hl->setContentsMargins(4, 2, 4, 2);
+        hl->setContentsMargins(show_source_groups ? 12 : 4, 2, 4, 2);
         hl->setSpacing(6);
 
         mr.checkbox = new QLabel(mr.row);
@@ -293,6 +329,29 @@ void ShapeTreePanel::refreshHighlights(const std::vector<geom::Mesh>& meshes,
                                        int hover_island_idx) {
     refreshSelectionCounter(meshes);
     if (!theme_) return;
+
+    for (auto& sr : source_rows_) {
+        if (!sr.row || !sr.name_lbl) continue;
+        const QColor bg = theme_->bg_toolbar;
+        QPalette rp = sr.row->palette();
+        rp.setColor(QPalette::Window, bg);
+        sr.row->setPalette(rp);
+        sr.row->setAutoFillBackground(true);
+        sr.row->setStyleSheet(QString(
+            "QWidget#shapeSourceRow { background:%1; border-top:1px solid %2; border-bottom:1px solid %2; }")
+            .arg(bg.name(QColor::HexRgb),
+                 theme_->rule.name(QColor::HexRgb)));
+
+        QPalette lp = sr.name_lbl->palette();
+        lp.setColor(QPalette::Window, bg);
+        lp.setColor(QPalette::WindowText, theme_->secondary);
+        sr.name_lbl->setPalette(lp);
+        sr.name_lbl->setAutoFillBackground(true);
+        sr.name_lbl->setStyleSheet(QString(
+            "QLabel#shapeSourceLabel { background:%1; color:%2; padding:2px 4px; }")
+            .arg(bg.name(QColor::HexRgb),
+                 theme_->secondary.name(QColor::HexRgb)));
+    }
 
     for (auto& mr : mesh_rows_) {
         if (mr.mesh_idx < 0 || mr.mesh_idx >= int(meshes.size())) continue;
@@ -409,17 +468,29 @@ void ShapeTreePanel::applyTheme(const themes::Theme& t) {
     style_side(header_, t.bg_toolbar,  t.parchment);
     style_side(status_, t.bg_panel,    t.parchment_faint);
     if (header_) {
+        // Use the theme's own serif title font so the panel heading feels
+        // consistent with the welcome screen and picker typography.
+        const QString title_family = t.font_title.isEmpty() ? "Georgia" : t.font_title;
+        QFont hf(title_family);
+        hf.setBold(true);
+        header_->setFont(hf);
         header_->setStyleSheet(QString(
             "QLabel {"
             " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %1, stop:1 %2);"
             " color:%3;"
             " border-bottom:1px solid %4;"
-            " padding:8px 10px;"
+            " border-left:3px solid %5;"
+            " padding:8px 10px 8px 8px;"
             "}")
             .arg(t.surface.name(QColor::HexRgb),
                  t.bg_toolbar.name(QColor::HexRgb),
                  t.parchment.name(QColor::HexRgb),
-                 t.rule.name(QColor::HexRgb)));
+                 t.rule.name(QColor::HexRgb),
+                 t.secondary.name(QColor::HexRgb)));
+    }
+    if (status_) {
+        const QString body_family = t.font_main.isEmpty() ? "Segoe UI" : t.font_main;
+        status_->setFont(QFont(body_family, 8));
     }
     if (status_) {
         status_->setStyleSheet(QString(

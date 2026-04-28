@@ -160,35 +160,66 @@ void WelcomeWidget::applyTheme(const themes::Theme& t) {
     p.setColor(QPalette::WindowText, t.parchment);
     setPalette(p);
     setAutoFillBackground(true);
+
+    // Panel: top-to-bottom gradient from surface (lighter "lid") to bg_panel
+    // ("base"), with a 2 px surface_hi highlight on the top edge and a 1 px
+    // rule border on the other three sides — classical inset-frame construction.
+    const QColor panel_top = QColor(
+        t.surface.red(), t.surface.green(), t.surface.blue(), 210);
+    const QColor panel_bot = QColor(
+        t.bg_panel.red(), t.bg_panel.green(), t.bg_panel.blue(), 230);
     setStyleSheet(QString(
         "QWidget#welcomePanel {"
-        " background:%1;"
-        " border:1px solid %2;"
-        " border-top-color:%3;"
+        " background:qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 %1, stop:1 %2);"
+        " border:1px solid %3;"
+        " border-top:2px solid %4;"
         "}"
         "QFrame#welcomeRule {"
-        " background:qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 transparent, stop:0.18 %2, stop:0.5 %4, stop:0.82 %2, stop:1 transparent);"
+        " background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
+        "  stop:0 transparent, stop:0.15 %3,"
+        "  stop:0.5 %5,"
+        "  stop:0.85 %3, stop:1 transparent);"
         " border:none;"
         "}")
-        .arg(QColor(t.bg_panel.red(), t.bg_panel.green(), t.bg_panel.blue(), 220).name(QColor::HexArgb),
-             t.rule.name(QColor::HexRgb),
-             t.surface_hi.name(QColor::HexRgb),
-             t.secondary.name(QColor::HexRgb)));
+        .arg(panel_top.name(QColor::HexArgb),    // %1 gradient top
+             panel_bot.name(QColor::HexArgb),    // %2 gradient bottom
+             t.rule.name(QColor::HexRgb),         // %3 outer border
+             t.surface_hi.name(QColor::HexRgb),  // %4 top highlight edge
+             t.secondary.name(QColor::HexRgb)));  // %5 decorative rule centre
+
+    // Apply the theme's own typeface so each theme reads as typographically
+    // authentic (Palatino for Volkihar, Georgia for Renaissance, Constantia for
+    // Nordic, etc.).  Falls back to safe system fonts when the theme omits them.
+    const QString title_family = t.font_title.isEmpty() ? "Georgia"  : t.font_title;
+    const QString body_family  = t.font_main.isEmpty()  ? "Segoe UI" : t.font_main;
+
+    title_->setFont(QFont(title_family, 30, QFont::Bold));
+
+    QFont sf(title_family, 11);
+    sf.setItalic(true);
+    subtitle_->setFont(sf);
+
+    QFont df(body_family, 8);
+    df.setItalic(true);
+    mesh_file_lbl_->setFont(df);
+    diffuse_file_lbl_->setFont(df);
+
+    supports_strip_->setFont(QFont(body_family, 8));
 
     for (auto* lbl : {title_, subtitle_, mesh_file_lbl_, diffuse_file_lbl_, supports_strip_}) {
         if (!lbl) continue;
         QPalette lp = lbl->palette();
         lp.setColor(QPalette::Window,     t.bg_canvas);
-        QColor fg = (lbl == title_)      ? t.parchment
-                   : (lbl == subtitle_)  ? t.parchment
-                                         : t.parchment;
+        // Three-tier text hierarchy: title full parchment, subtitle dimmed,
+        // caption/detail labels faint — mirrors classical manuscript rubric.
+        QColor fg = (lbl == title_) ? t.parchment : t.parchment_faint;
         lp.setColor(QPalette::WindowText, fg);
         lbl->setPalette(lp);
     }
 
     if (footer_rule_) {
         QPalette rp = footer_rule_->palette();
-        rp.setColor(QPalette::Window, t.rule);
+        rp.setColor(QPalette::Window, t.secondary);
         footer_rule_->setPalette(rp);
     }
 
@@ -327,7 +358,7 @@ void WelcomeWidget::dropEvent(QDropEvent* e) {
     const auto parts = paths.split("|||");
     bool mesh_emitted = false, diffuse_emitted = false;
     for (const QString& p : parts) {
-        if (is_mesh_file(p) && !mesh_emitted) {
+        if (is_mesh_file(p)) {
             emit meshFileDropped(p);
             mesh_emitted = true;
         }
