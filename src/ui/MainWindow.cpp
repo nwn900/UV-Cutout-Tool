@@ -8,6 +8,7 @@
 #include "WelcomeWidget.h"
 
 #include "../app/AppSettings.h"
+#include "../cut/MeshCutManifest.h"
 #include "../codec/DDSLoader.h"
 #include "../codec/TGAIO.h"
 #include "../parsers/NiflyParser.h"
@@ -149,6 +150,8 @@ void MainWindow::buildToolbar() {
     btn_undo_   = new WarmButton("Undo",     WarmButton::Secondary, toolbar_);
     btn_redo_   = new WarmButton("Redo",     WarmButton::Secondary, toolbar_);
     btn_export_ = new WarmButton("Export…",  WarmButton::Secondary, toolbar_);
+    btn_manifest_ = new WarmButton("Cut Manifest", WarmButton::Secondary, toolbar_);
+    btn_manifest_->setToolTip("Export the selected triangles as a cut manifest");
     btn_mesh_->setDropKind(WarmButton::MeshDrop);
     btn_diff_->setDropKind(WarmButton::DiffuseDrop);
     settings_btn_ = new WarmButton(QString(), WarmButton::Secondary, toolbar_);
@@ -179,12 +182,13 @@ void MainWindow::buildToolbar() {
     right_lay->setContentsMargins(0, 0, 0, 0);
     right_lay->setSpacing(6);
     right_lay->addWidget(btn_export_);
+    right_lay->addWidget(btn_manifest_);
     right_lay->addSpacing(8);
     right_lay->addWidget(settings_btn_);
 
     const QSize toolbar_button_size(112, 34);
     for (auto* b : {btn_home_, btn_mesh_, btn_diff_, alpha_btn_, btn_all_, btn_none_, btn_inv_,
-                    btn_undo_, btn_redo_, btn_export_}) {
+                    btn_undo_, btn_redo_, btn_export_, btn_manifest_}) {
         if (b) {
             b->setFixedSize(toolbar_button_size);
             b->setMinimumWidth(60);
@@ -214,6 +218,7 @@ void MainWindow::buildToolbar() {
     connect(btn_undo_,   &WarmButton::clicked, this, &MainWindow::undo);
     connect(btn_redo_,   &WarmButton::clicked, this, &MainWindow::redo);
     connect(btn_export_, &WarmButton::clicked, this, &MainWindow::openExportDialog);
+    connect(btn_manifest_, &WarmButton::clicked, this, &MainWindow::openManifestExportDialog);
     btn_undo_->setEnabled(false);
     btn_redo_->setEnabled(false);
 
@@ -359,7 +364,7 @@ void MainWindow::applyThemeVisuals(const themes::Theme& t) {
     }
 
     for (auto* b : {btn_home_, btn_mesh_, btn_diff_, alpha_btn_, btn_all_, btn_none_, btn_inv_,
-                    btn_undo_, btn_redo_, btn_export_, settings_btn_})
+                    btn_undo_, btn_redo_, btn_export_, btn_manifest_, settings_btn_})
         if (b) b->applyTheme(t);
     if (export_dialog_) export_dialog_->applyTheme(t);
     if (settings_btn_) settings_btn_->setIcon(make_gear_icon(t.secondary));
@@ -630,6 +635,7 @@ bool MainWindow::loadMeshFromPath(const QString& path) {
     const QString source_name = QFileInfo(path).fileName();
     for (auto& m : meshes) {
         m.source_name = source_name.toStdString();
+        m.source_path = path.toStdString();
     }
 
     int total_tris = 0;
@@ -961,6 +967,48 @@ void MainWindow::openExportDialog() {
              export_dialog_->tgaRle());
 }
 
+void MainWindow::openManifestExportDialog() {
+    bool any_selected = false;
+    for (const auto& m : canvas_->meshes()) {
+        for (const auto& t : m.triangles) {
+            if (t.selected) { any_selected = true; break; }
+        }
+        if (any_selected) break;
+    }
+    if (!any_selected) {
+        QMessageBox::warning(this, "Nothing Selected",
+                             "Select at least one triangle before exporting a cut manifest.");
+        return;
+    }
+
+    QString default_name = QStringLiteral("mesh_cut_manifest.uvcut.json");
+    for (const auto& m : canvas_->meshes()) {
+        if (m.source_path.empty()) continue;
+        default_name = QFileInfo(QString::fromStdString(m.source_path)).completeBaseName()
+            + ".uvcut.json";
+        break;
+    }
+
+    const QString path = QFileDialog::getSaveFileName(
+        this,
+        "Save Cut Manifest",
+        QDir(QCoreApplication::applicationDirPath()).filePath(default_name),
+        "JSON files (*.json);;All files (*.*)");
+    if (path.isEmpty()) return;
+
+    status_lbl_->setText("Exporting manifest...");
+    QApplication::processEvents();
+
+    QString error;
+    if (!cut::writeMeshCutManifest(path, canvas_->meshes(), "remove", &error)) {
+        QMessageBox::critical(this, "Manifest export failed", error);
+        if (status_lbl_) status_lbl_->clear();
+        return;
+    }
+
+    status_lbl_->setText(QString("Manifest exported  ·  %1").arg(path));
+}
+
 void MainWindow::doExport(const QString& fmt, ExportColorMode mode, bool alpha,
                           int png_quality, bool tga_rle) {
     const QString exe_dir = QCoreApplication::applicationDirPath();
@@ -1049,7 +1097,7 @@ void MainWindow::updateToolbarForSize() {
         alpha_btn_->setMinimumWidth(60);
     }
     for (auto* b : {btn_home_, btn_mesh_, btn_diff_, btn_all_, btn_none_, btn_inv_,
-                    btn_undo_, btn_redo_, btn_export_}) {
+                    btn_undo_, btn_redo_, btn_export_, btn_manifest_}) {
         if (b) {
             b->setFixedSize(btn_width, 34);
             b->setMinimumWidth(60);

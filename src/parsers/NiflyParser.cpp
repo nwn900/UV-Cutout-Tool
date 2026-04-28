@@ -33,6 +33,7 @@ struct NiflyParser::Impl {
     using load_fn       = void* (*)(const char*);
     using destroy_fn    = void  (*)(void*);
     using getShapes_fn  = int   (*)(void* file, void** out, int max, int flags);
+    using getShapeName_fn = int (*)(void* shape, char* out, int max);
     using getVerts_fn   = int   (*)(void* file, void* shape, float* out, int max, int flags);
     using getUVs_fn     = int   (*)(void* file, void* shape, float* out, int max, int flags);
     using getTris_fn    = int   (*)(void* file, void* shape, uint16_t* out, int max, int flags);
@@ -41,6 +42,7 @@ struct NiflyParser::Impl {
     load_fn      nifly_load      = nullptr;
     destroy_fn   nifly_destroy   = nullptr;
     getShapes_fn nifly_getShapes = nullptr;
+    getShapeName_fn nifly_getShapeName = nullptr;
     getVerts_fn  nifly_getVerts  = nullptr;
     getUVs_fn    nifly_getUVs    = nullptr;
     getTris_fn   nifly_getTris   = nullptr;
@@ -79,6 +81,7 @@ struct NiflyParser::Impl {
         nifly_load      = resolve<load_fn>("load");
         nifly_destroy   = resolve<destroy_fn>("destroy");
         nifly_getShapes = resolve<getShapes_fn>("getShapes");
+        nifly_getShapeName = resolve<getShapeName_fn>("getShapeName");
         nifly_getVerts  = resolve<getVerts_fn>("getVertsForShape");
         nifly_getUVs    = resolve<getUVs_fn>("getUVs");
         nifly_getTris   = resolve<getTris_fn>("getTriangles");
@@ -192,7 +195,13 @@ std::vector<Mesh> NiflyParser::parse(const QString& filepath, ProgressCallback c
         if (n_uvs <= 0 || n_vs <= 0 || n_tris <= 0) continue;
 
         Mesh m;
-        m.name = std::string("Shape_") + std::to_string(i + 1);
+        if (d_->nifly_getShapeName) {
+            char name_buf[256] = {0};
+            if (d_->nifly_getShapeName(shape_handles[i], name_buf, int(sizeof(name_buf))) > 0) {
+                m.name = name_buf;
+            }
+        }
+        if (m.name.empty()) m.name = std::string("Shape_") + std::to_string(i + 1);
         m.visible = true;
         m.triangles.reserve(n_tris);
 

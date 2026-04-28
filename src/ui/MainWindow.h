@@ -31,6 +31,7 @@ public slots:
     void loadMesh();
     void loadDiffuse();
     void openExportDialog();
+    void openManifestExportDialog();
     void selectAll();
     void deselectAll();
     void invertSelection();
@@ -96,6 +97,7 @@ private:
     WarmButton*     btn_none_ = nullptr;
     WarmButton*     btn_inv_  = nullptr;
     WarmButton*     btn_export_ = nullptr;
+    WarmButton*     btn_manifest_ = nullptr;
     WarmButton*     btn_undo_ = nullptr;
     WarmButton*     btn_redo_ = nullptr;
     WarmButton*     settings_btn_ = nullptr;

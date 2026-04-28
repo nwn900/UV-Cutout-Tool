@@ -26,6 +26,7 @@ struct Triangle {
 struct Mesh {
     std::string name;
     std::string source_name;
+    std::string source_path;
     std::vector<Triangle> triangles;
     bool visible = true;
     std::vector<std::vector<int>> islands; // triangle indices per island

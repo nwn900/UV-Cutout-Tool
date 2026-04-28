@@ -42,6 +42,9 @@ set(PROJECT_SOURCES
     src/geometry/IslandBuilder.h
     src/geometry/IslandBuilder.cpp
 
+    src/cut/MeshCutManifest.h
+    src/cut/MeshCutManifest.cpp
+
     src/themes/Theme.h
     src/themes/Theme.cpp
 
